@@ -93,7 +93,7 @@ ipcRenderer.on(REG_EVENT.READER_DATA , (event, data) => {
 });
 
 //UI HANDLERS
-utils.getByCssName('reg-smartbanner-options-restore').addEventListener('click', evt => {
+utils.getByCssName('reg-options-restore-button').addEventListener('click', evt => {
     const fs = require('fs');
     const out = fs.readFileSync('app/storage/users.json');
     _.forEach(JSON.parse(out.toString()), user => {
@@ -115,7 +115,8 @@ utils.getByCssName('reg-fullscreenpopup-submit').addEventListener('click', evt =
     moduleWindow.classList.remove('reg-fullscreenpopup-active');
     utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
 
-    ipcRenderer.send(REG_EVENT.NEW_USER, {uid, firstname, lastname});
+    const shouldSave = utils.getByCssName('reg-options-restore-label input').checked;
+    ipcRenderer.send(REG_EVENT.NEW_USER, { uid, firstname, lastname, shouldSave });
 });
 
 utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt => {
