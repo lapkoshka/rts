@@ -57,6 +57,10 @@ module.exports = class Controller {
             this.win.loadFile('view/race.html');
             this._initRaceEvents();
         });
+        
+        ipcMain.on(REG_EVENT.CONTINUE_LISTEN_P_READER, (event) => {
+            this.portableReader.continue();
+        });
     }
 
     _initRaceEvents() {
@@ -102,10 +106,14 @@ module.exports = class Controller {
         }
 
         this._renderReaderStatus(READER.PORTABLE, 'ok', 'Connected');
+        this.portableReader.startListen();
     }
 
-    _portableReaderTagHandler(tag) {
-        this.win.webContents.send(REG_EVENT.ON_TAG, tag);
+    _portableReaderTagHandler(uid) {
+        this.win.webContents.send(REG_EVENT.ON_TAG, {
+            uid, 
+            user: this.users[uid]
+        });
     }
 
     _renderReaderStatus(type, status, message) {

@@ -24,7 +24,11 @@ namespace portablereader
             if (isConnected)
             {
                 Console.WriteLine("ok:connected");
-                reader.ListenReader(delay);
+                string input = Console.ReadLine();
+                if (input == "1")
+                {
+                    reader.ListenReader(delay);
+                }
             }
             else
             {

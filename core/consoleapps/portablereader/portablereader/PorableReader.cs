@@ -56,7 +56,9 @@ namespace portablereader
                     if (InventoryResponse == 1)
                     {
                         RFIDTag tag = BuildEPCTagFromBytes(TotalLen, EPC);
-                        Console.WriteLine("tag:"+tag.UID);
+                        Console.WriteLine("tag:" + tag.UID);
+                        //Return control to the calling program;
+                        string input = Console.ReadLine();
                         sleepTime = delay;
                     }
                     Thread.Sleep(sleepTime);

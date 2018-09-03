@@ -12,7 +12,7 @@ module.exports = class PortableReader {
     }
 
     open() {
-        const delay = '2000';
+        const delay = '200';
         this.process = spawn(process.cwd() + '/bin/portablereader.exe', [delay]);
         this.process.stdout.on('data', data => {
             const [status, message] = data.toString().trim().split(':');
@@ -44,9 +44,30 @@ module.exports = class PortableReader {
         });
     }
 
+    startListen() {
+        this._sendMessage(pREADER_MSG.START);
+    }
+
+    continue() {
+        this._sendMessage(pREADER_MSG.CONTINUE);
+    }
+
+    _sendMessage(message) {
+        if (this.isConnected) {
+            this.process.stdin.write(message);
+        } else {
+            throw new Error('Portable reader does not connected');
+        }
+    }
+
     kill() {
         this.process.kill();
         console.log('Portable reader process was killed');
     }
 
 }
+
+const pREADER_MSG = {
+    START: '1\r\n',
+    CONTINUE: '2\r\n'
+};
