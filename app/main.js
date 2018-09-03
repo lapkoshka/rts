@@ -5,7 +5,7 @@ let win;
 let root;
   
 app.on('ready', () => {
-  win = new BrowserWindow({width: 1600, height: 450});
+  win = new BrowserWindow({width: 1600, height: 800});
   root = new Controller(win);
   root.initRegEvents();
 

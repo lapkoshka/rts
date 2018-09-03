@@ -2,6 +2,7 @@
     filter: blur(2px);
 }
 
+/* SMARTBANNER */
 .reg-smartbanner {
     box-shadow: 0 3px 5px rgba(41, 47, 55, 0.1);
     background: #ffffff;
@@ -21,13 +22,6 @@
     font-size: 24px;
     margin-bottom: 8px;
     font-weight: 600;
-}
-
-.reg-smartbanner-options-restore {
-    width: 195px;
-    height: 34px;
-    font-weight: 600;
-    font-size: 12px;
 }
 
 .reg-smartbanner-readers {
@@ -66,6 +60,38 @@
     background: red;
 }
 
+
+/* OPTIONS */
+.reg-options-restore {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.reg-options-restore-button {
+    width: 120px;
+    height: 34px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.reg-options-restore-label {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    width: 102px;
+    position: relative;
+    cursor: pointer;
+}
+
+.reg-options-restore-label input {
+    width: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* USERS */
 .reg-content {
     display: flex;
     width: 100%;
@@ -137,6 +163,8 @@
     box-shadow: 0 3px 5px rgba(41, 47, 55, 0.1);
 }
 
+/* FULLSCREEN POPUP */
+/* TODO SHOLD BE A COMPONENT AND REMOVED TO COMMON */
 .reg-fullscreenpopup {
     display: none;
     position: fixed;

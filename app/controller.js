@@ -41,8 +41,11 @@ module.exports = class Controller {
 
         ipcMain.on(REG_EVENT.NEW_USER, (event, arg) => {
             this.users[arg.uid] = arg;
-            fs.writeFile('./app/storage/users.json', JSON.stringify(this.users));
             this._renderUsers();
+
+            if (arg.shouldSave) {
+                fs.writeFile('./app/storage/users.json', JSON.stringify(this.users));
+            }
         })
 
         ipcMain.on(REG_EVENT.REMOVE_USER, (event, uid) => {
@@ -126,52 +129,51 @@ module.exports = class Controller {
 
     _mainReaderTagHandler(tag) {
         const diff = new Date() - this.raceStartTime;
-            if (this.competitorsMap[tag] && !this.competitorsMap[tag].isFinished) {
-                if (!this.competitorsMap[tag].lastDetect) {
-                    this._updateCompetitor(tag);
-                    this._sortAndCalcCompetitorProps();
-                    this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
-                }
-                const now = new Date();
-                if (now - this.competitorsMap[tag].lastDetect > 5000) {
-                    this._updateCompetitor(tag);
-                    this._sortAndCalcCompetitorProps();
-                    this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
-                }
+        if (this.competitorsMap[tag] && !this.competitorsMap[tag].isFinished) {
+            if (!this.competitorsMap[tag].lastDetect) {
+                this._updateCompetitors(tag);
+                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
             }
+            const now = new Date();
+            if (now - this.competitorsMap[tag].lastDetect > 5000) {
+                this._updateCompetitors(tag);
+                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
+            }
+        }
 
-            const raceIsOver = Object.values(this.competitorsMap)
-                .every(competitor => competitor.isFinished);
-            if (raceIsOver) {
-                this.mainReader.kill();
-                this.win.webContents.send(RACE_EVENT.OVER, null);
-            }
+        const raceIsOver = Object.values(this.competitorsMap)
+            .every(competitor => competitor.isFinished);
+        if (raceIsOver) {
+            this.mainReader.kill();
+            this.win.webContents.send(RACE_EVENT.OVER, null);
+        }
     }
 
-    _updateCompetitor(tag) {
+    _updateCompetitors(tag) {
+        const competitor = this.competitorsMap[tag];
         const now = new Date();
-        this.competitorsMap[tag].lastDetect = now;
-        //const totalTime = now - this.raceStartTime + Math.floor(Math.random() * 6000) + 1000;
+        competitor.lastDetect = now;
         const totalTime = now - this.raceStartTime;
-        this.competitorsMap[tag]._totaltime = totalTime;
-        this.competitorsMap[tag].totaltime = utils.toHumanReadableTime(totalTime);
-        this.competitorsMap[tag].laps++;
-        // this.competitorsMap[tag].besttime = humanReadableTime;
+        competitor._totaltime = totalTime;
+        competitor.totaltime = utils.toHumanReadableTime(totalTime);
+        competitor.laps++;
+        // competitor.besttime = humanReadableTime;
 
         //calc additonal laps
         const timeIsOver = new Date(now - this.raceStartTime).getMinutes() >= 10;
         if (timeIsOver) {
-            if (!Number.isInteger(this.competitorsMap[tag].additionalLaps)) {
-                this.competitorsMap[tag].additionalLaps = 0;
+            if (!Number.isInteger(competitor.additionalLaps)) {
+                competitor.additionalLaps = 0;
             } else {
-                this.competitorsMap[tag].additionalLaps++;
+                competitor.additionalLaps++;
             }
         }
-        
-        const addLaps = this.competitorsMap[tag].additionalLaps;
-        if (Number.isInteger(addLaps) && addLaps === 2) {
-            this.competitorsMap[tag].isFinished = true;
+
+        if (Number.isInteger(addLaps) && competitor.additionalLaps === 2) {
+            competitor.isFinished = true;
         }
+
+        this._sortAndCalcCompetitorProps();
     }
 
     _sortAndCalcCompetitorProps() {
