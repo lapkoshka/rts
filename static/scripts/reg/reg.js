@@ -55,13 +55,14 @@ function updateUsersOnSmartBanner(count) {
 }
 
 //IPC HANDLERS
-ipcRenderer.on(REG_EVENT.ON_TAG , (event , tag) => {
+ipcRenderer.on(REG_EVENT.ON_TAG , (event , data) => {
+    const {uid, user} = data;
     moduleWindow.classList.add('reg-fullscreenpopup-active');
     utils.getByCssName('reg-main-wrapper').classList.add('reg-main-wrapper-blur');
 
-    utils.getByCssName('reg-fullscreenpopup-uid').value = tag;
-    utils.getByCssName('reg-fullscreenpopup-firstname').value = '';
-    utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
+    utils.getByCssName('reg-fullscreenpopup-uid').value = uid;
+    utils.getByCssName('reg-fullscreenpopup-firstname').value = user ? user.firstname : '';
+    utils.getByCssName('reg-fullscreenpopup-lastname').value = user ? user.lastname : '';
 });
 
 ipcRenderer.on(REG_EVENT.RENDER_USERS , (event, users) => {
@@ -108,6 +109,7 @@ userList.addEventListener('click', evt => {
         ipcRenderer.send(REG_EVENT.REMOVE_USER, target.dataset.uid);
     }
 })
+
 utils.getByCssName('reg-fullscreenpopup-submit').addEventListener('click', evt => {
     const uid = utils.getByCssName('reg-fullscreenpopup-uid').value;
     const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value;
@@ -117,6 +119,7 @@ utils.getByCssName('reg-fullscreenpopup-submit').addEventListener('click', evt =
 
     const shouldSave = utils.getByCssName('reg-options-restore-label input').checked;
     ipcRenderer.send(REG_EVENT.NEW_USER, { uid, firstname, lastname, shouldSave });
+    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
 });
 
 utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt => {
@@ -125,6 +128,7 @@ utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt =>
     const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
     moduleWindow.classList.remove('reg-fullscreenpopup-active');
     utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
+    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
 });
 
 submitFormButton.addEventListener('click', evt => {
