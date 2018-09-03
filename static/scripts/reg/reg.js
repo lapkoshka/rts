@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron');
 const REG_EVENT = require('../app/reg/events.js');
 const READER = require('../app/readers.js');
 const utils = require('../app/utils.js');
+const KEY_CODE = require('../app/keycodes.js');
 const _ = require('lodash');
 
 const moduleWindow = utils.getByCssName('reg-fullscreenpopup');
@@ -9,6 +10,7 @@ const submitFormButton = utils.getByCssName('reg-submit-registration');
 const userList = utils.getByCssName('reg-users');
 
 ipcRenderer.send(REG_EVENT.PAGE_READY, null);
+let isPopupOpened = false;
 
 //RENDER FUNCTIONS
 function renderUser(container, user) {
@@ -58,6 +60,7 @@ function updateUsersOnSmartBanner(count) {
 ipcRenderer.on(REG_EVENT.ON_TAG , (event , data) => {
     const {uid, user} = data;
     moduleWindow.classList.add('reg-fullscreenpopup-active');
+    isPopupOpened = true;
     utils.getByCssName('reg-main-wrapper').classList.add('reg-main-wrapper-blur');
 
     utils.getByCssName('reg-fullscreenpopup-uid').value = uid;
@@ -93,6 +96,30 @@ ipcRenderer.on(REG_EVENT.READER_DATA , (event, data) => {
     readerStatus.innerText = message;
 });
 
+//UI FUNCTIONS
+function submitUser() {
+    const uid = utils.getByCssName('reg-fullscreenpopup-uid').value;
+    const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value;
+    const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value;
+    moduleWindow.classList.remove('reg-fullscreenpopup-active');
+    utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
+
+    const shouldSave = utils.getByCssName('reg-options-restore-label input').checked;
+    ipcRenderer.send(REG_EVENT.NEW_USER, { uid, firstname, lastname, shouldSave });
+    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
+    isPopupOpened = false;
+}
+
+function cancelSubmitUser() {
+    const uid = utils.getByCssName('reg-fullscreenpopup-uid').value = '';
+    const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value = '';
+    const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
+    moduleWindow.classList.remove('reg-fullscreenpopup-active');
+    utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
+    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
+    isPopupOpened = false;
+}
+
 //UI HANDLERS
 utils.getByCssName('reg-options-restore-button').addEventListener('click', evt => {
     const fs = require('fs');
@@ -111,24 +138,11 @@ userList.addEventListener('click', evt => {
 })
 
 utils.getByCssName('reg-fullscreenpopup-submit').addEventListener('click', evt => {
-    const uid = utils.getByCssName('reg-fullscreenpopup-uid').value;
-    const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value;
-    const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value;
-    moduleWindow.classList.remove('reg-fullscreenpopup-active');
-    utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
-
-    const shouldSave = utils.getByCssName('reg-options-restore-label input').checked;
-    ipcRenderer.send(REG_EVENT.NEW_USER, { uid, firstname, lastname, shouldSave });
-    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
+    submitUser();
 });
 
 utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt => {
-    const uid = utils.getByCssName('reg-fullscreenpopup-uid').value = '';
-    const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value = '';
-    const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
-    moduleWindow.classList.remove('reg-fullscreenpopup-active');
-    utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
-    ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);
+    cancelSubmitUser();
 });
 
 submitFormButton.addEventListener('click', evt => {
@@ -136,7 +150,17 @@ submitFormButton.addEventListener('click', evt => {
     ipcRenderer.send(REG_EVENT.SUBMIT, null);
 });
 
-//TODO KEY PRESS HANDLER
+document.addEventListener('keydown', event => {
+    switch (event.keyCode) {
+        case KEY_CODE.ESC:
+            if (isPopupOpened) cancelSubmitUser();
+            break;
+        case KEY_CODE.ENTER:
+            if (isPopupOpened) submitUser();
+            break;
+        default:
+    }
+  });
 
 
 //MOCK
