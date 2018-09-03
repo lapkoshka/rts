@@ -1,0 +1,91 @@
+.race-smartbanner {
+    box-shadow: 0 3px 5px rgba(41, 47, 55, 0.1);
+    background: #ffffff;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.race-smartbanner-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.race-smartbanner-timer {
+    font-weight: 600;
+    font-size: 28px;
+    color: #c5c5c5;
+}
+
+.race-smartbanner-timer-active {
+    color: #206eb3;
+}
+
+.race-results {
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 3px 5px rgba(41, 47, 55, 0.1);
+}
+
+.race-results-header,
+.race-results-competitor {
+    display: flex;
+    white-space: nowrap;
+    height: 32px;
+    align-items: center;
+    margin-bottom: 2px;
+    justify-content: space-between;
+    min-height: 720;
+}
+
+.race-results-header {
+    font-weight: 600;
+}
+
+.race-results-competitor:nth-child(odd) {
+    background-color: rgba(42, 42, 42, 0.06);
+}
+
+.row-event {
+    text-align: center;
+    margin-left: 16px;
+}
+
+.row-event-position {
+    width: 70px;
+}
+
+.row-event-competitor {
+    width: 300px;
+    text-align: left;
+}
+
+.row-event-competitor-finished {
+    font-weight: 600;
+}
+
+.row-event-totaltime {
+    width: 80px;
+}
+
+.row-event-diff {
+    width: 97px;
+}
+
+.row-event-laps {
+    width: 108px;
+}
+
+.row-event-besttime {
+    width: 135px;
+}
+
+.race-controls {
+    justify-content: center;
+    display: flex;
+    margin-top: 16px;
+}

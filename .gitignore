@@ -1,0 +1,7 @@
+.vs/
+/node_modules
+/bin
+core/consoleapps/portablereader/portablereader/bin/
+core/consoleapps/portablereader/portablereader/obj/
+core/consoleapps/MainReaderAdapter/MainReaderAdapter/bin/
+core/consoleapps/MainReaderAdapter/MainReaderAdapter/obj/
