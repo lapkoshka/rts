@@ -6,5 +6,6 @@ module.exports = {
     REMOVE_USER: 'reg_remove_user',
     READER_DATA: 'reg_reader_data',
     PAGE_READY: 'reg_page_ready',
-    CONTINUE_LISTEN_P_READER: 'reg_continue_lispreader'
+    CONTINUE_LISTEN_P_READER: 'reg_continue_lispreader',
+    VALIDATE: 'reg_validate'
 };
