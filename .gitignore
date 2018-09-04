@@ -1,7 +1,7 @@
 .vs/
 /node_modules
 /bin
-/app/storage
+/app/storage/*
 core/consoleapps/portablereader/portablereader/bin/
 core/consoleapps/portablereader/portablereader/obj/
 core/consoleapps/MainReaderAdapter/MainReaderAdapter/bin/

@@ -17,7 +17,6 @@ function renderUser(container, user) {
     const name = document.createElement('div');
     const uid = document.createElement('div');
     const removeLink = document.createElement('div');
-
     
     name.classList.add('reg-users-user-name');
     name.innerText = `${user.firstname} ${user.lastname}`;
@@ -85,6 +84,10 @@ ipcRenderer.on(REG_EVENT.RENDER_USERS , (event, users) => {
     }
 });
 
+ipcRenderer.on(REG_EVENT.VALIDATE, (event, isValid) => {
+    utils.getByCssName('reg-submit-registration').disabled = !isValid;
+});
+
 ipcRenderer.on(REG_EVENT.READER_DATA , (event, data) => {
     const status = data.info.status;
     const type = data.type;
@@ -146,7 +149,6 @@ utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt =>
 });
 
 submitFormButton.addEventListener('click', evt => {
-    //TODO VALIDATE READER CONNECTION
     ipcRenderer.send(REG_EVENT.SUBMIT, null);
 });
 
@@ -160,7 +162,7 @@ document.addEventListener('keydown', event => {
             break;
         default:
     }
-  });
+});
 
 
 //MOCK

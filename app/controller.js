@@ -46,6 +46,7 @@ module.exports = class Controller {
             if (arg.shouldSave) {
                 fs.writeFile('./app/storage/users.json', JSON.stringify(this.users));
             }
+            this._validateRegForm();
         })
 
         ipcMain.on(REG_EVENT.REMOVE_USER, (event, uid) => {
@@ -106,6 +107,7 @@ module.exports = class Controller {
         }
 
         this._renderReaderStatus(READER.PORTABLE, 'ok', 'Connected');
+        this._validateRegForm();
         this.portableReader.startListen();
     }
 
@@ -132,6 +134,7 @@ module.exports = class Controller {
             return;
         }
 
+        this._validateRegForm();
         this._renderReaderStatus(READER.MAIN, 'ok', 'Connected');
     }
 
@@ -198,6 +201,12 @@ module.exports = class Controller {
             }
         });
         this.sortedCompetitors = sorted;
+    }
+
+    _validateRegForm() {
+        const arrOfUsers = Object.values(this.users);
+        const isValid = this.mainReader.isConnected && this.portableReader.isConnected && arrOfUsers.length > 0;
+        this.win.webContents.send(REG_EVENT.VALIDATE, isValid);
     }
 
     killAll() {
