@@ -149,7 +149,10 @@ utils.getByCssName('reg-fullscreenpopup-close').addEventListener('click', evt =>
 });
 
 submitFormButton.addEventListener('click', evt => {
-    ipcRenderer.send(REG_EVENT.SUBMIT, null);
+    const config = {
+        raceTimeLimit: utils.getByCssName('reg-options-racetime-input').value
+    };
+    ipcRenderer.send(REG_EVENT.SUBMIT, config);
 });
 
 document.addEventListener('keydown', event => {

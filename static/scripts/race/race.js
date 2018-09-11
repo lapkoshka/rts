@@ -6,6 +6,7 @@ const utils = require('../app/utils.js');
 ipcRenderer.send(RACE_EVENT.PAGE_READY, null);
 
 let raceStartTime = null;
+let raceTimeLimit = null;
 let timer = null;
 
 //RENDER FUNCTIONS
@@ -48,11 +49,7 @@ function renderUser(container, user) {
 //IPC HANDLERS
 ipcRenderer.on(RACE_EVENT.UPDATE_USERS , (event , users) => {
   const container = utils.getByCssName('race-results-body');
-  //console.log(users);
   container.innerHTML = '';
-    // for (key in users) {
-    //   renderUser(container, users[key]);
-    // }
     users.forEach(user => renderUser(container, user));
 });
 
@@ -73,3 +70,7 @@ utils.getByCssName('race-controls-start').addEventListener('click', evt => {
       timerEl.innerText = utils.toHumanReadableTime(diff);
   }, 150);
 })
+
+utils.getByCssName('race-controls-over').addEventListener('click', evt => {
+    ipcRenderer.send(RACE_EVENT.OVER, null);
+});

@@ -3,6 +3,30 @@
 //PROBLEMS:
 //Участник с меткой остановился под антенной
 
+//TODO
+//Сортировка должна работать сначала по количеству кругов, потом по времени
+//Вывод на баннер детект на секунду
+//Лучшее время круга
+//Тачка не должна уходить в спящий режим
+//проработать и подобрать разные варианты сеттингов главного ридера, частота/скорость считывания меток
+//Забаговано завершение гонки, результат меняется все равно
+
+//Фичи
+// Загрузка разных наборов тегов
+// Алертинг на то что процесс уже открыт или поиск и убийство существующего процесса
+
+//Итого:
+/*
+1) Хорошо работает когда приемник направлен в хвост, метки сзади на шлемах
+2) Плохо работает когда метка не смотрит на приемник, например приемник в хвост, а метке смотрит вверх
+    а наклеена наверх кара
+3) Не сработало когда примник смотрел вниз, а метка была на морде вверх (вероятно из за того что примник низко)
+4) Нужно выяснить на какой высоте должен быть применик для того чтобы светить ровно вниз и где лучше при это располагать метки?
+5) Есть мнение что лучше всего вешать приемник в хвост, таким образом можно добиться
+финишной черты, тк край света приемника попадает ровно на нее (надо еще подобрать таким образом)
+
+*/
+
 const MainReader = require('../core/devices/mainreader');
 const PortableReader = require('../core/devices/portablereader');
 const { ipcMain } = require('electron');
@@ -24,6 +48,8 @@ module.exports = class Controller {
         this.competitorsMap = {};
         this.sortedCompetitors = [];
         this.raceStartTime = null;
+
+        this.config = {};
     }
 
     initRegEvents() {
@@ -54,11 +80,13 @@ module.exports = class Controller {
             this._renderUsers();
         });
 
-        ipcMain.on(REG_EVENT.SUBMIT, (event) => {
+        ipcMain.on(REG_EVENT.SUBMIT, (event, config) => {
+            this.config.raceTimeLimit = parseInt(config.raceTimeLimit, 10);
+            console.log(this.config);
             this.win.loadFile('view/race.html');
             this._initRaceEvents();
         });
-        
+
         ipcMain.on(REG_EVENT.CONTINUE_LISTEN_P_READER, (event) => {
             this.portableReader.continue();
         });
@@ -74,6 +102,11 @@ module.exports = class Controller {
             this.raceStartTime = new Date();;
             this.mainReader.startListen();
         });
+
+        ipcMain.on(RACE_EVENT.OVER, (event) => {
+            this.win.webContents.send(RACE_EVENT.OVER, null);
+        });
+        
     }
 
     _initCompetitors() {
@@ -91,6 +124,8 @@ module.exports = class Controller {
             this.competitorsMap[key].diff = humanReadableTime;
             this.competitorsMap[key].laps = 0;
             this.competitorsMap[key].besttime = '-';
+
+            this.competitorsMap[key].lapColletion = [];
         }
 
         this.sortedCompetitors = Object.values(this.competitorsMap);
@@ -113,7 +148,7 @@ module.exports = class Controller {
 
     _portableReaderTagHandler(uid) {
         this.win.webContents.send(REG_EVENT.ON_TAG, {
-            uid, 
+            uid,
             user: this.users[uid]
         });
     }
@@ -163,15 +198,24 @@ module.exports = class Controller {
     _updateCompetitors(tag) {
         const competitor = this.competitorsMap[tag];
         const now = new Date();
+        if (competitor.lastDetect) {
+            competitor.lapColletion.push(now - competitor.lastDetect);            
+        }
+
         competitor.lastDetect = now;
         const totalTime = now - this.raceStartTime;
         competitor._totaltime = totalTime;
         competitor.totaltime = utils.toHumanReadableTime(totalTime);
         competitor.laps++;
-        // competitor.besttime = humanReadableTime;
+
+        //calc besttime
+        if (competitor.lapColletion.length > 0) {
+            const besttime = _.orderBy(competitor.lapColletion)[0];
+            competitor.besttime = utils.toHumanReadableTime(besttime);
+        }
 
         //calc additonal laps
-        const timeIsOver = new Date(now - this.raceStartTime).getMinutes() >= 10;
+        const timeIsOver = new Date(now - this.raceStartTime).getMinutes() >= this.config.raceTimeLimit;
         if (timeIsOver) {
             if (!Number.isInteger(competitor.additionalLaps)) {
                 competitor.additionalLaps = 0;
@@ -180,7 +224,7 @@ module.exports = class Controller {
             }
         }
 
-        if (Number.isInteger(addLaps) && competitor.additionalLaps === 2) {
+        if (competitor.additionalLaps === 2) {
             competitor.isFinished = true;
         }
 
@@ -205,7 +249,8 @@ module.exports = class Controller {
 
     _validateRegForm() {
         const arrOfUsers = Object.values(this.users);
-        const isValid = this.mainReader.isConnected && this.portableReader.isConnected && arrOfUsers.length > 0;
+        // const isValid = this.mainReader.isConnected && this.portableReader.isConnected && arrOfUsers.length > 0;
+        const isValid = this.mainReader.isConnected && arrOfUsers.length > 0;
         this.win.webContents.send(REG_EVENT.VALIDATE, isValid);
     }
 
