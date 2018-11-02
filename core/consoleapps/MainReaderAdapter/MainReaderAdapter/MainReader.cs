@@ -36,7 +36,7 @@ namespace MainReaderAdapter
         protected virtual void RFIDTagCallback(IntPtr p, Int32 nEvt)
         {
             RFIDTag rfidTag = (RFIDTag)Marshal.PtrToStructure(p, typeof(RFIDTag));
-            Console.WriteLine("tag:"+rfidTag.UID);
+            Console.WriteLine("tag:"+rfidTag.UID + ":"+ rfidTag.RSSI);
         }
 
         public void ListenReader(byte Qvalue, byte Session, byte Scantime)

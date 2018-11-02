@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
-const REG_EVENT = require('../app/reg/events.js');
+const REG_EVENT = require('../app/events.js').regEvents;
+console.log(REG_EVENT)
 const READER = require('../app/readers.js');
 const utils = require('../app/utils.js');
 const KEY_CODE = require('../app/keycodes.js');
@@ -64,6 +65,7 @@ ipcRenderer.on(REG_EVENT.ON_TAG , (event , data) => {
 
     utils.getByCssName('reg-fullscreenpopup-uid').value = uid;
     utils.getByCssName('reg-fullscreenpopup-firstname').value = user ? user.firstname : '';
+    utils.getByCssName('reg-fullscreenpopup-firstname').focus();
     utils.getByCssName('reg-fullscreenpopup-lastname').value = user ? user.lastname : '';
 });
 
@@ -114,9 +116,9 @@ function submitUser() {
 }
 
 function cancelSubmitUser() {
-    const uid = utils.getByCssName('reg-fullscreenpopup-uid').value = '';
-    const firstname = utils.getByCssName('reg-fullscreenpopup-firstname').value = '';
-    const lastname = utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
+    utils.getByCssName('reg-fullscreenpopup-uid').value = '';
+    utils.getByCssName('reg-fullscreenpopup-firstname').value = '';
+    utils.getByCssName('reg-fullscreenpopup-lastname').value = '';
     moduleWindow.classList.remove('reg-fullscreenpopup-active');
     utils.getByCssName('reg-main-wrapper').classList.remove('reg-main-wrapper-blur');
     ipcRenderer.send(REG_EVENT.CONTINUE_LISTEN_P_READER, null);

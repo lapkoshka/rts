@@ -4,35 +4,35 @@
 //Участник с меткой остановился под антенной
 
 //TODO
-//Сортировка должна работать сначала по количеству кругов, потом по времени
-//Вывод на баннер детект на секунду
-//Лучшее время круга
-//Тачка не должна уходить в спящий режим
-//проработать и подобрать разные варианты сеттингов главного ридера, частота/скорость считывания меток
-//Забаговано завершение гонки, результат меняется все равно
+// Если лучшее время круга === +=выставленной задержке помечать как остановившегося и предлагать заморозить участие
+// Кнопка ВЫБЫЛ
 
-//Фичи
+// Поле для регулирования задержки
+
+// Кнопки реконнекта - заебало перезагружать приложение
+
+// Выгрузка результатов
+// Режимы - свободный, на время, круги
+// Поле количества дополнительных кругов в режиме на время
+// Страница с заездами и возможность возврата на нее после завершения гонки
+
+// история поиска в садджесте на островке
+
+
+// Фичи
 // Загрузка разных наборов тегов
 // Алертинг на то что процесс уже открыт или поиск и убийство существующего процесса
-
-//Итого:
-/*
-1) Хорошо работает когда приемник направлен в хвост, метки сзади на шлемах
-2) Плохо работает когда метка не смотрит на приемник, например приемник в хвост, а метке смотрит вверх
-    а наклеена наверх кара
-3) Не сработало когда примник смотрел вниз, а метка была на морде вверх (вероятно из за того что примник низко)
-4) Нужно выяснить на какой высоте должен быть применик для того чтобы светить ровно вниз и где лучше при это располагать метки?
-5) Есть мнение что лучше всего вешать приемник в хвост, таким образом можно добиться
-финишной черты, тк край света приемника попадает ровно на нее (надо еще подобрать таким образом)
-
-*/
+// Сортировка результатов
+// проработать и подобрать разные варианты сеттингов главного ридера, частота/скорость считывания меток
+// проверка на запущенные процессы при попытке закрытия приложения 
 
 const MainReader = require('../core/devices/mainreader');
 const PortableReader = require('../core/devices/portablereader');
 const { ipcMain } = require('electron');
-const REG_EVENT = require('./reg/events.js');
-const RACE_EVENT = require('./race/events.js');
-const utils = require('./utils.js');
+const REG_EVENT = require('./events.js').regEvents;
+const RACE_EVENT = require('./events.js').raceEvents;
+console.log(REG_EVENT, RACE_EVENT)
+//const utils = require('./utils.js');
 const READER = require('./readers.js');
 const _ = require('lodash');
 const fs = require('fs');
@@ -46,7 +46,6 @@ module.exports = class Controller {
 
         this.users = {};
         this.competitorsMap = {};
-        this.sortedCompetitors = [];
         this.raceStartTime = null;
 
         this.config = {};
@@ -82,7 +81,11 @@ module.exports = class Controller {
 
         ipcMain.on(REG_EVENT.SUBMIT, (event, config) => {
             this.config.raceTimeLimit = parseInt(config.raceTimeLimit, 10);
-            console.log(this.config);
+            // TODO: make input
+            this.config.maxAdditionalLaps = 1;
+            // TODO: make input
+            this.config.detectDelay = 1000;
+            console.log('config:', this.config);
             this.win.loadFile('view/race.html');
             this._initRaceEvents();
         });
@@ -94,19 +97,19 @@ module.exports = class Controller {
 
     _initRaceEvents() {
         ipcMain.on(RACE_EVENT.PAGE_READY, (event) => {
-            this._initCompetitors();
-            this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
+            const competitors = this._initCompetitors();
+            this.win.webContents.send(RACE_EVENT.UPDATE_USERS, competitors);
         });
 
         ipcMain.on(RACE_EVENT.START, (event) => {
-            this.raceStartTime = new Date();;
+            this.raceStartTime = new Date();
             this.mainReader.startListen();
         });
 
         ipcMain.on(RACE_EVENT.OVER, (event) => {
+            this.mainReader.kill();
             this.win.webContents.send(RACE_EVENT.OVER, null);
         });
-        
     }
 
     _initCompetitors() {
@@ -116,19 +119,18 @@ module.exports = class Controller {
                 this.competitorsMap[key].lastname;
             const t = new Date();
             t.setHours(0, 0, 0, 0);
-            const humanReadableTime = utils.toHumanReadableTime(t);
             this.competitorsMap[key].position = 0;
             this.competitorsMap[key].competitor = name;
             this.competitorsMap[key]._totaltime = t;
-            this.competitorsMap[key].totaltime = humanReadableTime;
-            this.competitorsMap[key].diff = humanReadableTime;
+            this.competitorsMap[key].totaltime = t;
+            this.competitorsMap[key].diff = t;
             this.competitorsMap[key].laps = 0;
-            this.competitorsMap[key].besttime = '-';
+            this.competitorsMap[key].besttime = null;
 
             this.competitorsMap[key].lapColletion = [];
         }
 
-        this.sortedCompetitors = Object.values(this.competitorsMap);
+        return Object.values(this.competitorsMap);
     }
 
     _renderUsers() {
@@ -174,16 +176,16 @@ module.exports = class Controller {
     }
 
     _mainReaderTagHandler(tag) {
-        const diff = new Date() - this.raceStartTime;
-        if (this.competitorsMap[tag] && !this.competitorsMap[tag].isFinished) {
-            if (!this.competitorsMap[tag].lastDetect) {
-                this._updateCompetitors(tag);
-                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
+        const uid = tag.uid;
+        if (this.competitorsMap[uid] && !this.competitorsMap[uid].isFinished) {
+            if (!this.competitorsMap[uid].lastDetect) {
+                const competitors = this._updateCompetitors(tag);
+                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, competitors);
             }
             const now = new Date();
-            if (now - this.competitorsMap[tag].lastDetect > 5000) {
-                this._updateCompetitors(tag);
-                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, this.sortedCompetitors);
+            if (now - this.competitorsMap[uid].lastDetect > this.config.detectDelay) {
+                const competitors = this._updateCompetitors(tag);
+                this.win.webContents.send(RACE_EVENT.UPDATE_USERS, competitors);
             }
         }
 
@@ -196,22 +198,34 @@ module.exports = class Controller {
     }
 
     _updateCompetitors(tag) {
-        const competitor = this.competitorsMap[tag];
+        // бля грязновато как то пиздец, тут считаю и МУТИРУЮ что-то в глобальной области, но дальше возвращаю результат
+        // какбы чистой функции
+        // надо сделать так чтобы были исходные данные
+        //  хули это за комменты calc, должны быть чистые функции не мутирующие исходные объекты
+
+        // нужно завести и описать список полей чтобы понимать из чего состоит участник и ничего не проебать
+
+        //Здесь считаются свойства для конкретного участника по тегу
+        // завести объект "участник" пусть все говно считается внутри него и будет скрыто
+        const competitor = this.competitorsMap[tag.uid];
+        this.win.webContents.send(RACE_EVENT.ON_TAG, competitor);
         const now = new Date();
         if (competitor.lastDetect) {
-            competitor.lapColletion.push(now - competitor.lastDetect);            
+            competitor.lapColletion.push(now - competitor.lastDetect);
+            //            
         }
 
         competitor.lastDetect = now;
         const totalTime = now - this.raceStartTime;
         competitor._totaltime = totalTime;
-        competitor.totaltime = utils.toHumanReadableTime(totalTime);
+        competitor.totaltime = totalTime;
         competitor.laps++;
+        competitor.rssi = tag.rssi;
 
         //calc besttime
         if (competitor.lapColletion.length > 0) {
             const besttime = _.orderBy(competitor.lapColletion)[0];
-            competitor.besttime = utils.toHumanReadableTime(besttime);
+            competitor.besttime = besttime;
         }
 
         //calc additonal laps
@@ -224,33 +238,50 @@ module.exports = class Controller {
             }
         }
 
-        if (competitor.additionalLaps === 2) {
+        if (competitor.additionalLaps === this.config.maxAdditionalLaps) {
             competitor.isFinished = true;
         }
 
-        this._sortAndCalcCompetitorProps();
+        //get besttime
+        let min = 9999999999999999999999999;
+        let bestTag = null;
+        for (let _tag in this.competitorsMap) {
+            const _competitor = this.competitorsMap[_tag];
+            _competitor.isBestTime = false;
+            const time = _competitor.besttime;
+            if (time && time < min) {
+                min = time;
+                bestTag = _tag;
+            }
+        }
+        if (bestTag) {
+            this.competitorsMap[bestTag].isBestTime = true;
+        }
+        // а здесь для всех остальных, надо эти понятия разделить
+        return this._sortAndCalcCompetitorProps();
     }
 
+    //название метода как у долбоеба
     _sortAndCalcCompetitorProps() {
-        const sorted = _.orderBy(this.competitorsMap, ['_totaltime'], ['asc']);
+        const sorted = _.orderBy(this.competitorsMap, ['laps', '_totaltime'], ['desc']);
         sorted.forEach((_, index) => {
             //calc diff and pos
             if (index === 0) {
-                sorted[index].diff = '-';
+                sorted[index].diff = null;
             }
             sorted[index].position = index + 1;
             if (sorted[index + 1]) {
+                // todo rename
                 const diff = sorted[index + 1]._totaltime - sorted[0]._totaltime;
-                sorted[index + 1].diff = utils.toHumanReadableTime(diff);
+                sorted[index + 1].diff = diff;
             }
         });
-        this.sortedCompetitors = sorted;
+        return sorted;
     }
 
     _validateRegForm() {
         const arrOfUsers = Object.values(this.users);
-        // const isValid = this.mainReader.isConnected && this.portableReader.isConnected && arrOfUsers.length > 0;
-        const isValid = this.mainReader.isConnected && arrOfUsers.length > 0;
+        const isValid = true || this.mainReader.isConnected && arrOfUsers.length > 0;
         this.win.webContents.send(REG_EVENT.VALIDATE, isValid);
     }
 
