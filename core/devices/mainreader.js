@@ -1,5 +1,5 @@
 'use strict';
-const exec = require('child_process').execFile;
+//const exec = require('child_process').execFile;
 const spawn = require('child_process').spawn;
 
 
@@ -37,12 +37,14 @@ module.exports = class MainReader {
                 }
             } else {
                 const chunk = data.toString().trim().split('\n');
-                chunk.forEach(tag => {
-                    const [status, message] = tag.split(':');
+                chunk.forEach(line => {
+                    console.log(line)
+                    const status = line.split(':')[0];
+
                     if (status === 'tag') {
-                        this.onTag(message.replace('\r', ''));
+                        this.onTag(this._parseTag(line));
                     } else {
-                        throw new Error('Something went wrong with tag', tag);
+                        throw new Error('Something went wrong with tag', line);
                     }
                 });
             }
@@ -65,6 +67,14 @@ module.exports = class MainReader {
     kill() {
         this.process.kill();
         console.log('Main reader process was killed');
+    }
+
+    _parseTag(data) {
+        const [_, uid, rssi] = data.replace('\r', '').split(':');
+        return {
+            uid,
+            rssi
+        }
     }
 }
 

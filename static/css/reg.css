@@ -34,6 +34,8 @@
 
 .reg-smartbanner-reader {
     display: flex;
+    justify-content: space-between;
+    min-width: 212px;
 }
 
 .reg-smartbanner-reader-status {
@@ -62,10 +64,22 @@
 
 
 /* OPTIONS */
+.reg-options {
+    padding: 16px;
+    font-size: 13px;
+}
+
+.reg-options-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
 .reg-options-restore {
     display: flex;
     justify-content: space-between;
-    padding: 16px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.19);
+    padding-bottom: 16px;
 }
 
 .reg-options-restore-button {
@@ -76,7 +90,6 @@
 }
 
 .reg-options-restore-label {
-    font-size: 13px;
     display: flex;
     align-items: center;
     width: 102px;
@@ -89,6 +102,28 @@
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.reg-options-race {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.19);
+    padding-bottom: 16px;
+}
+
+.reg-options-racetime {
+    margin-right: 8px;
+}
+
+.reg-options-race input {
+    max-width: 110px;
+}
+
+.reg-options-race-title {
+    max-width: 110px;
+    margin-bottom: 4px;
 }
 
 /* USERS */
