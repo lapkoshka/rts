@@ -3,25 +3,66 @@
     <head>
       <meta charset="UTF-8">
       <title>RTS</title>
-      <link rel="stylesheet" type="text/css" href="../common/styles/style.css">
-      <link rel="stylesheet" type="text/css" href="./styles/style.css">
+      <link rel="stylesheet" type="text/css" href="../common/styles/common.css">
+      <link rel="stylesheet" type="text/css" href="../common/styles/ui.css">
+
+      <link rel="stylesheet" type="text/css" href="./styles/page.css">
+      <link rel="stylesheet" type="text/css" href="./styles/smartbanner.css">
+      <link rel="stylesheet" type="text/css" href="./styles/race.css">
+      <link rel="stylesheet" type="text/css" href="./styles/users.css">
+      <link rel="stylesheet" type="text/css" href="./styles/reg-fullscreenpopup.css">
     </head>
     <body>
-      <main class="reg-main-wrapper">
-        <div class="reg-smartbanner">
-          <div class="reg-smartbanner-readers">
-            <div class="reg-smartbanner-reader reg-smartbanner-portablereader">
-              <span class="reg-smartbanner-reader-title">Portable reader:</span>
-              <span class="reg-smartbanner-reader-status"></span>
-              <div class="reg-smartbanner-reader-signal"></div>
+      <div class="content">
+
+        <header class="smartbanner ui-block">
+          <div class="smartbanner-readers">
+            <div class="smartbanner-reader smartbanner-portablereader">
+              <span class="smartbanner-reader-title">Portable reader:</span>
+              <span class="smartbanner-reader-status"></span>
+              <div class="smartbanner-reader-signal"></div>
             </div>
-            <div class="reg-smartbanner-reader reg-smartbanner-mainreader">
-              <span class="reg-smartbanner-reader-title">Main reader:</span>
-              <span class="reg-smartbanner-reader-status"></span>
-              <div class="reg-smartbanner-reader-signal"></div>
+            <div class="smartbanner-reader smartbanner-mainreader">
+              <span class="smartbanner-reader-title">Main reader:</span>
+              <span class="smartbanner-reader-status"></span>
+              <div class="smartbanner-reader-signal"></div>
             </div>
           </div>
+        </header>
+
+        <main>
+          <div class="race ui-block">
+            <table>
+                <tr class="race-header">
+                    <th class="race-row-name">Имя</th>
+                    <th class="row-row-time">Общее время</th>
+                </tr>
+            </table>
+          </div>
+
+          <div class="users ui-block">
+              <table>
+                  <tr class="users-header">
+                      <th class="users-row-name">Имя</th>
+                      <th class="users-row-best-time">Лучшее время</th>
+                      <th class="users-row-best-time">Всего заездов</th>
+                  </tr>
+              </table>
+          </div>
+        </main>
+
+        <div class="reg-fullscreenpopup">
+          <div class="reg-fullscreenpopup-content">
+            <div class="reg-fullscreenpopup-close">Закрыть</div>
+            <h2>Новый участник</h2>
+            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-tag ui-input" type="text" placeholder="Tag">
+            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-firstname ui-input" type="text" placeholder="Имя">
+            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-lastname ui-input" type="text" placeholder="Фамилия">
+            <button class="reg-fullscreenpopup-submit ui-button">Добавить</button>
+          </div>
         </div>
+
+      </div>
     </body>
-    <script src="./scripts/script.js"></script>
+    <script src="./scripts/portable-reader-events.js"></script>
   </html>

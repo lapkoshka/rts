@@ -8,4 +8,7 @@ function onRendererEvent(type, listener) {
     ipcRenderer.on(type, listener)
 };
 
-sendRendererEvent('loaded', 'hi');
+module.exports = {
+    sendRendererEvent,
+    onRendererEvent
+}

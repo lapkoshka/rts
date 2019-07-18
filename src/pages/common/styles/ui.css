@@ -1,22 +1,12 @@
-@font-face {
-    font-family: 'OpenSans';
-    src: url('./fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
-  }
-
-:root {
-    --bg-color: #f2f1f0;
-    --color-link: #0074c5;
-    --stop-color: #a50000;
+.ui-block {
+    box-shadow: 0 3px 5px rgba(41, 47, 55, 0.1);
+    background: #ffffff;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 4px;
 }
 
-body {
-    font-family: 'OpenSans';
-    padding: 32px 16px;
-    background: var(--bg-color);
-}
-
-/* BUTTON */
-/* .button-regular {
+.ui-button {
     border-radius: 4px;
     cursor: pointer;
     height: 48px;
@@ -32,27 +22,26 @@ body {
     border: 0;
 }
 
-.button-regular:hover {
+.ui-button:hover {
     background: #1d81d9;
     text-shadow: 0 2px 2px rgba(32,110,179,0.2);
     box-shadow: inset 0 -2px 0 #206eb3;
 }
 
-.button-regular:active {
+.ui-button:active {
     background: #1d6bc3;
     text-shadow: none;
 }
 
-.button-regular:focus {
+.ui-button:focus {
     outline: none;
 }
 
-.button-regular:disabled {
+.ui-button:disabled {
     opacity: .5;
-} */
+}
 
-/* INPUT */
-/* .input-regular {
+.ui-input {
     border-radius: 3px;
     border: 1px solid rgba(133,135,139,0.3);
     box-shadow: inset 0 2px 2px 0 rgba(218,216,213,0.5);
@@ -62,4 +51,4 @@ body {
     height: 35px;
     padding: 0 10px;
     width: 100%;
-} */
+}
