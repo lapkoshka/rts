@@ -5,19 +5,24 @@ class MainPageRoot {
         this.window = window;
         this.portableReader = portableReader;
 
-        this._init(); 
+        this._init();
     }
 
     _init() {
-        this._initPortableReader();
+        this._addPageListener('DOMContentLoaded', _ => {
+            this._initPortableReader();
+        });
+
+        this._addPageListener('fakeTag', _ => {
+            this.portableReader.fakeTag();
+        });
     }
 
     _initPortableReader() {
         this.portableReader.on('connectingStart', evt => {
-            // 4e ne rabotaet-to?
             this._sendEvent('onPortableReaderConnectingStart');
         });
-        
+
         this.portableReader.on('connected', evt => {
             this._sendEvent('onPortableReaderConnected');
         });

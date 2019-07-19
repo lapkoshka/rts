@@ -1,5 +1,11 @@
 const { sendRendererEvent, onRendererEvent } = require('../common/scripts/event-handling');
 
+const fakeTag = () => sendRendererEvent('fakeTag');
+
+document.addEventListener('DOMContentLoaded', evt => {
+    sendRendererEvent('DOMContentLoaded');
+});
+
 onRendererEvent('onPortableReaderConnectingStart', _ => {
     console.log('onPortableReaderConnectingStart');
 })
