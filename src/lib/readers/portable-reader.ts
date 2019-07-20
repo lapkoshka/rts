@@ -1,35 +1,38 @@
-const { spawn } = require('child_process');
-const EventEmitter = require('events');
-const fs = require('fs');
+import { ChildProcess, spawn } from 'child_process';
+import * as EventEmitter from 'events';
+import * as fs from 'fs';
 
 const pREADER_MSG = {
     START_LISTEN: 'start_listen\r\n',
-    CONTINUE_LISEN: 'continue_listen\r\n'
+    CONTINUE_LISTEN: 'continue_listen\r\n'
 };
 
 const EXE_FILE_PATH = '/bin/portablereader.exe';
 
 class PortableReader extends EventEmitter {
+    private process: ChildProcess;
+    private isConnected: boolean;
+
     constructor() {
         super();
         this.process = null;
         this.isConnected = false;
     }
 
-    startListen() {
-        this._open().then(_ => {
-            this._sendMessage(pREADER_MSG.START_LISTEN);
-        }).catch(err => {
+    public startListen(): void {
+        this.open().then(() => {
+            this.sendMessage(pREADER_MSG.START_LISTEN);
+        }).catch((err: any) => {
             console.log(err);
         });
 
     }
 
-    continue() {
-        this._sendMessage(pREADER_MSG.CONTINUE_LISTEN);
+    public continue(): void {
+        this.sendMessage(pREADER_MSG.CONTINUE_LISTEN);
     }
 
-    kill() {
+    public kill() {
         if (!this.process) {
             return;
         }
@@ -38,11 +41,11 @@ class PortableReader extends EventEmitter {
         console.log('Portable reader process was killed');
     }
 
-    fakeTag() {
+    public fakeTag(): void {
         this.emit('tag', 'FAKE_TAG_UID:123456789');
     }
 
-    _open() {
+    private open(): Promise<string> {
         this.emit('connectingStart');
         const msg = `${EXE_FILE_PATH} not found`;
         if (!fs.existsSync(EXE_FILE_PATH)) {
@@ -58,7 +61,7 @@ class PortableReader extends EventEmitter {
 
                 if (status === 'error') {
                     this.emit('connectedFailed', message);
-                    reject('Connected to portable reader failed, message: ', message);
+                    reject(`Connected to portable reader failed, message: ${message}`);
                     return;
                 }
 
@@ -84,7 +87,7 @@ class PortableReader extends EventEmitter {
         });
     }
 
-    _sendMessage(message) {
+    private sendMessage(message: string) {
         if (this.isConnected) {
             this.process.stdin.write(message);
         } else {
@@ -93,4 +96,4 @@ class PortableReader extends EventEmitter {
     }
 }
 
-module.exports = PortableReader;
+export default PortableReader;

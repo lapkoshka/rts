@@ -2,15 +2,19 @@
   "name": "rts",
   "version": "2.0.0",
   "description": "race tracking system",
-  "main": "src/index.js",
   "scripts": {
-    "start": "electron .",
-    "update-bin": "node scripts/updatebin.js"
+    "update-bin": "node scripts/updatebin.js",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "npm run build && electron ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "electron": "^2.0.7",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }
