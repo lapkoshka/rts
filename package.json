@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "race tracking system",
   "scripts": {
-    "update-bin": "node scripts/updatebin.js",
+    "bin": "node scripts/updatebin.js",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
