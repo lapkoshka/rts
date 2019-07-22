@@ -7,7 +7,7 @@ const pREADER_MSG = {
     CONTINUE_LISTEN: 'continue_listen\r\n'
 };
 
-const EXE_FILE_PATH = '/bin/portablereader.exe';
+const EXE_FILE_PATH = process.cwd() + '/bin/portablereader.exe'
 
 class PortableReader extends EventEmitter {
     private process: ChildProcess;
@@ -55,7 +55,7 @@ class PortableReader extends EventEmitter {
 
         return new Promise((resolve, reject) => {
             const delay = '200';
-            this.process = spawn(process.cwd() + EXE_FILE_PATH, [delay]);
+            this.process = spawn(EXE_FILE_PATH, [delay]);
             this.process.stdout.on('data', data => {
                 const [status, message] = data.toString().trim().split(':');
 

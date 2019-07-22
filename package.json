@@ -5,6 +5,7 @@
   "scripts": {
     "bin": "node scripts/updatebin.js",
     "build": "tsc",
+    "br": "npm run build && npm start",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "start": "electron ./dist/index.js"
