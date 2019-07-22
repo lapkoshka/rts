@@ -47,8 +47,8 @@ class PortableReader extends EventEmitter {
 
     private open(): Promise<string> {
         this.emit('connectingStart');
-        const msg = `${EXE_FILE_PATH} not found`;
         if (!fs.existsSync(EXE_FILE_PATH)) {
+            const msg = `${EXE_FILE_PATH} not found`;
             this.emit('connectedFailed', msg);
             return Promise.reject(msg);
         }
@@ -58,6 +58,12 @@ class PortableReader extends EventEmitter {
             this.process = spawn(process.cwd() + EXE_FILE_PATH, [delay]);
             this.process.stdout.on('data', data => {
                 const [status, message] = data.toString().trim().split(':');
+
+                if (status === 'tag') {
+                    this.emit('tag', message);
+
+                    return;
+                }
 
                 if (status === 'error') {
                     this.emit('connectedFailed', message);
@@ -69,12 +75,6 @@ class PortableReader extends EventEmitter {
                     this.isConnected = true;
                     this.emit('connected');
                     resolve();
-
-                    return;
-                }
-
-                if (status === 'tag') {
-                    this.emit('tag', message);
 
                     return;
                 }
