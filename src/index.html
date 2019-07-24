@@ -3,19 +3,19 @@
     <head>
       <meta charset="UTF-8">
       <title>RTS</title>
-      <link rel="stylesheet" type="text/css" href="../common/styles/common.css">
-      <link rel="stylesheet" type="text/css" href="../common/styles/ui.css">
+      <link rel="stylesheet" type="text/css" href="./styles/base.css">
+      <link rel="stylesheet" type="text/css" href="./styles/ui.css">
 
-      <link rel="stylesheet" type="text/css" href="./styles/page.css">
       <link rel="stylesheet" type="text/css" href="./styles/smartbanner.css">
       <link rel="stylesheet" type="text/css" href="./styles/race.css">
       <link rel="stylesheet" type="text/css" href="./styles/users.css">
+
       <link rel="stylesheet" type="text/css" href="./styles/reg-fullscreenpopup.css">
     </head>
     <body>
       <div class="content">
 
-        <header class="smartbanner ui-block">
+        <header id="smarbanner" class="smartbanner ui-block">
           <div class="smartbanner-readers">
             <div class="smartbanner-reader smartbanner-portablereader">
               <span class="smartbanner-reader-title">Portable reader:</span>
@@ -31,7 +31,7 @@
         </header>
 
         <main>
-          <div class="race ui-block">
+          <div id="race" class="race ui-block">
             <table>
                 <tr class="race-header">
                     <th class="race-row-name">Имя</th>
@@ -40,7 +40,7 @@
             </table>
           </div>
 
-          <div class="users ui-block">
+          <div id="users" class="users ui-block">
               <table>
                   <tr class="users-header">
                       <th class="users-row-name">Имя</th>
@@ -51,7 +51,7 @@
           </div>
         </main>
 
-        <div class="reg-fullscreenpopup">
+        <div id="regPopup" class="reg-fullscreenpopup">
           <div class="reg-fullscreenpopup-content">
             <div class="reg-fullscreenpopup-close">Закрыть</div>
             <h2>Новый участник</h2>
@@ -64,7 +64,29 @@
 
       </div>
     </body>
-    <script src="./scripts/ui-events.js"></script>
+    <script>
+     const { ipcRenderer } = require('electron');
 
-    <script src="./scripts/renderer-events.js"></script>
+     const smartbannerComponent = require('./components/smartbanner');
+     const raceComponents = require('./components/race');
+     const usersComponent = require('./components/users');
+     const regPopupComponent = require('./components/reg-popup');
+     
+    
+     const dispatcher = {
+      sendRendererEvent(type, data) {
+        ipcRenderer.send(type, data);
+      },
+      onRendererEvent(type, listener) {
+          ipcRenderer.on(type, listener)
+      }
+     };
+
+     smartbannerComponent(smarbanner, dispatcher);
+     raceComponents(race);
+     usersComponent(users);
+     regPopupComponent(regPopup, dispatcher);
+
+     const fakeTag = () => dispatcher.sendRendererEvent('fakeTag');
+    </script>
   </html>

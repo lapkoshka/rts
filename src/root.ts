@@ -1,6 +1,7 @@
 import { ipcMain, BrowserWindow } from 'electron';
-import PortableReader from "../../lib/readers/portable-reader";
-import { Tag } from "../../lib/readers/entities";
+import PortableReader from "./lib/readers/portable-reader";
+import { Tag } from "./lib/readers/entities";
+import { User } from './lib/users'
 
 
 class MainPageRoot {
@@ -15,13 +16,22 @@ class MainPageRoot {
     }
 
     private init(): void {
-        this.addPageListener('DOMContentLoaded', () => {
-            this.initPortableReader();
-        });
+        this.initPortableReader();
 
         this.addPageListener('fakeTag', () => {
             this.portableReader.fakeTag();
         });
+
+        this.addPageListener('onCancelRegistration', () => {
+            this.portableReader.continue();
+        });
+
+        this.addPageListener('onRegistrationSubmit', (user: User) => {
+            const { uid, firstname, lastname } = user;
+            console.log(uid, firstname, lastname);
+
+            this.portableReader.continue();
+        })
     }
 
     private initPortableReader() {

@@ -19,3 +19,12 @@ body {
     background: var(--bg-color);
     height: 100%;
 }
+
+main {
+    display: flex;
+    height: 100%;
+}
+
+.content-blur {
+    filter: blur(2px);
+}

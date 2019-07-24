@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from "electron";
-import MainPageRoot from "./pages/main/root";
+import MainPageRoot from "./root";
 import PortableReader from "./lib/readers/portable-reader";
 import * as path from 'path';
 
@@ -12,7 +12,7 @@ app.on('ready', () => {
   window = new BrowserWindow({width: 1600, height: 800});
   root = new MainPageRoot(window, portableReader);
 
-  window.loadFile(path.join(__dirname, '../src/pages/main/page.html'));
+  window.loadFile(path.join(__dirname, '../src/index.html'));
 
   // Open the DevTools.
   window.webContents.openDevTools()
