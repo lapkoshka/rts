@@ -33,7 +33,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
             uid,
             firstname,
             lastname,
-            alreadyRegistred
+            alreadyRegistred: alreadyRegistred === 'true' ? true : false
         })
     });
 
