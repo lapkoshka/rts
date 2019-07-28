@@ -2,14 +2,15 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import root from "./root";
 import PortableReader from "./lib/readers/portable-reader";
 import * as path from 'path';
-import { RootDispatcher } from "./lib/dispatcher";
 
-
-
+//TODO: add type
+export interface RootDispatcher {
+  sendEvent: any;
+  addPageListener: any;
+}
 
 let window: BrowserWindow;
 
-//TODO: add type
 const rootDispatcher: RootDispatcher = {
   sendEvent(type: string, data?: any) {
     window.webContents.send(type, data);
