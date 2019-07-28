@@ -8,7 +8,8 @@
     "br": "npm run build && npm start",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "start": "electron ./dist/index.js"
+    "start": "electron ./dist/index.js",
+    "postinstall": "install-app-deps"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +20,8 @@
     "sqlite3": "^4.0.9",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "electron-builder": "^21.1.5"
   }
 }

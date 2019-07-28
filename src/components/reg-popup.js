@@ -1,13 +1,17 @@
-const openPopup = (_, data) => {
-    const { tag, user } = data;
+//TODO: Press Enter and Escape 
 
-    document.querySelector('.reg-fullscreenpopup').classList.add('reg-fullscreenpopup-active');
+const openPopup = (_, user) => {
+    const { firstname, lastname, uid, alreadyRegistred } = user;
+
+    const popup = document.querySelector('.reg-fullscreenpopup');
+    popup.classList.add('reg-fullscreenpopup-active');
+    popup.dataset.alreadyRegistred = alreadyRegistred;
+    
     document.querySelector('.content').classList.add('main-blur');
-
-    document.querySelector('.reg-fullscreenpopup-uid').value = tag;
-    document.querySelector('.reg-fullscreenpopup-firstname').value = user ? user.firstname : '';
+    document.querySelector('.reg-fullscreenpopup-uid').value = uid;
+    document.querySelector('.reg-fullscreenpopup-firstname').value = firstname || '';
     document.querySelector('.reg-fullscreenpopup-firstname').focus();
-    document.querySelector('.reg-fullscreenpopup-lastname').value = user ? user.lastname : '';
+    document.querySelector('.reg-fullscreenpopup-lastname').value = lastname || '';
 };
 
 const registrationSubmitButton = document.querySelector('.reg-fullscreenpopup-submit');
@@ -21,13 +25,15 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         const uid = document.querySelector('.reg-fullscreenpopup-uid').value;
         const firstname = document.querySelector('.reg-fullscreenpopup-firstname').value;
         const lastname = document.querySelector('.reg-fullscreenpopup-lastname').value;
+        const alreadyRegistred = document.querySelector('.reg-fullscreenpopup').dataset.alreadyRegistred;
         popup.classList.remove('reg-fullscreenpopup-active');
         document.querySelector('.content').classList.remove('main-blur');
 
         sendRendererEvent('onRegistrationSubmit', {
             uid,
             firstname,
-            lastname
+            lastname,
+            alreadyRegistred
         })
     });
 
