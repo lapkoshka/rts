@@ -18,21 +18,21 @@ namespace portablereader
             }
             else
             {
-                Console.WriteLine("error:missed argument");
+                Console.WriteLine("error:Missed argument");
             }
             bool isConnected = reader.Connect();
             if (isConnected)
             {
                 Console.WriteLine("ok:connected");
                 string input = Console.ReadLine();
-                if (input == "1")
+                if (input == "start_listen")
                 {
                     reader.ListenReader(delay);
                 }
             }
             else
             {
-                Console.WriteLine("error:reader does not found");
+                Console.WriteLine("error:Reader does not found");
             }
         }
     }
