@@ -1,21 +1,46 @@
-//TODO: XSS vulnerability, rewrite to innerText
+// TODO: check XSS vulnerability
 const render = (table, data) => {
-    table.innerHTML = '';
-    table.innerHTML += `
-        <tr class="users-header">
-            <th class="users-row-name">Имя</th>
-            <th class="users-row-best-time">Лучшее время</th>
-            <th class="users-row-best-count">Всего заездов</th>
-        </tr>`;
+    const userHeader = document.createElement('tr');
+    userHeader.className = 'user-header';
+
+    const usersRowName = document.createElement('th');
+    usersRowName.className = 'users-row-name';
+
+    const usersRowBestTime = document.createElement('th');
+    usersRowBestTime.className = 'users-row-best-time';
+
+    const usersRowBestCount = document.createElement('th');
+    usersRowBestCount.className = 'users-row-best-count';
+
+    usersRowName.innerText = 'Имя';
+    usersRowBestTime.innerText = 'Лучшее время';
+    usersRowBestCount.innerText = 'Всего заездов';
+
+    table.appendChild(userHeader);
+    userHeader.appendChild(usersRowName);
+    userHeader.appendChild(usersRowBestTime);
+    userHeader.appendChild(usersRowBestCount);
 
     data.forEach(user => {
-        table.innerHTML += `
-        <tr>
-            <td class="users-row-name">${user.firstname} ${user.lastname}</td>
-            <td class="users-row-best-time">${user.time}</td>
-            <td class="users-row-best-count">${user.count}</td>
-        </tr>
-        `;
+        const userHeader = document.createElement('tr');
+
+        const usersRowName = document.createElement('td');
+        usersRowName.className = 'users-row-name';
+
+        const usersRowBestTime = document.createElement('td');
+        usersRowBestTime.className = 'users-row-best-time';
+
+        const usersRowBestCount = document.createElement('td');
+        usersRowBestCount.className = 'users-row-best-count';
+
+        usersRowName.innerText = `${user.firstname} ${user.lastname})`;
+        usersRowBestTime.innerText = `${user.time}`;
+        usersRowBestCount.innerText = `${user.count}`;
+
+        table.appendChild(userHeader);
+        userHeader.appendChild(usersRowName);
+        userHeader.appendChild(usersRowBestTime);
+        userHeader.appendChild(usersRowBestCount);
     });
 };
 
