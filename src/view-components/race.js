@@ -1,8 +1,6 @@
-let rootElement = null;
-const init = element => {
-    rootElement = element;
-    console.log(rootElement);
+module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
+    // onRendererEvent('onUsersDataUpdate', (_, data) => {
+    //     const table = rootElement.querySelector('table');
+    //     render(table, data);
+    // });
 };
-
-
-module.exports = init;

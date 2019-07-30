@@ -1,6 +1,7 @@
 import PortableReader from "../lib/readers/portable-reader";
 import { RootDispatcher } from "../index";
-import { getUser } from "../lib/users/users";
+import { getUser } from "./database";
+
 
 const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
     portableReader.on('connectingStart', () => {

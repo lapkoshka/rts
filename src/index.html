@@ -45,7 +45,7 @@
                   <tr class="users-header">
                       <th class="users-row-name">Имя</th>
                       <th class="users-row-best-time">Лучшее время</th>
-                      <th class="users-row-best-time">Всего заездов</th>
+                      <th class="users-row-best-count">Всего заездов</th>
                   </tr>
               </table>
           </div>
@@ -82,10 +82,14 @@
      };
 
      smartbannerComponent(smarbanner, windowDispatcher);
-     raceComponents(race);
-     usersComponent(users);
+     raceComponents(race, windowDispatcher);
+     usersComponent(users, windowDispatcher);
      regPopupComponent(regPopup, windowDispatcher);
 
      const fakeTag = () => windowDispatcher.sendRendererEvent('fakeTag');
+
+     document.addEventListener('DOMContentLoaded', () => {
+      windowDispatcher.sendRendererEvent('onViewReady');
+     });
     </script>
   </html>
