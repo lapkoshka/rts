@@ -12,8 +12,8 @@ const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
         dispatcher.sendEvent('onPortableReaderConnected');
     });
 
-    portableReader.on('connectedFailed', (message: string) => {
-        dispatcher.sendEvent('onPortableReaderConnectedFailed', message);
+    portableReader.on('connectingFailed', (message: string) => {
+        dispatcher.sendEvent('onPortableReaderConnectingFailed', message);
     });
 
     portableReader.on('tag', async (tag: string) => {

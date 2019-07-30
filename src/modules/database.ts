@@ -29,6 +29,15 @@ const prepareDatabase = (db: Database):void => {
       city text,
       bike text
   );`);
+
+  db.run(`create table if not exists race(
+    id integer autoincremented,
+    uid not null,
+    time integer,
+    date integer,
+    event text
+);`);
+
 }
 
 const database = connectDatabase();
@@ -68,6 +77,7 @@ export const getUsers = async(): Promise<Array<User>> => {
 
 export const getUserRaces = (tag: string): Promise<Array<Race>> => {
   return new Promise((resolve, reject) => {
+    // inner join
     resolve([])
   });
 };

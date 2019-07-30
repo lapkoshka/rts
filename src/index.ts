@@ -1,7 +1,9 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import root from "./root";
+import MainReader from "./lib/readers/main-reader";
 import PortableReader from "./lib/readers/portable-reader";
 import * as path from 'path';
+
 
 //TODO: add type
 export interface RootDispatcher {
@@ -20,11 +22,13 @@ const rootDispatcher: RootDispatcher = {
   }
  };
 
+// TODO: search and kill unclosed process depends on OS
+const mainReader = new MainReader();
 const portableReader = new PortableReader();
 
 app.on('ready', () => {
   window = new BrowserWindow({width: 1600, height: 800});
-  root(portableReader, rootDispatcher);
+  root(mainReader, portableReader, rootDispatcher);
 
   window.loadFile(path.join(__dirname, '../src/index.html'));
 
@@ -41,5 +45,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 
+  // TODO: gracefully closed
+  mainReader.kill();
   portableReader.kill();
 });

@@ -25,7 +25,6 @@ class PortableReader extends EventEmitter {
         }).catch((err: any) => {
             console.log(err);
         });
-
     }
 
     public continue(): void {
@@ -41,15 +40,15 @@ class PortableReader extends EventEmitter {
         console.log('Portable reader process was killed');
     }
 
-    public fakeTag(): void {
-        this.emit('tag', 'FAKE_TAG_UID:123456789');
+    public fakeTag(tag: string): void {
+        this.emit('tag', tag || 'FAKE_PORTABLE_READER_TAG:123456789');
     }
 
     private open(): Promise<string> {
         this.emit('connectingStart');
         if (!fs.existsSync(EXE_FILE_PATH)) {
             const msg = `${EXE_FILE_PATH} not found`;
-            this.emit('connectedFailed', msg);
+            this.emit('connectingFailed', msg);
             return Promise.reject(msg);
         }
 
@@ -66,7 +65,7 @@ class PortableReader extends EventEmitter {
                 }
 
                 if (status === 'error') {
-                    this.emit('connectedFailed', message);
+                    this.emit('connectingFailed', message);
                     reject(`Connected to portable reader failed, message: ${message}`);
                     return;
                 }

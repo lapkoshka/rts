@@ -62,6 +62,12 @@
           </div>
         </div>
 
+<!--        TODO // enable/disable reader listening -->
+        <footer>
+          <button>PortableReaderOn</button>
+          <button>MainReaderOn</button>
+        </footer>
+
       </div>
     </body>
     <script>
@@ -71,7 +77,7 @@
      const raceComponents = require('./view-components/race');
      const usersComponent = require('./view-components/users');
      const regPopupComponent = require('./view-components/reg-popup');
-     
+
      const windowDispatcher = {
       sendRendererEvent(type, data) {
         ipcRenderer.send(type, data);
@@ -86,7 +92,8 @@
      usersComponent(users, windowDispatcher);
      regPopupComponent(regPopup, windowDispatcher);
 
-     const fakeTag = () => windowDispatcher.sendRendererEvent('fakeTag');
+     const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakeProtableTag', uid);
+     const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
 
      document.addEventListener('DOMContentLoaded', () => {
       windowDispatcher.sendRendererEvent('onViewReady');

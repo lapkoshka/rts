@@ -1,6 +1,8 @@
+import MainReader from "./lib/readers/main-reader";
 import PortableReader from "./lib/readers/portable-reader";
-import { User } from './lib/types'
+import { User } from './lib/types';
 import initPortableReader from './modules/portable-reader';
+import initMainReader from './modules/main-reader';
 import { RootDispatcher } from "./index";
 import { updateUser, insertUser, getUsers, getUserRaces } from "./modules/database";
 
@@ -17,7 +19,7 @@ const updateView = async (dispatcher: RootDispatcher) => {
     for (let i = 0; i < users.length; i++) {
         const user = users[i];
         const races = await getUserRaces(user.uid);
-        // TODO: 
+        // TODO:
         // sort by best time
         data.push({
             firstname: user.firstname,
@@ -30,7 +32,7 @@ const updateView = async (dispatcher: RootDispatcher) => {
     dispatcher.sendEvent('onUsersDataUpdate', data);
 };
 
-const submitNewUser = (user: User): Promise<string> => 
+const submitNewUser = (user: User): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
 
 const waitView = (dispatcher: RootDispatcher): Promise<void> => {
@@ -42,15 +44,22 @@ const waitView = (dispatcher: RootDispatcher): Promise<void> => {
 };
 
 const root = async (
+    mainReader: MainReader,
     portableReader: PortableReader,
     dispatcher: RootDispatcher,
 ) => {
     await waitView(dispatcher);
+
     updateView(dispatcher);
     initPortableReader(portableReader, dispatcher);
+    initMainReader(mainReader, dispatcher);
 
-    dispatcher.addPageListener('fakeTag', () => {
-        portableReader.fakeTag();
+    dispatcher.addPageListener('fakePortableTag', (evt: any, tag: string) => {
+        portableReader.fakeTag(tag);
+    });
+
+    dispatcher.addPageListener('fakeMainTag', (evt: any, tag: string) => {
+        mainReader.fakeTag(tag);
     });
 
     // registration events to the registration events module
@@ -68,7 +77,7 @@ const root = async (
         });
 
         portableReader.continue();
-    })
-}
+    });
+};
 
 export default root;
