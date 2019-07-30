@@ -9,3 +9,8 @@ export interface Race {
     uid: string;
     time: number;
 }
+
+export interface RFIDTag {
+    uid: string;
+    rssi?: string;
+}

@@ -9,12 +9,12 @@ const connectDatabase = (): Database => {
         if (err) {
           throw Error(err.message);
         }
-  
+
         console.log(`Connected to the ${DATABASE_PATH} SQlite database.`);
     });
-  }
-  
-const prepareDatabase = (db: Database):void => {
+};
+
+const prepareDatabase = (db: Database): void => {
   // something wrong with res and err types
   db.run(`create table if not exists users(
       uid not null unique,
@@ -37,17 +37,16 @@ const prepareDatabase = (db: Database):void => {
     date integer,
     event text
 );`);
-
-}
+};
 
 const database = connectDatabase();
 // TODO: need return promise from prepare?
 prepareDatabase(database);
 
-export const getUser = async(uid: string): Promise<User> => {
+export const getUser = async (uid: string): Promise<User> => {
   const user: User = {
       uid,
-      alreadyRegistred: false
+      alreadyRegistred: false,
   };
 
   return new Promise((resolve, reject) => {
@@ -59,11 +58,11 @@ export const getUser = async(uid: string): Promise<User> => {
 
           user.alreadyRegistred = true;
           resolve(Object.assign(user, row));
-      })
+      });
   });
-}
+};
 
-export const getUsers = async(): Promise<Array<User>> => {
+export const getUsers = async (): Promise<User[]> => {
   return new Promise((resolve, reject) => {
     database.all('select * from users', (err: any, rows: any) => {
       if (err) {
@@ -73,19 +72,19 @@ export const getUsers = async(): Promise<Array<User>> => {
       resolve(rows);
     });
   });
-}
+};
 
-export const getUserRaces = (tag: string): Promise<Array<Race>> => {
+export const getUserRaces = (tag: string): Promise<Race[]> => {
   return new Promise((resolve, reject) => {
     // inner join
-    resolve([])
+    resolve([]);
   });
 };
 
 export const updateUser = (user: User): Promise<string> => {
   const { uid, firstname, lastname } = user;
   return new Promise((resolve, reject) => {
-    database.run(`update users 
+    database.run(`update users
       set
       firstname = (?),
       lastname = (?)
@@ -103,7 +102,7 @@ export const updateUser = (user: User): Promise<string> => {
         resolve('User updated');
     });
   });
-}
+};
 
 export const insertUser = (user: User): Promise<string> => {
   const { uid, firstname, lastname } = user;
@@ -116,9 +115,9 @@ export const insertUser = (user: User): Promise<string> => {
         uid,
         firstname,
         lastname,
-      ], function(err) {
+      ], (err: any) => {
 
-      const isUserAlreadyExist = err && 
+      const isUserAlreadyExist = err &&
           err.message === 'SQLITE_CONSTRAINT: UNIQUE constraint failed: users.uid';
       if (isUserAlreadyExist) {
           // TODO: logger for exceptions with gui on client
@@ -128,4 +127,4 @@ export const insertUser = (user: User): Promise<string> => {
       resolve(`A row has been inserted with uid ${uid}`);
     });
   });
-} 
+};

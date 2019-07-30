@@ -62,7 +62,7 @@
           </div>
         </div>
 
-<!--        TODO // enable/disable reader listening -->
+<!--    TODO // enable/disable reader listening -->
         <footer>
           <button>PortableReaderOn</button>
           <button>MainReaderOn</button>
@@ -83,7 +83,7 @@
         ipcRenderer.send(type, data);
       },
       onRendererEvent(type, listener) {
-          ipcRenderer.on(type, listener)
+        ipcRenderer.on(type, listener)
       }
      };
 
@@ -96,7 +96,7 @@
      const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
 
      document.addEventListener('DOMContentLoaded', () => {
-      windowDispatcher.sendRendererEvent('onViewReady');
+        windowDispatcher.sendRendererEvent('onViewReady');
      });
     </script>
   </html>

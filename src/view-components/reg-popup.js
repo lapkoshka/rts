@@ -1,12 +1,11 @@
-//TODO: Press Enter and Escape 
-
+// TODO: Press Enter and Escape
 const openPopup = (_, user) => {
     const { firstname, lastname, uid, alreadyRegistred } = user;
 
     const popup = document.querySelector('.reg-fullscreenpopup');
     popup.classList.add('reg-fullscreenpopup-active');
     popup.dataset.alreadyRegistred = alreadyRegistred;
-    
+
     document.querySelector('.content').classList.add('main-blur');
     document.querySelector('.reg-fullscreenpopup-uid').value = uid;
     document.querySelector('.reg-fullscreenpopup-firstname').value = firstname || '';
@@ -33,8 +32,8 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
             uid,
             firstname,
             lastname,
-            alreadyRegistred: alreadyRegistred === 'true' ? true : false
-        })
+            alreadyRegistred: alreadyRegistred === 'true',
+        });
     });
 
     closeRegistrationPopup.addEventListener('click', () => {
@@ -46,4 +45,4 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
 
         sendRendererEvent('onCancelRegistration');
     });
-}
+};

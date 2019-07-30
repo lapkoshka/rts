@@ -1,4 +1,3 @@
-
 import { RootDispatcher } from '../index';
 import MainReader from '../lib/readers/main-reader';
 

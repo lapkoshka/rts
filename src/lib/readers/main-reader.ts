@@ -1,6 +1,8 @@
 import { ChildProcess, spawn } from 'child_process';
 import * as EventEmitter from 'events';
 import * as fs from 'fs';
+import { RFIDTag } from '../types';
+
 
 const EXE_FILE_PATH = process.cwd() + '/bin/MainReaderAdapter.exe';
 
@@ -19,7 +21,7 @@ const Q_VALUE = {
     _12: '12',
     _13: '13',
     _14: '14',
-    _15: '15'
+    _15: '15',
 };
 
 const SESSION = {
@@ -27,7 +29,7 @@ const SESSION = {
     _1: '1',
     _2: '2',
     _3: '3',
-    AUTO: '255'
+    AUTO: '255',
 };
 
 class MainReader extends EventEmitter {
@@ -38,6 +40,32 @@ class MainReader extends EventEmitter {
         super();
         this.process = null;
         this.isConnected = false;
+    }
+
+    // TODO: base readers class
+    public startListen(): void {
+        this.open().then(() => {
+            // TODO: improve protocol naming
+            // TODO: create enum with messages
+            this.sendMessage('1\r\n');
+        }).catch((err: any) => {
+            // TODO: same logic with portable reader
+            console.log(err);
+        });
+    }
+
+    // TODO:
+    // public stopListen(): void {
+    //
+    // }
+
+    public kill(): void {
+        this.process.kill();
+        console.log('Main reader process was killed');
+    }
+
+    public fakeTag(tag: string): void {
+        this.emit('tag', tag || 'FAKE_MAIN_READER_TAG:123456789');
     }
 
     private open(): Promise<string> {
@@ -52,7 +80,7 @@ class MainReader extends EventEmitter {
             const scantime = '20';
             const args = [Q_VALUE._4, SESSION.AUTO, scantime];
             this.process = spawn(EXE_FILE_PATH, args);
-            this.process.stdout.on('data', data => {
+            this.process.stdout.on('data', (data: string) => {
                 if (!this.isConnected) {
                     const [status, message] = data.toString().trim().split(':');
 
@@ -72,7 +100,7 @@ class MainReader extends EventEmitter {
                     }
                 } else {
                     const chunk = data.toString().trim().split('\n');
-                    chunk.forEach(line => {
+                    chunk.forEach((line: string) => {
                         const status = line.split(':')[0];
 
                         if (status === 'tag') {
@@ -92,19 +120,7 @@ class MainReader extends EventEmitter {
         });
     }
 
-    // TODO: base readers class
-    public startListen(): void {
-        this.open().then(() => {
-        // TODO: improve protocol naming
-        // TODO: create enum with messages
-            this.sendMessage("1\r\n");
-        }).catch((err: any) => {
-            // TODO: same logic with portable reader
-            console.log(err);
-        });
-    }
-
-    private sendMessage(message: string) {
+    private sendMessage(message: string): void {
         if (this.isConnected) {
             this.process.stdin.write(message);
         } else {
@@ -112,27 +128,13 @@ class MainReader extends EventEmitter {
         }
     }
 
-    // TODO:
-    public stopListen(): void {
-
-    }
-
-    public kill(): void {
-        this.process.kill();
-        console.log('Main reader process was killed');
-    }
-
-    public fakeTag(tag: string): void {
-        this.emit('tag', tag || 'FAKE_MAIN_READER_TAG:123456789');
-    }
-
-    private parseTag(data: string) {
+    private parseTag(data: string): RFIDTag {
         const [_, uid, rssi] = data.replace('\r', '').split(':');
         // TODO: rssi is undefined
         return {
             uid,
-            rssi
-        }
+            rssi,
+        };
     }
 }
 

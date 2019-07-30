@@ -1,10 +1,10 @@
-import MainReader from "./lib/readers/main-reader";
-import PortableReader from "./lib/readers/portable-reader";
+import MainReader from './lib/readers/main-reader';
+import PortableReader from './lib/readers/portable-reader';
 import { User } from './lib/types';
 import initPortableReader from './modules/portable-reader';
 import initMainReader from './modules/main-reader';
-import { RootDispatcher } from "./index";
-import { updateUser, insertUser, getUsers, getUserRaces } from "./modules/database";
+import { RootDispatcher } from './index';
+import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database';
 
 const updateView = async (dispatcher: RootDispatcher) => {
     let users = [];
@@ -25,9 +25,9 @@ const updateView = async (dispatcher: RootDispatcher) => {
             firstname: user.firstname,
             lastname: user.lastname,
             time: races[0] ? races[0].time : '-',
-            count: races.length
+            count: races.length,
         });
-    };
+    }
 
     dispatcher.sendEvent('onUsersDataUpdate', data);
 };
@@ -68,11 +68,11 @@ const root = async (
     });
 
     dispatcher.addPageListener('onRegistrationSubmit', (evt: any, user: User) => {
-        submitNewUser(user).then(message => {
+        submitNewUser(user).then((message: string) => {
             console.log(message);
             updateView(dispatcher);
         })
-        .catch(err => {
+        .catch((err: string) => {
             throw Error(err);
         });
 

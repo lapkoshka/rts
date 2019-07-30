@@ -1,26 +1,24 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import root from "./root";
-import MainReader from "./lib/readers/main-reader";
-import PortableReader from "./lib/readers/portable-reader";
+import { app, BrowserWindow, ipcMain } from 'electron';
+import root from './root';
+import MainReader from './lib/readers/main-reader';
+import PortableReader from './lib/readers/portable-reader';
 import * as path from 'path';
 
-
-//TODO: add type
 export interface RootDispatcher {
-  sendEvent: any;
-  addPageListener: any;
+  sendEvent: (type: string, data?: any) => void;
+  addPageListener: (type: string, listener: Function) => void;
 }
 
 let window: BrowserWindow;
 
 const rootDispatcher: RootDispatcher = {
-  sendEvent(type: string, data?: any) {
+  sendEvent(type: string, data?: any): void {
     window.webContents.send(type, data);
   },
-  addPageListener(type: string, listener: Function) {
-      ipcMain.on(type, listener)
-  }
- };
+  addPageListener(type: string, listener: Function): void {
+    ipcMain.on(type, listener);
+  },
+};
 
 // TODO: search and kill unclosed process depends on OS
 const mainReader = new MainReader();
@@ -33,16 +31,16 @@ app.on('ready', () => {
   window.loadFile(path.join(__dirname, '../src/index.html'));
 
   // Open the DevTools.
-  window.webContents.openDevTools()
+  window.webContents.openDevTools();
 
   window.on('closed', () => {
     window = null;
-  })
+  });
 });
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
 
   // TODO: gracefully closed

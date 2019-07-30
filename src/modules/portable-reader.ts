@@ -1,6 +1,6 @@
-import PortableReader from "../lib/readers/portable-reader";
-import { RootDispatcher } from "../index";
-import { getUser } from "./database";
+import PortableReader from '../lib/readers/portable-reader';
+import { RootDispatcher } from '../index';
+import { getUser } from './database';
 
 
 const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {

@@ -15,9 +15,9 @@ const render = (table, data) => {
             <td class="users-row-best-time">${user.time}</td>
             <td class="users-row-best-count">${user.count}</td>
         </tr>
-        `
+        `;
     });
-}
+};
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     onRendererEvent('onUsersDataUpdate', (_, data) => {

@@ -1,11 +1,4 @@
 hello
-
-LINT:
-todo: typescript strict return methods
-todo: typescript space between object brackets
-todo: margin between imports and codes
-todo: single brackets
-
 TODO:
 Перетащить доки и либы по оборудованию в проект
 

@@ -2,12 +2,12 @@ import { ChildProcess, spawn } from 'child_process';
 import * as EventEmitter from 'events';
 import * as fs from 'fs';
 
-const pREADER_MSG = {
+const P_READER_MSG = {
     START_LISTEN: 'start_listen\r\n',
-    CONTINUE_LISTEN: 'continue_listen\r\n'
+    CONTINUE_LISTEN: 'continue_listen\r\n',
 };
 
-const EXE_FILE_PATH = process.cwd() + '/bin/portablereader.exe'
+const EXE_FILE_PATH = process.cwd() + '/bin/portablereader.exe';
 
 class PortableReader extends EventEmitter {
     private process: ChildProcess;
@@ -21,17 +21,17 @@ class PortableReader extends EventEmitter {
 
     public startListen(): void {
         this.open().then(() => {
-            this.sendMessage(pREADER_MSG.START_LISTEN);
+            this.sendMessage(P_READER_MSG.START_LISTEN);
         }).catch((err: any) => {
             console.log(err);
         });
     }
 
     public continue(): void {
-        this.sendMessage(pREADER_MSG.CONTINUE_LISTEN);
+        this.sendMessage(P_READER_MSG.CONTINUE_LISTEN);
     }
 
-    public kill() {
+    public kill(): void {
         if (!this.process) {
             return;
         }
@@ -55,7 +55,7 @@ class PortableReader extends EventEmitter {
         return new Promise((resolve, reject) => {
             const delay = '200';
             this.process = spawn(EXE_FILE_PATH, [delay]);
-            this.process.stdout.on('data', data => {
+            this.process.stdout.on('data', (data: string) => {
                 const [status, message] = data.toString().trim().split(':');
 
                 if (status === 'tag') {
@@ -79,14 +79,14 @@ class PortableReader extends EventEmitter {
                 }
             });
 
-            //TODO CATCH ERROR IF READER DISCONNECT
+            // TODO: CATCH ERROR IF READER DISCONNECT
             this.process.on('close', (code, signal) => {
                 console.log('Portable reader process was closed', code, signal);
             });
         });
     }
 
-    private sendMessage(message: string) {
+    private sendMessage(message: string): void {
         if (this.isConnected) {
             this.process.stdin.write(message);
         } else {
