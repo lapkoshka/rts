@@ -15,7 +15,9 @@ class PortableReader extends BaseReader {
     }
 
     public continue(): void {
-        this.sendMessage(this.PROTOCOL.CONTINUE_LISTEN);
+        if (this.isConnected) {
+            this.sendMessage(this.PROTOCOL.CONTINUE_LISTEN);
+        }
     }
 
     public open(): Promise<string> {
