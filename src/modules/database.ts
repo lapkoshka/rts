@@ -50,12 +50,14 @@ const database = connectDatabase();
 // TODO: need return promise from prepare?
 prepareDatabase(database);
 
-export const closeDatabase = ()=> {
-  database && database.close((err: Error) => {
-    if (err) {
-      throw err;
-    }
-  });
+export const closeDatabase = () => {
+  if (database) {
+      database.close((err: Error) => {
+          if (err) {
+              throw err;
+          }
+      });
+  }
 };
 
 export const getUser = async (uid: string): Promise<User> => {
