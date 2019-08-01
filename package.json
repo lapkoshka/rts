@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "race tracking system",
   "scripts": {
-    "bin": "node scripts/updatebin.js",
+    "ub": "node scripts/updatebin.js",
     "build": "tsc",
     "br": "npm run build && npm start",
     "watch": "tsc -w",

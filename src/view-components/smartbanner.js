@@ -51,4 +51,9 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         console.error(message);
         setStatus(mainReader, 'error');
     });
+
+    onRendererEvent('onMainReaderIpReceived', (_, message) => {
+       // TODO: show ip on view
+       console.log(message);
+    });
 };

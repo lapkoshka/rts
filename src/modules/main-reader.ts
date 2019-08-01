@@ -19,7 +19,9 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
         // dispatcher.sendEvent('onMainReaderTag', tag);
     });
 
-    // mainReader.startListen();
+    mainReader.on('onIpReceived', (ip: string) => {
+        dispatcher.sendEvent('onMainReaderIpReceived', ip);
+    });
 };
 
 export default init;

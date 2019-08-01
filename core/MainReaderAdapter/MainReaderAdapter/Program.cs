@@ -51,7 +51,7 @@ namespace MainReaderAdapter
             {
                 Console.WriteLine("ok:connected");
                 string input = Console.ReadLine();
-                if (input == "1")
+                if (input == "start_listen")
                 {
                     reader.ListenReader(Qvalue, Session, Scantime);
                 }

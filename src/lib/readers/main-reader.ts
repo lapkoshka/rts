@@ -30,7 +30,7 @@ const SESSION = {
 };
 
 const M_READER_MSG: ProtocolMessages = {
-    START_LISTEN: '1\r\n',
+    START_LISTEN: 'start_listen\r\n',
 };
 
 class MainReader extends BaseReader {
@@ -54,6 +54,10 @@ class MainReader extends BaseReader {
             this.process.stdout.on('data', (data: string) => {
                 if (!this.isConnected) {
                     const [status, message] = data.toString().trim().split(':');
+
+                    if (status === 'found') {
+                        this.emit('onIpReceived', message);
+                    }
 
                     if (status === 'error') {
                         this.emit('connectingFailed', message);
