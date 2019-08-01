@@ -60,6 +60,10 @@ class MainReader extends EventEmitter {
     // }
 
     public kill(): void {
+        if (!this.process) {
+            return;
+        }
+
         this.process.kill();
         console.log('Main reader process was killed');
     }

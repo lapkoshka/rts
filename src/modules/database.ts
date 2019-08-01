@@ -1,10 +1,17 @@
 import { verbose, Database } from 'sqlite3';
 import { User, Race } from '../lib/types';
+import * as fs from 'fs';
 
 const sqlite3 = verbose();
-const DATABASE_PATH = './database/rts.db';
+const DATABASE_CATALOG = './database'
+const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
 const connectDatabase = (): Database => {
+    // Create database folder isn't exists
+    if (!fs.existsSync(DATABASE_CATALOG)) {
+      fs.mkdirSync(DATABASE_CATALOG);
+    }
+
     return new sqlite3.Database(DATABASE_PATH, (err: Error) => {
         if (err) {
           throw Error(err.message);
@@ -36,7 +43,7 @@ const prepareDatabase = (db: Database): void => {
     time integer,
     date integer,
     event text
-);`);
+  );`);
 };
 
 const database = connectDatabase();

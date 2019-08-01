@@ -3,6 +3,7 @@ import root from './root';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import * as path from 'path';
+import { gracefulShutdown } from "./modules/service";
 
 export interface RootDispatcher {
   sendEvent: (type: string, data?: any) => void;
@@ -43,7 +44,11 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 
-  // TODO: gracefully closed
   mainReader.kill();
   portableReader.kill();
 });
+
+gracefulShutdown(() => {
+  mainReader.kill();
+  portableReader.kill();
+})
