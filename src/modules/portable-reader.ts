@@ -21,8 +21,6 @@ const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
 
         dispatcher.sendEvent('onPortableReaderTag', user);
     });
-
-    portableReader.startListen();
 };
 
 export default init;

@@ -1,7 +1,7 @@
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import { User } from './lib/types';
-import initPortableReader from './modules/portable-reader';
+import initPortableReaderEvents from './modules/portable-reader';
 import initMainReader from './modules/main-reader';
 import { RootDispatcher } from './index';
 import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database';
@@ -51,7 +51,7 @@ const root = async (
     await waitView(dispatcher);
 
     updateView(dispatcher);
-    initPortableReader(portableReader, dispatcher);
+    initPortableReaderEvents(portableReader, dispatcher);
     initMainReader(mainReader, dispatcher);
 
     dispatcher.addPageListener('fakePortableTag', (evt: any, tag: string) => {
@@ -77,6 +77,14 @@ const root = async (
         });
 
         portableReader.continue();
+    });
+
+    dispatcher.addPageListener('portableReaderTriggerClick', () => {
+        // portableReader.startListen();
+    });
+
+    dispatcher.addPageListener('mainReaderTriggerClick', () => {
+        console.log('m click');
     });
 };
 

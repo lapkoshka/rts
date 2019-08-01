@@ -1,5 +1,6 @@
 // TODO: check XSS vulnerability
 const render = (table, data) => {
+    table.innerHTML = '';
     const userHeader = document.createElement('tr');
     userHeader.className = 'user-header';
 
@@ -15,11 +16,10 @@ const render = (table, data) => {
     usersRowName.innerText = 'Имя';
     usersRowBestTime.innerText = 'Лучшее время';
     usersRowBestCount.innerText = 'Всего заездов';
-
-    table.appendChild(userHeader);
     userHeader.appendChild(usersRowName);
     userHeader.appendChild(usersRowBestTime);
     userHeader.appendChild(usersRowBestCount);
+    table.appendChild(userHeader);
 
     data.forEach(user => {
         const userHeader = document.createElement('tr');
@@ -33,7 +33,7 @@ const render = (table, data) => {
         const usersRowBestCount = document.createElement('td');
         usersRowBestCount.className = 'users-row-best-count';
 
-        usersRowName.innerText = `${user.firstname} ${user.lastname})`;
+        usersRowName.innerText = `${user.firstname} ${user.lastname}`;
         usersRowBestTime.innerText = `${user.time}`;
         usersRowBestCount.innerText = `${user.count}`;
 

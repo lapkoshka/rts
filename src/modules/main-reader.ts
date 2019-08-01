@@ -19,7 +19,7 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
         // dispatcher.sendEvent('onMainReaderTag', tag);
     });
 
-    mainReader.startListen();
+    // mainReader.startListen();
 };
 
 export default init;

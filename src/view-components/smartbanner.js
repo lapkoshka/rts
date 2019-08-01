@@ -1,25 +1,52 @@
+const setStatus = (block, status) => {
+    const target = block.querySelector('.smartbanner-reader-status');
+    [
+        'smartbanner-reader-wait',
+        'smartbanner-reader-ok',
+        'smartbanner-reader-error',
+        'smartbanner-reader-disabled',
+    ].forEach(className => target.classList.remove(className));
+    target.classList.add(`smartbanner-reader-${status}`);
+};
+
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
+    const portableReader = rootElement.querySelector('.smartbanner-portablereader');
+    const mainReader = rootElement.querySelector('.smartbanner-mainreader');
+
+    const portableReaderButton = portableReader.querySelector('button');
+    const mainReaderButton = mainReader.querySelector('button');
+
+    portableReaderButton.addEventListener('click', () => {
+        sendRendererEvent('portableReaderTriggerClick');
+    });
+
+    mainReaderButton.addEventListener('click', () => {
+       sendRendererEvent('mainReaderTriggerClick');
+    });
+
     onRendererEvent('onPortableReaderConnectingStart', _ => {
-        console.log('onPortableReaderConnectingStart');
+        setStatus(portableReader, 'wait');
     });
 
     onRendererEvent('onPortableReaderConnected', _ => {
-        console.log('onPortableReaderConnected');
+        setStatus(portableReader, 'ok');
     });
 
     onRendererEvent('onPortableReaderConnectingFailed', (_, message) => {
-        console.log('onPortableReaderConnectingFailed', message);
+        // TODO: show error text
+        setStatus(portableReader, 'error');
     });
 
     onRendererEvent('onMainReaderConnectingStart', _ => {
-        console.log('onMainReaderConnectingStart');
+        setStatus(mainReader, 'wait');
     });
 
     onRendererEvent('onMainReaderConnected', _ => {
-        console.log('onMainReaderConnected');
+        setStatus(mainReader, 'ok');
     });
 
     onRendererEvent('onMainReaderConnectingFailed', (_, message) => {
-        console.log('onMainReaderConnectingFailed', message);
+        // TODO: show error text
+        setStatus(mainReader, 'error');
     });
 };

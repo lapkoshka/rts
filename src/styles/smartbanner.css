@@ -12,31 +12,30 @@
 
 .smartbanner-reader {
     display: flex;
-    justify-content: space-between;
     min-width: 212px;
 }
 
 .smartbanner-reader-status {
-    margin-left: 4px;
-    font-weight: 600;
-}
-
-.smartbanner-reader-signal {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    margin-left: 8px;
+    margin-right: 16px;
 }
 
-.smartbanner-reader-wait > .smartbanner-reader-signal {
+.smartbanner-reader-disabled {
+    background: black;
+    opacity: .5;
+}
+
+.smartbanner-reader-wait {
     background: yellow;
 }
 
-.smartbanner-reader-ok > .smartbanner-reader-signal {
+.smartbanner-reader-ok {
     background: green;
 }
 
-.smartbanner-reader-error > .smartbanner-reader-signal {
+.smartbanner-reader-error {
     background: red;
 }
 

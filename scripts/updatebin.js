@@ -8,16 +8,16 @@ const copy = (src, dist, files) => {
     fs.createReadStream(src + filename)
       .pipe(fs.createWriteStream(dist + filename));
   });
-}
+};
 
 copy(PREADER_BIN, './bin/', [
   'Basic.dll',
   'UHFReader09CSharp.dll',
-  'portablereader.exe'
+  'portablereader.exe',
 ]);
 
 copy(MREADER_BIN, './bin/', [
   'dmdll.dll',
   'UHFReader288.dll',
-  'MainReaderAdapter.exe'
+  'MainReaderAdapter.exe',
 ]);
