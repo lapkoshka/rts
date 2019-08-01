@@ -24,8 +24,8 @@ const rootDispatcher: RootDispatcher = {
 };
 
 // TODO: search and kill unclosed process depends on OS
-const mainReader = new MainReader();
-const portableReader = new PortableReader();
+const mainReader = new MainReader('/bin/MainReaderAdapter.exe');
+const portableReader = new PortableReader('/bin/portablereader.exe');
 
 app.on('ready', () => {
   window = new BrowserWindow({width: 1600, height: 800});

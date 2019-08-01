@@ -1,10 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
-import * as EventEmitter from 'events';
 import * as fs from 'fs';
 import { RFIDTag } from '../types';
-
-
-const EXE_FILE_PATH = process.cwd() + '/bin/MainReaderAdapter.exe';
+import BaseReader, { ProtocolMessages } from './base-reader';
 
 const Q_VALUE = {
     _1: '1',
@@ -32,63 +29,33 @@ const SESSION = {
     AUTO: '255',
 };
 
-class MainReader extends EventEmitter {
-    private process: ChildProcess;
-    private isConnected: boolean;
+const M_READER_MSG: ProtocolMessages = {
+    START_LISTEN: '1\r\n',
+};
 
-    constructor() {
-        super();
-        this.process = null;
-        this.isConnected = false;
+class MainReader extends BaseReader {
+    constructor(path: string) {
+        super(path);
+        this.type = 'MAIN_READER';
+        this.PROTOCOL = M_READER_MSG;
     }
 
-    // TODO: base readers class
-    public startListen(): void {
-        this.open().then(() => {
-            // TODO: improve protocol naming
-            // TODO: create enum with messages
-            this.sendMessage('1\r\n');
-        }).catch((msg: string) => {
-            this.emit('connectingFailed', msg);
-            console.log(msg);
-        });
-    }
-
-    // TODO:
-    // public stopListen(): void {
-    //
-    // }
-
-    public kill(): void {
-        if (!this.process) {
-            return;
-        }
-
-        this.process.kill();
-        console.log('Main reader process was killed');
-    }
-
-    public fakeTag(tag: string): void {
-        this.emit('tag', tag || 'FAKE_MAIN_READER_TAG:123456789');
-    }
-
-    private open(): Promise<string> {
+    public open(): Promise<string> {
         this.emit('connectingStart');
-        if (!fs.existsSync(EXE_FILE_PATH)) {
-            const msg = `${EXE_FILE_PATH} not found`;
+        if (!fs.existsSync(this.exeFilePath)) {
+            const msg = `${this.exeFilePath} not found`;
             return Promise.reject(msg);
         }
 
         return new Promise((resolve, reject) => {
             const scantime = '20';
             const args = [Q_VALUE._4, SESSION.AUTO, scantime];
-            this.process = spawn(EXE_FILE_PATH, args);
+            this.process = spawn(this.exeFilePath, args);
             this.process.stdout.on('data', (data: string) => {
                 if (!this.isConnected) {
                     const [status, message] = data.toString().trim().split(':');
 
                     if (status === 'error') {
-                        // TODO: core message to uppercase
                         this.emit('connectingFailed', message);
                         reject(`Connected to main reader failed, message: ${message}`);
                         return;
@@ -121,14 +88,6 @@ class MainReader extends EventEmitter {
                 console.log('Main reader process was closed', code, signal);
             });
         });
-    }
-
-    private sendMessage(message: string): void {
-        if (this.isConnected) {
-            this.process.stdin.write(message);
-        } else {
-            throw new Error('Portable reader does not connected');
-        }
     }
 
     private parseTag(data: string): RFIDTag {

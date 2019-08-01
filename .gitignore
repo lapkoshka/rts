@@ -5,3 +5,5 @@
 /app/storage/*
 dist/
 database/
+core/*/*/bin
+core/*/*/obj

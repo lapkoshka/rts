@@ -19,7 +19,7 @@ namespace MainReaderAdapter
             }
             else
             {
-                Console.WriteLine("error:reader does not found");
+                Console.WriteLine("error:Reader does not found");
             }
         }
 

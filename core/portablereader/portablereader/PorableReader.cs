@@ -52,7 +52,9 @@ namespace portablereader
                     byte[] EPC = new byte[5000];
                     int TotalLen = 0;
                     int CardNum = 0;
-                    int InventoryResponse = ReaderB.StaticClassReaderB.Inventory_G2(ref _comAdr, AdrTID, LenTID, TIDFlag, EPC, ref TotalLen, ref CardNum, _comPortIndex);
+                    int InventoryResponse = ReaderB.StaticClassReaderB
+                        .Inventory_G2(ref _comAdr, AdrTID, LenTID, TIDFlag, EPC, ref TotalLen, ref CardNum, _comPortIndex);
+
                     if (InventoryResponse == 1)
                     {
                         RFIDTag tag = BuildEPCTagFromBytes(TotalLen, EPC);

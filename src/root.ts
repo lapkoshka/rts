@@ -1,3 +1,4 @@
+import BaseReader from './lib/readers/base-reader';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import { User } from './lib/types';
@@ -43,6 +44,15 @@ const waitView = (dispatcher: RootDispatcher): Promise<void> => {
     });
 };
 
+const switchReader = (reader: BaseReader): void => {
+    if (reader.isConnected) {
+        reader.kill();
+        return;
+    }
+
+    reader.startListen();
+};
+
 const root = async (
     mainReader: MainReader,
     portableReader: PortableReader,
@@ -80,11 +90,11 @@ const root = async (
     });
 
     dispatcher.addPageListener('portableReaderTriggerClick', () => {
-        // portableReader.startListen();
+        switchReader(portableReader);
     });
 
     dispatcher.addPageListener('mainReaderTriggerClick', () => {
-        console.log('m click');
+        switchReader(mainReader);
     });
 };
 

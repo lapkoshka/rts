@@ -34,6 +34,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
 
     onRendererEvent('onPortableReaderConnectingFailed', (_, message) => {
         // TODO: show error text
+        console.error(message);
         setStatus(portableReader, 'error');
     });
 
@@ -47,6 +48,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
 
     onRendererEvent('onMainReaderConnectingFailed', (_, message) => {
         // TODO: show error text
+        console.error(message);
         setStatus(mainReader, 'error');
     });
 };
