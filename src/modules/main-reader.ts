@@ -11,7 +11,6 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
     });
 
     mainReader.on('connectingFailed', (message: string) => {
-        console.log('here', message);
         dispatcher.sendEvent('onMainReaderConnectingFailed', message);
     });
 

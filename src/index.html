@@ -92,7 +92,7 @@
      usersComponent(users, windowDispatcher);
      regPopupComponent(regPopup, windowDispatcher);
 
-     const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakeProtableTag', uid);
+     const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakePortableTag', uid);
      const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
 
      document.addEventListener('DOMContentLoaded', () => {

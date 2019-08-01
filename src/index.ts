@@ -3,7 +3,9 @@ import root from './root';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import * as path from 'path';
-import { gracefulShutdown } from "./modules/service";
+import { gracefulShutdown } from './modules/service';
+import { closeDatabase } from './modules/database';
+
 
 export interface RootDispatcher {
   sendEvent: (type: string, data?: any) => void;
@@ -39,16 +41,8 @@ app.on('ready', () => {
   });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-
+gracefulShutdown(app,  () => {
   mainReader.kill();
   portableReader.kill();
+  closeDatabase();
 });
-
-gracefulShutdown(() => {
-  mainReader.kill();
-  portableReader.kill();
-})

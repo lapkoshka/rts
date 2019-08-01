@@ -22,8 +22,9 @@ class PortableReader extends EventEmitter {
     public startListen(): void {
         this.open().then(() => {
             this.sendMessage(P_READER_MSG.START_LISTEN);
-        }).catch((err: any) => {
-            console.log(err);
+        }).catch((msg: string) => {
+            this.emit('connectingFailed', msg);
+            console.log(msg);
         });
     }
 
@@ -48,7 +49,6 @@ class PortableReader extends EventEmitter {
         this.emit('connectingStart');
         if (!fs.existsSync(EXE_FILE_PATH)) {
             const msg = `${EXE_FILE_PATH} not found`;
-            this.emit('connectingFailed', msg);
             return Promise.reject(msg);
         }
 
@@ -79,7 +79,7 @@ class PortableReader extends EventEmitter {
                 }
             });
 
-            // TODO: CATCH ERROR IF READER DISCONNECT
+            // TODO: Catch error if reader disconnected
             this.process.on('close', (code, signal) => {
                 console.log('Portable reader process was closed', code, signal);
             });
