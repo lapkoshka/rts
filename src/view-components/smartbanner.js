@@ -13,8 +13,8 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     const portableReader = rootElement.querySelector('.smartbanner-portablereader');
     const mainReader = rootElement.querySelector('.smartbanner-mainreader');
 
-    const portableReaderButton = portableReader.querySelector('button');
-    const mainReaderButton = mainReader.querySelector('button');
+    const portableReaderButton = portableReader.querySelector('.portab-button');
+    const mainReaderButton = mainReader.querySelector('.main-button');
 
     portableReaderButton.addEventListener('click', () => {
         sendRendererEvent('portableReaderTriggerClick');

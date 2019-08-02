@@ -1,4 +1,3 @@
-// TODO: Press Enter and Escape
 const openPopup = (_, user) => {
     const { firstname, lastname, uid, alreadyRegistred } = user;
 
@@ -20,7 +19,7 @@ const popup = document.querySelector('.reg-fullscreenpopup');
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     onRendererEvent('onPortableReaderTag', openPopup);
 
-    registrationSubmitButton.addEventListener('click', () => {
+    function checkIn() {
         const uid = document.querySelector('.reg-fullscreenpopup-uid').value;
         const firstname = document.querySelector('.reg-fullscreenpopup-firstname').value;
         const lastname = document.querySelector('.reg-fullscreenpopup-lastname').value;
@@ -34,9 +33,19 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
             lastname,
             alreadyRegistred: alreadyRegistred === 'true',
         });
+    }
+
+    registrationSubmitButton.addEventListener('click', () => {
+           checkIn();
     });
 
-    closeRegistrationPopup.addEventListener('click', () => {
+    popup.addEventListener('keyup', e => {
+        if (e.keyCode === 13) {
+            checkIn();
+        }
+    });
+
+    function closePopup() {
         document.querySelector('.reg-fullscreenpopup-uid').value = '';
         document.querySelector('.reg-fullscreenpopup-firstname').value = '';
         document.querySelector('.reg-fullscreenpopup-lastname').value = '';
@@ -44,5 +53,15 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         document.querySelector('.content').classList.remove('main-blur');
 
         sendRendererEvent('onCancelRegistration');
+    };
+
+    closeRegistrationPopup.addEventListener('click', () => {
+        closePopup()
+    });
+
+    popup.addEventListener('keyup', e => {
+        if (e.keyCode === 27) {
+            closePopup();
+        }
     });
 };

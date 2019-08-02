@@ -3,6 +3,11 @@
     src: url('./fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
   }
 
+  @font-face {
+    font-family: 'OpenSans SemiBold';
+    src: url('./fonts/Open_Sans/OpenSans-SemiBold.ttf') format('truetype');
+  }
+
 :root {
     --bg-color: #f2f1f0;
     --color-link: #0074c5;
