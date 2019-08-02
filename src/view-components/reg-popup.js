@@ -1,3 +1,6 @@
+const ENTER_KEY_CODE = 13;
+const ESC_KEY_CODE = 27;
+
 const openPopup = (_, user) => {
     const { firstname, lastname, uid, alreadyRegistred } = user;
 
@@ -12,7 +15,18 @@ const openPopup = (_, user) => {
     document.querySelector('.reg-fullscreenpopup-lastname').value = lastname || '';
 };
 
-const registrationSubmit = () => {
+const closePopup = sendRendererEvent => {
+    document.querySelector('.reg-fullscreenpopup-uid').value = '';
+    document.querySelector('.reg-fullscreenpopup-firstname').value = '';
+    document.querySelector('.reg-fullscreenpopup-lastname').value = '';
+    popup.classList.remove('reg-fullscreenpopup-active');
+    document.querySelector('.content').classList.remove('main-blur');
+
+    sendRendererEvent('onCancelRegistration');
+};
+
+const registrationSubmit = sendRendererEvent => {
+    // TODO: a bug! uid is unique and not changable, should disable this field
     const uid = document.querySelector('.reg-fullscreenpopup-uid').value;
     const firstname = document.querySelector('.reg-fullscreenpopup-firstname').value;
     const lastname = document.querySelector('.reg-fullscreenpopup-lastname').value;
@@ -28,37 +42,29 @@ const registrationSubmit = () => {
     });
 };
 
-const closePopup = () => {
-    document.querySelector('.reg-fullscreenpopup-uid').value = '';
-    document.querySelector('.reg-fullscreenpopup-firstname').value = '';
-    document.querySelector('.reg-fullscreenpopup-lastname').value = '';
-    popup.classList.remove('reg-fullscreenpopup-active');
-    document.querySelector('.content').classList.remove('main-blur');
-
-    sendRendererEvent('onCancelRegistration');
-};
-
 const registrationSubmitButton = document.querySelector('.reg-fullscreenpopup-submit');
 const closeRegistrationPopup = document.querySelector('.reg-fullscreenpopup-close');
 const popup = document.querySelector('.reg-fullscreenpopup');
-const ENTER_KEY_CODE = 13;
-const ESC_KEY_CODE = 27;
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     onRendererEvent('onPortableReaderTag', openPopup);
 
-    registrationSubmitButton.addEventListener('click', registrationSubmit);
-    closeRegistrationPopup.addEventListener('click', closePopup)
+    registrationSubmitButton.addEventListener('click', () => {
+        registrationSubmit(sendRendererEvent);
+    });
+    closeRegistrationPopup.addEventListener('click', () => {
+        closePopup(sendRendererEvent);
+    });
 
     document.addEventListener('keyup', e => {
         if (e.keyCode === ENTER_KEY_CODE) {
-            registrationSubmit();
+            registrationSubmit(sendRendererEvent);
         }
     });
 
     document.addEventListener('keyup', e => {
         if (e.keyCode === ESC_KEY_CODE) {
-            closePopup();
+            closePopup(sendRendererEvent);
         }
     });
 };
