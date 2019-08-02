@@ -4,21 +4,19 @@
     justify-content: space-between;
 }
 
-.main-button, .portab-button
-{
+.smartbanner-mainreader-button, .smarbanner-portablereader-button {
     opacity: .5;
     display: flex;
     justify-content: center;
     cursor: pointer;
 }
 
-.main-button:hover, .portab-button:hover
-{
+.smartbanner-mainreader-button:hover, .smarbanner-portablereader-button:hover {
    opacity: 1;
 }
 
-.main-button {
-    margin-bottom: 10px;
+.smartbanner-mainreader-button {
+    margin-bottom: 16px;
 }
 
 .smartbanner-reader {
