@@ -4,21 +4,21 @@ const render = (table, data) => {
     const userHeader = document.createElement('tr');
     userHeader.className = 'user-header';
 
-    const usersRowName = document.createElement('th');
-    usersRowName.className = 'users-row-name';
+    const titleUsersRowName = document.createElement('th');
+    titleUsersRowName.className = 'title-users-row-name';
 
-    const usersRowBestTime = document.createElement('th');
-    usersRowBestTime.className = 'users-row-best-time';
+    const titleUsersRowBestTime = document.createElement('th');
+    titleUsersRowBestTime.className = 'title-users-row-best-time';
 
-    const usersRowBestCount = document.createElement('th');
-    usersRowBestCount.className = 'users-row-best-count';
+    const titleUsersRowBestCount = document.createElement('th');
+    titleUsersRowBestCount.className = 'title-users-row-best-count';
 
-    usersRowName.innerText = 'Имя';
-    usersRowBestTime.innerText = 'Лучшее время';
-    usersRowBestCount.innerText = 'Всего заездов';
-    userHeader.appendChild(usersRowName);
-    userHeader.appendChild(usersRowBestTime);
-    userHeader.appendChild(usersRowBestCount);
+    titleUsersRowName.innerText = 'Имя';
+    titleUsersRowBestTime.innerText = 'Лучшее время';
+    titleUsersRowBestCount.innerText = 'Всего заездов';
+    userHeader.appendChild(titleUsersRowName);
+    userHeader.appendChild(titleUsersRowBestTime);
+    userHeader.appendChild(titleUsersRowBestCount);
     table.appendChild(userHeader);
 
     data.forEach(user => {

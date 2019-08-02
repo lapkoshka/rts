@@ -1,4 +1,8 @@
 .race {
-    min-width: 512px;
+    min-width: 410px;
     margin-right: 16px;
+}
+
+table {
+    min-width: 150px;
 }

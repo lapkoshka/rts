@@ -1,13 +1,22 @@
 .smartbanner {
+    min-width: 900px;
     display: flex;
     justify-content: space-between;
 }
 
-.smartbanner-readers {
+.smartbanner-mainreader-button, .smarbanner-portablereader-button {
     opacity: .5;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    cursor: pointer;
+}
+
+.smartbanner-mainreader-button:hover, .smarbanner-portablereader-button:hover {
+   opacity: 1;
+}
+
+.smartbanner-mainreader-button {
+    margin-bottom: 16px;
 }
 
 .smartbanner-reader {

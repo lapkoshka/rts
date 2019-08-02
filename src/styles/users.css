@@ -4,16 +4,23 @@
 
 .users > table {
     text-align: left;
+    min-width: 410px;
+}
+
+.title-users-row-name {
+    min-width: 150px;
+    font-family: 'OpenSans SemiBold';
 }
 
 .users-row-name {
-    min-width: 256px;
+    min-width: 150px;
 }
 
-.users-row-best-time {
+.title-users-row-best-count, .title-users-row-best-time {
     text-align: center;
+    font-family: 'OpenSans SemiBold';
 }
 
-.users-row-best-count {
+.users-row-best-time, .users-row-best-count {
     text-align: center;
 }
