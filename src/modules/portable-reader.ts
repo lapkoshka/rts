@@ -16,6 +16,10 @@ const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
         dispatcher.sendEvent('onPortableReaderConnectingFailed', message);
     });
 
+    portableReader.on('disconnected', (message: string) => {
+        dispatcher.sendEvent('onPortableReaderDisconnected', message);
+    });
+
     portableReader.on('tag', async (tag: string) => {
         const user = await getUser(tag);
 

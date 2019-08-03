@@ -14,6 +14,10 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
         dispatcher.sendEvent('onMainReaderConnectingFailed', message);
     });
 
+    mainReader.on('disconnected', (message: string) => {
+        dispatcher.sendEvent('onMainReaderDisconnected', message);
+    });
+
     mainReader.on('tag', (tag: string) => {
         console.log(tag);
         // dispatcher.sendEvent('onMainReaderTag', tag);
