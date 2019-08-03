@@ -9,6 +9,9 @@ const openPopup = (_, user) => {
     popup.dataset.alreadyRegistred = alreadyRegistred;
 
     document.querySelector('.content').classList.add('main-blur');
+    const uidField = document.querySelector('.reg-fullscreenpopup-uid');
+    uidField.value = uid;
+    uidField.readOnly = true;
     document.querySelector('.reg-fullscreenpopup-uid').value = uid;
     document.querySelector('.reg-fullscreenpopup-firstname').value = firstname || '';
     document.querySelector('.reg-fullscreenpopup-firstname').focus();
@@ -26,7 +29,6 @@ const closePopup = sendRendererEvent => {
 };
 
 const registrationSubmit = sendRendererEvent => {
-    // TODO: a bug! uid is unique and not changable, should disable this field
     const uid = document.querySelector('.reg-fullscreenpopup-uid').value;
     const firstname = document.querySelector('.reg-fullscreenpopup-firstname').value;
     const lastname = document.querySelector('.reg-fullscreenpopup-lastname').value;

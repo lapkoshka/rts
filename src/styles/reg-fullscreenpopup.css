@@ -28,6 +28,10 @@
     margin-bottom: 8px;
 }
 
+.reg-fullscreenpopup-uid {
+    background-color: #e3e3e3;
+}
+
 .reg-fullscreenpopup-close {
     font-size: 13px;
     color: #ffffff;
