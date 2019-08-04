@@ -4,7 +4,7 @@ import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import * as path from 'path';
 import { gracefulShutdown } from './modules/service';
-import { closeDatabase } from './modules/database';
+import { closeDatabase } from './modules/database/database';
 
 
 export interface RootDispatcher {

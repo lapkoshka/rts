@@ -5,7 +5,7 @@ import { User } from './lib/types';
 import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
 import { RootDispatcher } from './index';
-import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database';
+import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database/database';
 
 const updateView = async (dispatcher: RootDispatcher) => {
     let users = [];
@@ -62,6 +62,7 @@ const root = async (
 
     updateView(dispatcher);
     initPortableReaderEvents(portableReader, dispatcher);
+    switchReader(portableReader);
     initMainReaderEvents(mainReader, dispatcher);
 
     dispatcher.addPageListener('fakePortableTag', (evt: any, tag: string) => {

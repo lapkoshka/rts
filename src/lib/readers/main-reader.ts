@@ -94,13 +94,11 @@ class MainReader extends BaseReader {
         });
     }
 
-    private parseTag(data: string): RFIDTag {
-        const [_, uid, rssi] = data.replace('\r', '').split(':');
-        // TODO: rssi is undefined
-        return {
-            uid,
-            rssi,
-        };
+    // TODO: replace string to RFIDTag, add rssi and other props of main reader tag
+    private parseTag(data: string): string {
+        const [_, uid, rssi] = data.replace('\r', '')
+            .split(':');
+        return uid;
     }
 }
 
