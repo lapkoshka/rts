@@ -12,6 +12,5 @@ export const getUsersMap = (users: User[]) => {
         return map;
     }, new Map());
     usersMapCache.set(users, usersMap);
-    console.log('return after calculating');
     return usersMap;
 };
