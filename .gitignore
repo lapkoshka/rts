@@ -4,6 +4,6 @@
 /bin
 /app/storage/*
 dist/
-database/
+/database/
 core/*/*/bin
 core/*/*/obj
