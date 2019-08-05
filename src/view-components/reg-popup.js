@@ -50,9 +50,9 @@ const popup = document.querySelector('.reg-fullscreenpopup');
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     onRendererEvent('onPortableReaderTag', openPopup);
-    const popupPortableReaderButton = rootElement.querySelector('.popup-portablereader-button');
+    const switchPortableReaderButton = rootElement.querySelector('.popup-portablereader-button');
 
-    popupPortableReaderButton.addEventListener('click', () => {
+    switchPortableReaderButton.addEventListener('click', () => {
         sendRendererEvent('portableReaderTriggerClick');
     });
 
