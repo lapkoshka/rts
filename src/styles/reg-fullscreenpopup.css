@@ -48,3 +48,18 @@
 .reg-fullscreenpopup-close:active {
     opacity: .8;
 }
+
+.reg-fullscreenpopup-submit {
+    margin-bottom: 16px;
+}
+
+.popup-portablereader-button {
+    opacity: .5;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.popup-portablereader-button:hover {
+    opacity: 1;
+ }
