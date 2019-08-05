@@ -3,6 +3,7 @@ import MainReader from '../lib/readers/main-reader';
 import { RFIDTag } from '../lib/types';
 import { getUsersMap } from '../lib/users';
 import { getUsers } from './database/database';
+import { handleUserInRace } from './race';
 
 const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
     mainReader.on('connectingStart', () => {
@@ -31,6 +32,8 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
         if (!user) {
             return;
         }
+
+        handleUserInRace(user);
     });
 };
 

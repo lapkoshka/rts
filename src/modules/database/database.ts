@@ -9,7 +9,6 @@ const DATABASE_CATALOG = './database';
 const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
 const connectDatabase = (): Database => {
-    // Create database folder isn't exists
     if (!fs.existsSync(DATABASE_CATALOG)) {
       fs.mkdirSync(DATABASE_CATALOG);
     }
@@ -24,7 +23,6 @@ const connectDatabase = (): Database => {
 };
 
 const prepareDatabase = (db: Database): void => {
-  // something wrong with res and err types
   db.run(`create table if not exists users(
       uid not null unique,
       firstname text,
@@ -52,7 +50,7 @@ const database = connectDatabase();
 // TODO: need return promise from prepare?
 prepareDatabase(database);
 
-export const closeDatabase = () => {
+export const closeDatabase = (): void => {
   if (database) {
       database.close((err: Error) => {
           if (err) {
@@ -83,12 +81,12 @@ export const getUser = async (uid: string): Promise<User> => {
 };
 
 export const getUsers = async (): Promise<User[]> => {
-
     const query = 'select * from users';
     const cache = databaseCache[query];
     if (cache) {
         return Promise.resolve(cache);
     }
+
     return new Promise((resolve, reject) => {
         database.all(query, (err: any, rows: any) => {
           if (err) {
