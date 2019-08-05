@@ -70,3 +70,43 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         }
     });
 };
+
+const setStatus = (block, status) => {
+    const target = block.querySelector('.popup-reader-status');
+    [
+        'popup-reader-wait',
+        'popup-reader-ok',
+        'popup-reader-error',
+        'popup-reader-disabled',
+    ].forEach(className => target.classList.remove(className));
+    target.classList.add(`popup-reader-${status}`);
+};
+
+module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
+    const portableReader = rootElement.querySelector('.popup-portablereader');
+
+    const popupPortableReaderButton = portableReader.querySelector('.popup-portablereader-button');
+
+    popupPortableReaderButton.addEventListener('click', () => {
+        sendRendererEvent('portableReaderTriggerClick');
+    });
+
+    onRendererEvent('onPortableReaderConnectingStart', _ => {
+        setStatus(portableReader, 'wait');
+    });
+
+    onRendererEvent('onPortableReaderConnected', _ => {
+        setStatus(portableReader, 'ok');
+    });
+
+    onRendererEvent('onPortableReaderConnectingFailed', (_, message) => {
+        // TODO: show error text
+        console.error(message);
+        setStatus(portableReader, 'error');
+    });
+
+    onRendererEvent('onPortableReaderDisconnected', (_, message) => {
+        setStatus(portableReader, 'error');
+    });
+};
+

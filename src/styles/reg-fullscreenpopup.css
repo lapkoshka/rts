@@ -48,3 +48,47 @@
 .reg-fullscreenpopup-close:active {
     opacity: .8;
 }
+
+.reg-fullscreenpopup-submit {
+    margin-bottom: 16px;
+}
+
+.popup-portablereader-button {
+    opacity: .5;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.popup-portablereader-button:hover {
+    opacity: 1;
+ }
+
+ .popup-reader {
+    display: flex;
+    min-width: 212px;
+}
+
+.popup-reader-status {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.popup-reader-disabled {
+    background: black;
+    opacity: .5;
+}
+
+.popup-reader-wait {
+    background: yellow;
+}
+
+.popup-reader-ok {
+    background: green;
+}
+
+.popup-reader-error {
+    background: red;
+}
