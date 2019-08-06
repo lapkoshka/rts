@@ -62,7 +62,6 @@ const root = async (
 
     updateView(dispatcher);
     initPortableReaderEvents(portableReader, dispatcher);
-    switchReader(portableReader);
     initMainReaderEvents(mainReader, dispatcher);
 
     dispatcher.addPageListener('fakePortableTag', (evt: any, tag: string) => {
@@ -95,6 +94,7 @@ const root = async (
     });
 
     dispatcher.addPageListener('mainReaderTriggerClick', () => {
+        // TODO: popup alert if any active races
         switchReader(mainReader);
     });
 };

@@ -155,3 +155,15 @@ export const insertUser = (user: User): Promise<string> => {
     });
   });
 };
+
+export const insertRace = (uid: string, timestamp: number): void => {
+    // TODO: autoinrement doesnt work
+    database.run(`insert into race (
+        uid,
+        time
+    ) values (?, ?)`, [uid, timestamp], (err: any) => {
+        if (err) {
+            throw Error (err);
+        }
+    });
+};

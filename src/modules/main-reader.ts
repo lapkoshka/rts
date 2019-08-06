@@ -33,7 +33,7 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
             return;
         }
 
-        handleUserInRace(user);
+        handleUserInRace(user, dispatcher);
     });
 };
 
