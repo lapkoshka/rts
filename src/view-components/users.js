@@ -34,7 +34,7 @@ const render = (table, data) => {
         usersRowBestCount.className = 'users-row-best-count';
 
         usersRowName.innerText = `${user.firstname} ${user.lastname}`;
-        usersRowBestTime.innerText = `${user.time}`;
+        usersRowBestTime.innerText = `${user.besttime}`;
         usersRowBestCount.innerText = `${user.count}`;
 
         table.appendChild(userHeader);

@@ -2,6 +2,7 @@ import { RootDispatcher } from '../index';
 import { User } from '../lib/types';
 import { toHumanReadableTime } from '../lib/users';
 import { insertRace } from './database/database';
+import { updateUsersView } from './users';
 
 interface StartLabel {
     user: User;
@@ -16,7 +17,7 @@ interface CurrentRaces {
 
 const currentRaces: CurrentRaces = {};
 
-const updateView = (dispatcher: RootDispatcher) =>{
+const updateRaceView = (dispatcher: RootDispatcher) =>{
     dispatcher.sendEvent('onCurrentRacesUpdate', currentRaces);
 };
 
@@ -29,10 +30,10 @@ export const handleUserInRace = (user: User, dispatcher: RootDispatcher) => {
             canMarkedAsFinished: false,
         };
 
-        updateView(dispatcher);
+        updateRaceView(dispatcher);
         setTimeout(() => {
             currentRaces[user.uid].canMarkedAsFinished = true;
-            updateView(dispatcher);
+            updateRaceView(dispatcher);
         }, 10000);
     }
 
@@ -41,11 +42,12 @@ export const handleUserInRace = (user: User, dispatcher: RootDispatcher) => {
         const total = new Date().valueOf() - race.start;
         race.total = toHumanReadableTime(total);
         insertRace(user.uid, total);
-        updateView(dispatcher);
+        updateRaceView(dispatcher);
 
         setTimeout(() => {
             delete currentRaces[user.uid];
-            updateView(dispatcher);
+            updateRaceView(dispatcher);
+            updateUsersView(dispatcher);
         }, 5000);
     }
 };

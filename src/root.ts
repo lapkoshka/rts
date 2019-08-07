@@ -6,32 +6,7 @@ import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
 import { RootDispatcher } from './index';
 import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database/database';
-
-const updateView = async (dispatcher: RootDispatcher) => {
-    let users = [];
-
-    try {
-        users = await getUsers();
-    } catch (err) {
-        throw Error(err);
-    }
-
-    const data = [];
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i];
-        const races = await getUserRaces(user.uid);
-        // TODO:
-        // sort by best time
-        data.push({
-            firstname: user.firstname,
-            lastname: user.lastname,
-            time: races[0] ? races[0].time : '-',
-            count: races.length,
-        });
-    }
-
-    dispatcher.sendEvent('onUsersDataUpdate', data);
-};
+import { updateUsersView } from './modules/users';
 
 const submitNewUser = (user: User): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
@@ -60,7 +35,7 @@ const root = async (
 ) => {
     await waitView(dispatcher);
 
-    updateView(dispatcher);
+    updateUsersView(dispatcher);
     initPortableReaderEvents(portableReader, dispatcher);
     initMainReaderEvents(mainReader, dispatcher);
 
@@ -80,7 +55,7 @@ const root = async (
     dispatcher.addPageListener('onRegistrationSubmit', (evt: any, user: User) => {
         submitNewUser(user).then((message: string) => {
             console.log(message);
-            updateView(dispatcher);
+            updateUsersView(dispatcher);
         })
         .catch((err: string) => {
             throw Error(err);

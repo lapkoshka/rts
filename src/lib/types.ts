@@ -6,8 +6,10 @@ export interface User {
 }
 
 export interface Race {
-    uid: string;
-    time: number;
+    firstname: string;
+    lastname: string;
+    besttime: number;
+    count: number;
 }
 
 export interface RFIDTag {

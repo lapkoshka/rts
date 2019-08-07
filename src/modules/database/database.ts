@@ -99,11 +99,29 @@ export const getUsers = async (): Promise<User[]> => {
     });
 };
 
-export const getUserRaces = (tag: string): Promise<Race[]> => {
-  return new Promise((resolve, reject) => {
-    // inner join
-    resolve([]);
-  });
+// TODO: add cache for this table
+export const getUserRaces = (): Promise<Race[]> => {
+    const query = `
+        select u.firstname as "firstname",
+        u.lastname  as "lastname",
+        count(r.uid) as "count",
+        min(r.time) as "besttime"
+        from race r
+        join users u
+        on r.uid = u.uid
+        group by r.uid
+        order by besttime asc
+    `;
+
+    return new Promise((resolve, reject) => {
+      database.all(query, (err: any, rows: any) => {
+          if (err) {
+              throw Error(err);
+          }
+
+          resolve(rows);
+      });
+    });
 };
 
 export const updateUser = (user: User): Promise<string> => {
