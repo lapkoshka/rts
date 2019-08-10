@@ -1,4 +1,8 @@
 .rssi {
     display: none;
-    height: 350px;
+}
+
+.rssi-close {
+    font-size: 13px;
+    cursor: pointer;
 }

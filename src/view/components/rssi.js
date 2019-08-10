@@ -1,33 +1,76 @@
+const randHex = len => {
+    const maxlen = 6;
+    const min = Math.pow(16, Math.min(len, maxlen) - 1);
+    const max = Math.pow(16, Math.min(len, maxlen)) - 1;
+    const n = Math.floor( Math.random() * (max - min + 1) ) + min;
+    let r = n.toString(16);
+    while (r.length < len) {
+        r = r + randHex(len - maxlen);
+    }
+
+    return r;
+};
+
+const findTraceIndex = (uid, traces) => {
+    for (let i = 0; i < traces.length; i++) {
+        if (traces[i].uid === uid) {
+            return i;
+        }
+    }
+
+    return -1;
+};
+
+const CONTAINER_ID = 'histogram';
+
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
-    // const rssiLevelElement = rootElement.querySelector('.rssi-level');
+    // TODO: bad name
+    const watchingUids = [];
+    const traceMap = new Map();
 
-    let counter = 0;
-    const time = [];
-    const y = [];
-    const trace = {
-        type: 'scatter',
-        x: time,
-        y: y,
-        mode: 'lines',
-        name: 'Red',
-        line: {
-            color: 'rgb(219, 64, 82)',
-            width: 3,
-        },
-    };
-
-    onRendererEvent('onMainReaderTag', (_, {uid, rssi}) => {
-        if (window.lastTag !== uid) {
+    onRendererEvent('onUsernameClick', (_, { uid, username }) => {
+        // TODO: do not delete trace from watchingUids
+        const index = findTraceIndex(uid, watchingUids);
+        if (index !== -1) {
+            watchingUids.splice(index, 1);
+            traceMap.delete(uid);
             return;
         }
 
-        counter++;
-        time.push(counter);
-        y.push(rssi);
-        if (y.length > 300) {
-            time.shift();
-            y.shift();
+        const trace = {
+            uid,
+            type: 'scatter',
+            x: [],
+            y: [],
+            mode: 'lines',
+            name: username,
+            line: {
+                color: randHex(6),
+                width: 3,
+            },
+        };
+        watchingUids.push(trace);
+        traceMap.set(uid, trace);
+
+        if (watchingUids.length === 1) {
+            rootElement.style.display = 'block';
+            Plotly.newPlot(CONTAINER_ID, watchingUids);
         }
-        Plotly.newPlot('histogram', [trace]);
+    });
+
+    onRendererEvent('onMainReaderTag', (_, {uid, rssi}) => {
+        const trace = traceMap.get(uid);
+        if (trace) {
+            trace.x.push(performance.now() / 1000);
+            trace.y.push(rssi);
+
+            // TODO: Plotly.react
+            Plotly.newPlot(CONTAINER_ID, watchingUids);
+        }
+    });
+
+    rootElement.querySelector('.rssi-close').addEventListener('click', evt => {
+        traceMap.clear();
+        rootElement.style.display = 'none';
     });
 };

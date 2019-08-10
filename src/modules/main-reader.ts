@@ -22,10 +22,6 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
     mainReader.on('onIpReceived', (ip: string) => {
         dispatcher.sendEvent('onMainReaderIpReceived', ip);
     });
-
-    mainReader.on('tag', (tag: RFIDTag) => {
-        dispatcher.sendEvent('onMainReaderTag', tag);
-    });
 };
 
 export default init;

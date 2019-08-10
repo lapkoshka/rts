@@ -102,8 +102,9 @@ export const getUsers = async (): Promise<User[]> => {
 // TODO: add cache for this table
 export const getUserRaces = (): Promise<Race[]> => {
     const query = `
-        select u.firstname as "firstname",
-        u.lastname  as "lastname",
+        select u.uid as "uid",
+        u.firstname as "firstname",
+        u.lastname as "lastname",
         count(r.uid) as "count",
         min(r.time) as "besttime"
         from race r
