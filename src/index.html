@@ -56,6 +56,11 @@
           </div>
         </main>
 
+        <footer id="rssi">
+            <div class="rssi-level"></div>
+            <div id="histogram"></div>
+        </footer>
+
         <div id="regPopup" class="reg-fullscreenpopup">
           <div class="reg-fullscreenpopup-content">
             <div class="reg-fullscreenpopup-close">Закрыть</div>
@@ -69,6 +74,7 @@
         </div>
       </div>
     </body>
+    <script src="./lib/plotly-latest.min.js"></script>
     <script>
      const { ipcRenderer } = require('electron');
 
@@ -76,6 +82,7 @@
      const raceComponents = require('./view-components/race');
      const usersComponent = require('./view-components/users');
      const regPopupComponent = require('./view-components/reg-popup');
+     const rssiComponent = require('./view-components/rssi');
 
      const windowDispatcher = {
       sendRendererEvent(type, data) {
@@ -90,6 +97,7 @@
      raceComponents(race, windowDispatcher);
      usersComponent(users, windowDispatcher);
      regPopupComponent(regPopup, windowDispatcher);
+     rssiComponent(rssi, windowDispatcher);
 
      const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakePortableTag', uid);
      const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);

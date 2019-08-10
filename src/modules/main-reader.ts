@@ -1,9 +1,6 @@
 import { RootDispatcher } from '../index';
 import MainReader from '../lib/readers/main-reader';
 import { RFIDTag } from '../lib/types';
-import { getUsersMap } from '../lib/users';
-import { getUsers } from './database/database';
-import { handleUserInRace } from './race';
 
 const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
     mainReader.on('connectingStart', () => {
@@ -26,14 +23,8 @@ const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
         dispatcher.sendEvent('onMainReaderIpReceived', ip);
     });
 
-    mainReader.on('tag', async (tag: string) => {
-        const users = getUsersMap(await getUsers());
-        const user = users.get(tag);
-        if (!user) {
-            return;
-        }
-
-        handleUserInRace(user, dispatcher);
+    mainReader.on('tag', (tag: RFIDTag) => {
+        dispatcher.sendEvent('onMainReaderTag', tag);
     });
 };
 

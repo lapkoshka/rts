@@ -1,7 +1,8 @@
 import { RootDispatcher } from '../index';
-import { User } from '../lib/types';
-import { toHumanReadableTime } from '../lib/users';
-import { insertRace } from './database/database';
+import MainReader from '../lib/readers/main-reader';
+import { RFIDTag, User } from '../lib/types';
+import { getUsersMap, toHumanReadableTime } from '../lib/users';
+import { getUsers, insertRace } from './database/database';
 import { updateUsersView } from './users';
 
 interface StartLabel {
@@ -21,7 +22,7 @@ const updateRaceView = (dispatcher: RootDispatcher) =>{
     dispatcher.sendEvent('onCurrentRacesUpdate', currentRaces);
 };
 
-export const handleUserInRace = (user: User, dispatcher: RootDispatcher) => {
+const handleUserInRace = (user: User, dispatcher: RootDispatcher) => {
     const race = currentRaces[user.uid];
     if (!race) {
         currentRaces[user.uid] = {
@@ -51,3 +52,17 @@ export const handleUserInRace = (user: User, dispatcher: RootDispatcher) => {
         }, 5000);
     }
 };
+
+const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
+    mainReader.on('tag', async (tag: RFIDTag) => {
+        const users = getUsersMap(await getUsers());
+        const user = users.get(tag.uid);
+        if (!user) {
+            return;
+        }
+
+        handleUserInRace(user, dispatcher);
+    });
+};
+
+export default init;

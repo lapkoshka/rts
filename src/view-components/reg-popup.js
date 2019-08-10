@@ -3,6 +3,7 @@ const ESC_KEY_CODE = 27;
 
 const openPopup = (_, user) => {
     const { firstname, lastname, uid, alreadyRegistred } = user;
+    window.lastTag = uid;
 
     const popup = document.querySelector('.reg-fullscreenpopup');
     popup.classList.add('reg-fullscreenpopup-active');
