@@ -1,8 +1,0 @@
-main {
-    display: flex;
-    height: 100%;
-}
-
-.content-blur {
-    filter: blur(2px);
-}

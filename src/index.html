@@ -1,109 +1,108 @@
 <!DOCTYPE html>
-  <html>
+<html>
     <head>
-      <meta charset="UTF-8">
-      <title>RTS</title>
-      <link rel="stylesheet" type="text/css" href="./styles/base.css">
-      <link rel="stylesheet" type="text/css" href="./styles/ui.css">
+        <meta charset="UTF-8">
+        <title>RTS</title>
+        <link rel="stylesheet" type="text/css" href="./styles/base.css">
+        <link rel="stylesheet" type="text/css" href="./styles/ui.css">
 
-      <link rel="stylesheet" type="text/css" href="./styles/smartbanner.css">
-      <link rel="stylesheet" type="text/css" href="./styles/race.css">
-      <link rel="stylesheet" type="text/css" href="./styles/users.css">
+        <link rel="stylesheet" type="text/css" href="./styles/smartbanner.css">
+        <link rel="stylesheet" type="text/css" href="./styles/race.css">
+        <link rel="stylesheet" type="text/css" href="./styles/users.css">
+        <link rel="stylesheet" type="text/css" href="./styles/rssi.css">
 
-      <link rel="stylesheet" type="text/css" href="./styles/reg-fullscreenpopup.css">
+        <link rel="stylesheet" type="text/css" href="./styles/reg-fullscreenpopup.css">
     </head>
     <body>
-      <div class="content">
+        <div class="content">
 
-        <header id="smarbanner" class="smartbanner ui-block">
-          <div class="smartbanner-readers">
+            <div id="smarbanner" class="smartbanner ui-block">
+                <div class="smartbanner-readers">
+                    <div class="smartbanner-reader smartbanner-mainreader">
+                        <div class="smartbanner-mainreader-button">
+                            <div class="smartbanner-reader-status smartbanner-reader-disabled"></div>
+                            <span class="smartbanner-reader-title">Главный считыватель</span>
+                        </div>
+                    </div>
 
-            <div class="smartbanner-reader smartbanner-mainreader">
-              <div class="smartbanner-mainreader-button">
-                <div class="smartbanner-reader-status smartbanner-reader-disabled"></div>
-              <span class="smartbanner-reader-title">Главный считыватель</span>
-              </div>
+                    <div class="smartbanner-reader smartbanner-portablereader">
+                        <div class="smarbanner-portablereader-button">
+                            <div class="smartbanner-reader-status smartbanner-reader-disabled"></div>
+                            <span class="smartbanner-reader-title">Портативный считыватель</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="smartbanner-reader smartbanner-portablereader">
-              <div class="smarbanner-portablereader-button">
-                <div class="smartbanner-reader-status smartbanner-reader-disabled"></div>
-              <span class="smartbanner-reader-title">Портативный считыватель</span>
-              </div>
+            <div id="rssi" class="ui-block">
+                <div class="rssi-level"></div>
+                <div id="histogram"></div>
             </div>
 
-          </div>
-        </header>
+            <main>
+                <div id="race" class="race ui-block">
+                    <table>
+                        <tr class="race-header">
+                            <th class="race-row-name">Имя</th>
+                            <th class="row-row-time">Время</th>
+                        </tr>
+                    </table>
+                </div>
 
-        <main>
-          <div id="race" class="race ui-block">
-            <table>
-                <tr class="race-header">
-                    <th class="race-row-name">Имя</th>
-                    <th class="row-row-time">Время</th>
-                </tr>
-            </table>
-          </div>
+                <div id="users" class="users ui-block">
+                    <table>
+                       <tr class="users-header">
+                          <th class="users-row-name">Имя</th>
+                          <th class="users-row-best-time">Лучшее время</th>
+                          <th class="users-row-best-count">Всего заездов</th>
+                       </tr>
+                    </table>
+                </div>
+            </main>
 
-          <div id="users" class="users ui-block">
-              <table>
-                  <tr class="users-header">
-                      <th class="users-row-name">Имя</th>
-                      <th class="users-row-best-time">Лучшее время</th>
-                      <th class="users-row-best-count">Всего заездов</th>
-                  </tr>
-              </table>
-          </div>
-        </main>
-
-        <footer id="rssi">
-            <div class="rssi-level"></div>
-            <div id="histogram"></div>
-        </footer>
-
-        <div id="regPopup" class="reg-fullscreenpopup">
-          <div class="reg-fullscreenpopup-content">
-            <div class="reg-fullscreenpopup-close">Закрыть</div>
-            <h2>Новый участник</h2>
-            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-uid ui-input" type="text" placeholder="Tag">
-            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-firstname ui-input" type="text" placeholder="Имя">
-            <input class="reg-fullscreenpopup-field reg-fullscreenpopup-lastname ui-input" type="text" placeholder="Фамилия">
-            <button class="reg-fullscreenpopup-submit ui-button">Добавить</button>
-            <span class="popup-portablereader-button">Вкл\Откл портативный считыватель</span>
-          </div>
+            <div id="regPopup" class="reg-fullscreenpopup">
+                <div class="reg-fullscreenpopup-content">
+                    <div class="reg-fullscreenpopup-close">Закрыть</div>
+                    <h2>Новый участник</h2>
+                    <input class="reg-fullscreenpopup-field reg-fullscreenpopup-uid ui-input" type="text" placeholder="Tag">
+                    <input class="reg-fullscreenpopup-field reg-fullscreenpopup-firstname ui-input" type="text" placeholder="Имя">
+                    <input class="reg-fullscreenpopup-field reg-fullscreenpopup-lastname ui-input" type="text" placeholder="Фамилия">
+                    <button class="reg-fullscreenpopup-submit ui-button">Добавить</button>
+                    <span class="popup-portablereader-button">Вкл\Откл портативный считыватель</span>
+                </div>
+            </div>
         </div>
-      </div>
     </body>
-    <script src="./lib/plotly-latest.min.js"></script>
+    <script src="./view/lib/plotly-latest.min.js"></script>
     <script>
-     const { ipcRenderer } = require('electron');
+         const { ipcRenderer } = require('electron');
 
-     const smartbannerComponent = require('./view-components/smartbanner');
-     const raceComponents = require('./view-components/race');
-     const usersComponent = require('./view-components/users');
-     const regPopupComponent = require('./view-components/reg-popup');
-     const rssiComponent = require('./view-components/rssi');
+         const smartbannerComponent = require('./view/components/smartbanner');
+         const raceComponents = require('./view/components/race');
+         const usersComponent = require('./view/components/users');
+         const regPopupComponent = require('./view/components/reg-popup');
+         const rssiComponent = require('./view/components/rssi');
 
-     const windowDispatcher = {
-      sendRendererEvent(type, data) {
-        ipcRenderer.send(type, data);
-      },
-      onRendererEvent(type, listener) {
-        ipcRenderer.on(type, listener)
-      }
-     };
+         const windowDispatcher = {
+          sendRendererEvent(type, data) {
+            ipcRenderer.send(type, data);
+          },
+          onRendererEvent(type, listener) {
+            ipcRenderer.on(type, listener)
+          }
+         };
 
-     smartbannerComponent(smarbanner, windowDispatcher);
-     raceComponents(race, windowDispatcher);
-     usersComponent(users, windowDispatcher);
-     regPopupComponent(regPopup, windowDispatcher);
-     rssiComponent(rssi, windowDispatcher);
+         smartbannerComponent(smarbanner, windowDispatcher);
+         raceComponents(race, windowDispatcher);
+         usersComponent(users, windowDispatcher);
+         regPopupComponent(regPopup, windowDispatcher);
+         rssiComponent(rssi, windowDispatcher);
 
-     const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakePortableTag', uid);
-     const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
+         const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakePortableTag', uid);
+         const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
 
-     document.addEventListener('DOMContentLoaded', () => {
-        windowDispatcher.sendRendererEvent('onViewReady');
-     });
+         document.addEventListener('DOMContentLoaded', () => {
+            windowDispatcher.sendRendererEvent('onViewReady');
+         });
     </script>
-  </html>
+</html>
