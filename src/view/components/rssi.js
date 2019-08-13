@@ -11,6 +11,15 @@ const randHex = len => {
     return r;
 };
 
+const cutLongTraces = traceMap => {
+    traceMap.forEach(trace => [trace.x, trace.y]
+        .forEach(t => {
+            if (t.length > 50) {
+                t.shift();
+            }
+        }));
+};
+
 const findTraceIndex = (uid, traces) => {
     for (let i = 0; i < traces.length; i++) {
         if (traces[i].uid === uid) {
@@ -38,7 +47,9 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         }
 
         const trace = {
-            uid,
+            // hack, fake property
+            uid, // < you suck
+            // bad programming
             type: 'scatter',
             x: [],
             y: [],
@@ -63,6 +74,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         if (trace) {
             trace.x.push(performance.now() / 1000);
             trace.y.push(rssi);
+            cutLongTraces(traceMap);
 
             // TODO: Plotly.react
             Plotly.newPlot(CONTAINER_ID, watchingUids);
