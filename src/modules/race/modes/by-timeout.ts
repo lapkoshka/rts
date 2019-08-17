@@ -1,9 +1,9 @@
-import { RootDispatcher } from '../index';
-import MainReader from '../lib/readers/main-reader';
-import { RFIDTag, User } from '../lib/types';
-import { getUsersMap, toHumanReadableTime } from '../lib/users';
-import { getUsers, insertRace } from './database/database';
-import { updateUsersView } from './users';
+import { RootDispatcher } from '../../../index';
+import MainReader from '../../../lib/readers/main-reader';
+import { RFIDTag, User } from '../../../lib/types';
+import { getUsersMap, toHumanReadableTime } from '../../../lib/users';
+import { getUsers, insertRace } from './../../database/database';
+import { updateUsersView } from './../../users';
 
 interface StartLabel {
     user: User;
