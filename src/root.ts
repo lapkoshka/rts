@@ -4,7 +4,7 @@ import PortableReader from './lib/readers/portable-reader';
 import { User } from './lib/types';
 import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
-import initRaceEvents from './modules/race';
+import initRaceEvents from './modules/race/race';
 import initRSSIEvents from './modules/rssi';
 import { RootDispatcher } from './index';
 import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database/database';
@@ -36,6 +36,7 @@ const root = async (
     dispatcher: RootDispatcher,
 ) => {
     await waitView(dispatcher);
+    switchReader(mainReader);
 
     updateUsersView(dispatcher);
     initPortableReaderEvents(portableReader, dispatcher);
@@ -73,7 +74,6 @@ const root = async (
     });
 
     dispatcher.addPageListener('mainReaderTriggerClick', () => {
-        // TODO: popup alert if any active races
         switchReader(mainReader);
     });
 };

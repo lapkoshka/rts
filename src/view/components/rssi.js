@@ -33,21 +33,19 @@ const findTraceIndex = (uid, traces) => {
 const CONTAINER_ID = 'histogram';
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
-    // TODO: bad name
-    const watchingUids = [];
+    const traces = [];
     const traceMap = new Map();
 
     onRendererEvent('onUsernameClick', (_, { uid, username }) => {
-        // TODO: do not delete trace from watchingUids
-        const index = findTraceIndex(uid, watchingUids);
+        const index = findTraceIndex(uid, traces);
         if (index !== -1) {
-            watchingUids.splice(index, 1);
+            traces.splice(index, 1);
             traceMap.delete(uid);
             return;
         }
 
         const trace = {
-            // hack, fake property
+            // hack, fake property for findTraceIndex
             uid, // < you suck
             // bad programming
             type: 'scatter',
@@ -60,12 +58,12 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
                 width: 3,
             },
         };
-        watchingUids.push(trace);
+        traces.push(trace);
         traceMap.set(uid, trace);
 
-        if (watchingUids.length === 1) {
+        if (traces.length === 1) {
             rootElement.style.display = 'block';
-            Plotly.newPlot(CONTAINER_ID, watchingUids);
+            Plotly.newPlot(CONTAINER_ID, traces);
         }
     });
 
@@ -76,8 +74,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
             trace.y.push(rssi);
             cutLongTraces(traceMap);
 
-            // TODO: Plotly.react
-            Plotly.newPlot(CONTAINER_ID, watchingUids);
+            Plotly.newPlot(CONTAINER_ID, traces);
         }
     });
 

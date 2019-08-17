@@ -99,7 +99,6 @@ export const getUsers = async (): Promise<User[]> => {
     });
 };
 
-// TODO: add cache for this table
 export const getUserRaces = (): Promise<Race[]> => {
     const query = `
         select u.uid as "uid",
@@ -139,7 +138,6 @@ export const updateUser = (user: User): Promise<string> => {
       uid,
     ], (err: any, row: any) => {
         if (err) {
-            // TODO: logger for exceptions with gui on client
             reject(`Something went wrong with user update: ${err.message}`);
         }
 
@@ -165,7 +163,6 @@ export const insertUser = (user: User): Promise<string> => {
       const isUserAlreadyExist = err &&
           err.message === 'SQLITE_CONSTRAINT: UNIQUE constraint failed: users.uid';
       if (isUserAlreadyExist) {
-          // TODO: logger for exceptions with gui on client
           reject(`User with uid ${uid} already exist`);
       }
 
@@ -176,7 +173,6 @@ export const insertUser = (user: User): Promise<string> => {
 };
 
 export const insertRace = (uid: string, timestamp: number): void => {
-    // TODO: autoinrement doesnt work
     database.run(`insert into race (
         uid,
         time

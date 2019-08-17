@@ -1,4 +1,3 @@
-// TODO: check XSS vulnerability
 const render = (table, data) => {
     table.innerHTML = '';
     const userHeader = document.createElement('tr');

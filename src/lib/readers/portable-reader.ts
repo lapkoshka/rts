@@ -54,7 +54,6 @@ class PortableReader extends BaseReader {
                 }
             });
 
-            // TODO: Catch error if reader disconnected
             this.process.on('close', (code, signal) => {
                 console.log('Portable reader process was closed', code, signal);
             });

@@ -5,3 +5,5 @@ import initTimeoutMode from './modes/by-timeout';
 const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
     initTimeoutMode(mainReader, dispatcher);
 };
+
+export default init;

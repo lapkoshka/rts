@@ -80,14 +80,12 @@ class MainReader extends BaseReader {
                         if (status === 'tag') {
                             this.emit('tag', this.parseTag(line));
                         } else {
-                            // TODO: logger
                             throw new Error('Something went wrong with tag, line: ' + line);
                         }
                     });
                 }
             });
 
-            // TODO: Catch error if reader disconnected
             this.process.on('close', (code, signal) => {
                 console.log('Main reader process was closed', code, signal);
             });

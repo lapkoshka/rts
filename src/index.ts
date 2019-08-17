@@ -23,7 +23,6 @@ const rootDispatcher: RootDispatcher = {
     },
 };
 
-// TODO: search and kill unclosed process depends on OS
 const mainReader = new MainReader('/bin/MainReaderAdapter.exe');
 const portableReader = new PortableReader('/bin/portablereader.exe');
 
