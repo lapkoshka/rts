@@ -34,6 +34,7 @@ const CONTAINER_ID = 'histogram';
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     // TODO: bad name
+
     const watchingUids = [];
     const traceMap = new Map();
 
