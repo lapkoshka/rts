@@ -51,8 +51,11 @@ abstract class BaseReader extends EventEmitter {
         console.log(`${this.type} process was killed`);
     }
 
-    public fakeTag(tag: string): void {
-        this.emit('tag', tag || `FAKE_${this.type}_TAG:123456789`);
+    public fakeTag(uid: string, rssi?: number): void {
+        this.emit('tag', {
+            uid: uid || `FAKE_${this.type}_TAG:123456789`,
+            rssi: rssi === undefined ? 999 : rssi,
+        });
     }
 }
 export default BaseReader;

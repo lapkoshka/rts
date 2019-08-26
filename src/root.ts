@@ -7,7 +7,7 @@ import initMainReaderEvents from './modules/main-reader';
 import initRaceEvents from './modules/race/race';
 import initRSSIEvents from './modules/rssi';
 import { RootDispatcher } from './index';
-import { updateUser, insertUser, getUsers, getUserRaces } from './modules/database/database';
+import { updateUser, insertUser } from './modules/database/database';
 import { updateUsersView } from './modules/users';
 
 const submitNewUser = (user: User): Promise<string> =>
@@ -36,7 +36,7 @@ const root = async (
     dispatcher: RootDispatcher,
 ) => {
     await waitView(dispatcher);
-    switchReader(mainReader);
+    // switchReader(mainReader);
 
     updateUsersView(dispatcher);
     initPortableReaderEvents(portableReader, dispatcher);

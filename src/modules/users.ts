@@ -1,6 +1,6 @@
 import { RootDispatcher } from '../index';
-import { toHumanReadableTime } from '../lib/users';
-import { getUserRaces, getUsers } from './database/database';
+import { toHumanReadableTime } from '../lib/functions';
+import { getUserRaces } from './database/database';
 import { Race } from '../lib/types';
 
 export const updateUsersView = async (dispatcher: RootDispatcher) => {

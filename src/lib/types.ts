@@ -1,3 +1,5 @@
+// i dont like placement of this module
+
 export interface User {
     uid: string;
     firstname?: string;
@@ -14,5 +16,5 @@ export interface Race {
 
 export interface RFIDTag {
     uid: string;
-    rssi?: string;
+    rssi: number;
 }

@@ -1,3 +1,4 @@
+// TODO: replace innerHTML to DOM API
 const render = (table, races) => {
     table.innerHTML = '';
     table.innerHTML += `
@@ -7,7 +8,7 @@ const render = (table, races) => {
         </tr>`;
 
     Object.keys(races).forEach(key => {
-        const { user, total, canMarkedAsFinished } = races[key];
+        const { user, total } = races[key];
         table.innerHTML += `
            <tr class="race-header">
               <td class="race-row-name">${user.firstname} ${user.lastname}</td>

@@ -1,7 +1,6 @@
 import { verbose, Database } from 'sqlite3';
 import { User, Race } from '../../lib/types';
 import * as fs from 'fs';
-import { getUsersMap } from '../../lib/users';
 import { databaseCache } from './cache';
 
 const sqlite3 = verbose();
@@ -137,13 +136,13 @@ export const updateUser = (user: User): Promise<string> => {
       lastname,
       uid,
     ], (err: any, row: any) => {
-        if (err) {
-            reject(`Something went wrong with user update: ${err.message}`);
-        }
+            if (err) {
+                reject(`Something went wrong with user update: ${err.message}`);
+            }
 
-        databaseCache.clear();
-        resolve('User updated');
-    });
+            databaseCache.clear();
+            resolve('User updated');
+        });
     });
 };
 

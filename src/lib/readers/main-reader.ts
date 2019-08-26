@@ -1,4 +1,4 @@
-import { ChildProcess, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { RFIDTag } from '../types';
 import BaseReader, { ProtocolMessages } from './base-reader';
@@ -78,6 +78,7 @@ class MainReader extends BaseReader {
                         const status = line.split(':')[0];
 
                         if (status === 'tag') {
+                            // TODO: enums for events
                             this.emit('tag', this.parseTag(line));
                         } else {
                             throw new Error('Something went wrong with tag, line: ' + line);
@@ -93,11 +94,11 @@ class MainReader extends BaseReader {
     }
 
     private parseTag(data: string): RFIDTag {
-        const [_, uid, rssi] = data.replace('\r', '')
+        const values = data.replace('\r', '')
             .split(':');
         return {
-            uid,
-            rssi,
+            uid: values[1],
+            rssi: parseInt(values[2], 10),
         };
     }
 }

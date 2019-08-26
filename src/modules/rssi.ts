@@ -1,6 +1,5 @@
 import { RootDispatcher } from '../index';
 import MainReader from '../lib/readers/main-reader';
-import PortableReader from '../lib/readers/portable-reader';
 import { RFIDTag } from '../lib/types';
 
 const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {

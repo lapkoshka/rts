@@ -1,4 +1,4 @@
-import { ChildProcess, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import * as fs from 'fs';
 import BaseReader, { ProtocolMessages } from './base-reader';
 

@@ -1,6 +1,4 @@
-import Signals = NodeJS.Signals;
 import App = Electron.App;
-import { app } from 'electron';
 
 export const gracefulShutdown = (application: App, callback: Function): void => {
   // Close application over press X on window
