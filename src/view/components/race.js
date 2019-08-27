@@ -1,20 +1,51 @@
-// TODO: replace innerHTML to DOM API
 const render = (table, races) => {
-    table.innerHTML = '';
-    table.innerHTML += `
-        <tr class="race-header">
-            <th class="race-row-name">Имя</th>
-            <th class="row-row-time">Время</th>
-        </tr>`;
+    clearElement(table);
+    const header = createHeader();
+    table.appendChild(header);
 
     Object.keys(races).forEach(key => {
         const { user, total } = races[key];
-        table.innerHTML += `
-           <tr class="race-header">
-              <td class="race-row-name">${user.firstname} ${user.lastname}</td>
-              <td class="row-row-time">${total || '-'}</td>
-           </tr>`;
+        table.appendChild(createRow(user, total));
     });
+};
+
+const clearElement = element => Array.from(
+    element.children.forEach(e => e.remove()));
+
+const createHeader = () => {
+    const tr = document.createElement('tr');
+    tr.classList.add('race-header');
+
+    const name = document.createElement('th');
+    name.classList.add('race-row-name');
+    name.innerText = 'Имя';
+
+    const time = document.createElement('th');
+    name.classList.add('race-row-time');
+    time.innerText = 'Время';
+
+    tr.appendChild(name);
+    tr.appendChild(time);
+
+    return tr;
+};
+
+const createRow = (user, total) => {
+    const tr = document.createElement('tr');
+    tr.classList.add('race-header');
+
+    const name = document.createElement('td');
+    name.classList.add('race-row-name');
+    name.innerText = `${user.firstname} ${user.lastname}`;
+
+    const time = document.createElement('td');
+    time.classList.add('race-row-time');
+    time.innerText = `${total || '-'}`;
+
+    tr.appendChild(name);
+    tr.appendChild(time);
+
+    return tr;
 };
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
