@@ -36,11 +36,20 @@ class RSSITrace extends EventEmitter {
         this.points.push(new RSSITracePoint(tag));
     }
 
+    public getSortedPoints(): RSSITracePoint[] {
+    /* We have to point out that array already sorted by timestamp. */
+        return this.points
+            .map((x: RSSITracePoint) => x)
+            .sort((a: RSSITracePoint, b: RSSITracePoint) =>
+                b.tag.rssi - a.tag.rssi);
+    }
+
     public getHighestPoint(): RSSITracePoint {
-        // TODO: if has a several points with equal rssi value, then take by timestamp
-        // TODO: bug, sort mutate source array
-        return this.points.sort((a: RSSITracePoint, b: RSSITracePoint) =>
-            b.tag.rssi - a.tag.rssi)[0];
+        /**
+         * If serveral points have equal rssi values,
+         * then the earliest point is the highest one.
+         */
+        return this.getSortedPoints()[0];
     }
 
     private openTraceFilling(autoclose: boolean = true): void {
