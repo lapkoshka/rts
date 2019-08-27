@@ -1,14 +1,14 @@
-import { RootDispatcher } from '../index';
 import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
 import MainReader from '../lib/readers/main-reader';
+import rootDispatcher from './dispatcher/root-dispatcher';
 
-const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
+const init = (mainReader: MainReader) => {
     mainReader.on(READER_EVENT.TAG, (tag: RFIDTag) => {
-        dispatcher.sendEvent('onMainReaderTag', tag);
+        rootDispatcher.sendEvent('onMainReaderTag', tag);
     });
 
-    dispatcher.addPageListener('onUsernameClick', (_: any, user: object) => {
-        dispatcher.sendEvent('onUsernameClick', user);
+    rootDispatcher.addPageListener('onUsernameClick', (_: any, user: object) => {
+        rootDispatcher.sendEvent('onUsernameClick', user);
     });
 };
 

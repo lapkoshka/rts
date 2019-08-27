@@ -1,4 +1,3 @@
-import { RootDispatcher } from '../../index';
 import MainReader, { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import RSSITracePoint from '../../lib/rssi-trace-point';
 import { UserData } from '../database/database';
@@ -41,7 +40,7 @@ const createLap = (tag: RFIDTag, user: UserData): Lap => {
     return lap;
 };
 
-const handleRecievedTag = async (tag: RFIDTag, _: RootDispatcher): Promise<void> => {
+const handleRecievedTag = async (tag: RFIDTag): Promise<void> => {
     const lap = await getLap(tag);
     if (!lap) {
         return;
@@ -50,9 +49,9 @@ const handleRecievedTag = async (tag: RFIDTag, _: RootDispatcher): Promise<void>
     lap.appendTag(tag);
 };
 
-const init = (mainReader: MainReader, dispatcher: RootDispatcher): void => {
+const init = (mainReader: MainReader): void => {
     mainReader.on(READER_EVENT.TAG, (tag: RFIDTag) => {
-        handleRecievedTag(tag, dispatcher);
+        handleRecievedTag(tag);
     });
 };
 
