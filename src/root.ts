@@ -1,16 +1,15 @@
 import BaseReader from './lib/readers/base-reader';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
-import { User } from './lib/types';
 import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
 import initRaceEvents from './modules/race/race';
 import initRSSIEvents from './modules/rssi';
 import { RootDispatcher } from './index';
-import { updateUser, insertUser } from './modules/database/database';
+import { updateUser, insertUser, UserData } from './modules/database/database';
 import { updateUsersView } from './modules/users';
 
-const submitNewUser = (user: User): Promise<string> =>
+const submitNewUser = (user: UserData): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
 
 const waitView = (dispatcher: RootDispatcher): Promise<void> => {
@@ -44,11 +43,11 @@ const root = async (
     initRaceEvents(mainReader, dispatcher);
     initRSSIEvents(mainReader, dispatcher);
 
-    dispatcher.addPageListener('fakePortableTag', (evt: any, tag: string) => {
+    dispatcher.addPageListener('fakePortableTag', (_: any, tag: string) => {
         portableReader.fakeTag(tag);
     });
 
-    dispatcher.addPageListener('fakeMainTag', (evt: any, tag: string) => {
+    dispatcher.addPageListener('fakeMainTag', (_: any, tag: string) => {
         mainReader.fakeTag(tag);
     });
 
@@ -57,7 +56,7 @@ const root = async (
         portableReader.continue();
     });
 
-    dispatcher.addPageListener('onRegistrationSubmit', (evt: any, user: User) => {
+    dispatcher.addPageListener('onRegistrationSubmit', (_: any, user: UserData) => {
         submitNewUser(user).then((message: string) => {
             console.log(message);
             updateUsersView(dispatcher);

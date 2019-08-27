@@ -1,5 +1,5 @@
+import { RFIDTag } from './readers/base-reader';
 import RSSITracePoint from './rssi-trace-point';
-import { RFIDTag } from './types';
 import * as EventEmitter from 'events';
 
 export const TRACE_FILLING_TIMEOUT = 3000;

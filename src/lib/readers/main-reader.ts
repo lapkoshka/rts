@@ -1,7 +1,6 @@
 import { spawn } from 'child_process';
 import * as fs from 'fs';
-import { RFIDTag } from '../types';
-import BaseReader, { ProtocolMessages, READER_EVENT } from './base-reader';
+import BaseReader, { ProtocolMessages, READER_EVENT, RFIDTag } from './base-reader';
 
 const Q_VALUE = {
     _1: '1',

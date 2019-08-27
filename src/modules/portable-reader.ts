@@ -1,6 +1,6 @@
 import PortableReader, { READER_EVENT } from '../lib/readers/base-reader';
 import { RootDispatcher } from '../index';
-import { getUser } from './database/database';
+import { getUser, UserData } from './database/database';
 
 
 const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
@@ -21,9 +21,11 @@ const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
     });
 
     portableReader.on(READER_EVENT.TAG, async (tag: string) => {
-        const user = await getUser(tag);
-
-        dispatcher.sendEvent('onPortableReaderTag', user);
+        getUser(tag).then((user: UserData) => {
+            dispatcher.sendEvent('onPortableReaderTag', user);
+        }).catch((err: Error) => {
+           throw err;
+        });
     });
 };
 

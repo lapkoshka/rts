@@ -39,7 +39,6 @@ describe('rssi-trace methods', () => {
             const trace = new RSSITrace(tag);
             trace.on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
                 const points = trace.getSortedPoints();
-                console.log(points);
                 expect(tracePoint).toBe(points[0]);
                 expect(tracePoint.timestamp).toBeLessThanOrEqual(points[1].timestamp);
                 done();

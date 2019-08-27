@@ -1,14 +1,15 @@
 import { RootDispatcher } from '../index';
 import { toHumanReadableTime } from '../lib/functions';
-import { getUserRaces } from './database/database';
-import { Race } from '../lib/types';
+import { getUserRaces, RaceData } from './database/database';
 
 export const updateUsersView = async (dispatcher: RootDispatcher) => {
-    const data = await getUserRaces();
-    dispatcher.sendEvent('onUsersDataUpdate', data.map((row: Race) => {
-        return {
-            ...row,
-            besttime: toHumanReadableTime(row.besttime),
-        };
-    }));
+    getUserRaces().then((raceData: RaceData[]) => {
+        const updateData = raceData.map((row: RaceData) => ({
+                ...row,
+                besttime: toHumanReadableTime(row.besttime),
+        }));
+        dispatcher.sendEvent('onUsersDataUpdate', updateData);
+    }).catch((err: Error) => {
+        throw err;
+    });
 };

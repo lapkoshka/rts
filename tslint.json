@@ -2,7 +2,6 @@
   "extends": "tslint:recommended",
   "rules": {
     "indent": [true, "spaces", 4],
-    "no-unused-variable": {"severity": "error"},
     "max-line-length": {
       "options": [
         100

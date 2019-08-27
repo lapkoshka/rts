@@ -1,4 +1,4 @@
-import { RFIDTag } from './types';
+import { RFIDTag } from './readers/base-reader';
 
 class RSSITracePoint {
     public tag: RFIDTag;

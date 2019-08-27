@@ -1,6 +1,11 @@
 import * as EventEmitter from 'events';
 import { ChildProcess } from 'child_process';
 
+export interface RFIDTag {
+    uid: string;
+    rssi: number;
+}
+
 export interface ProtocolMessages {
     START_LISTEN: string;
     CONTINUE_LISTEN?: string;

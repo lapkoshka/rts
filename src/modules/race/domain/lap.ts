@@ -1,16 +1,17 @@
+import { RFIDTag } from '../../../lib/readers/base-reader';
 import RSSITrace, { RSSITraceEvent } from '../../../lib/rssi-trace';
 import RSSITracePoint from '../../../lib/rssi-trace-point';
-import { RFIDTag, User } from '../../../lib/types';
+import { UserData } from '../../database/database';
 
 class Lap {
     public onStart: (tracePoint: RSSITracePoint) => void;
-    public onFinish: (tracePoint: RSSITracePoint, time: number) => void;
-    // private user: User;
+    public onFinish: (user: UserData, time: number) => void;
+    private user: UserData;
     private startTrace: RSSITrace;
     private finishTrace: RSSITrace;
 
-    constructor(user: User) {
-        // this.user = user;
+    constructor(user: UserData) {
+        this.user = user;
         this.startTrace = undefined;
         this.finishTrace = undefined;
         this.onStart = undefined;
@@ -33,13 +34,12 @@ class Lap {
             return;
         }
 
-        // TODO: Dont' repeat yourself
         if (!this.finishTrace) {
             this.finishTrace = new RSSITrace(tag);
             this.finishTrace
-                .on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
+                .on(RSSITraceEvent.ON_COMPLETE, () => {
                     if (this.onFinish) {
-                        this.onFinish(tracePoint, this.getTotalTime());
+                        this.onFinish(this.user, this.getTotalTime());
                     }
                 });
         }

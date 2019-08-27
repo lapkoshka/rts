@@ -1,7 +1,20 @@
 import { verbose, Database } from 'sqlite3';
-import { User, Race } from '../../lib/types';
 import * as fs from 'fs';
 import { databaseCache } from './cache';
+
+export interface UserData {
+    uid: string;
+    firstname?: string;
+    lastname?: string;
+    alreadyRegistred: boolean;
+}
+
+export interface RaceData {
+    firstname: string;
+    lastname: string;
+    besttime: number;
+    count: number;
+}
 
 const sqlite3 = verbose();
 const DATABASE_CATALOG = './database';
@@ -59,15 +72,19 @@ export const closeDatabase = (): void => {
   }
 };
 
-export const getUser = async (uid: string): Promise<User> => {
+export const getUser = async (uid: string): Promise<UserData> => {
   const query = `select * from users where uid = (?)`;
-  const user: User = {
+  const user: UserData = {
       uid,
       alreadyRegistred: false,
   };
 
   return new Promise((resolve, reject) => {
       database.get(query, [uid], (err, row) => {
+          if (err) {
+              reject(err);
+          }
+
           if (!row) {
               resolve(user);
               return;
@@ -79,7 +96,7 @@ export const getUser = async (uid: string): Promise<User> => {
   });
 };
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<UserData[]> => {
     const query = 'select * from users';
     const cache = databaseCache[query];
     if (cache) {
@@ -98,7 +115,7 @@ export const getUsers = async (): Promise<User[]> => {
     });
 };
 
-export const getUserRaces = (): Promise<Race[]> => {
+export const getUserRaces = (): Promise<RaceData[]> => {
     const query = `
         select u.uid as "uid",
         u.firstname as "firstname",
@@ -115,7 +132,7 @@ export const getUserRaces = (): Promise<Race[]> => {
     return new Promise((resolve, reject) => {
       database.all(query, (err: any, rows: any) => {
           if (err) {
-              throw Error(err);
+              reject(err);
           }
 
           resolve(rows);
@@ -123,7 +140,7 @@ export const getUserRaces = (): Promise<Race[]> => {
     });
 };
 
-export const updateUser = (user: User): Promise<string> => {
+export const updateUser = (user: UserData): Promise<string> => {
     const { uid, firstname, lastname } = user;
     return new Promise((resolve, reject) => {
     database.run(`update users
@@ -135,7 +152,7 @@ export const updateUser = (user: User): Promise<string> => {
       firstname,
       lastname,
       uid,
-    ], (err: any, row: any) => {
+    ], (err: any) => {
             if (err) {
                 reject(`Something went wrong with user update: ${err.message}`);
             }
@@ -146,7 +163,7 @@ export const updateUser = (user: User): Promise<string> => {
     });
 };
 
-export const insertUser = (user: User): Promise<string> => {
+export const insertUser = (user: UserData): Promise<string> => {
   const { uid, firstname, lastname } = user;
   return new Promise((resolve, reject) => {
     database.run(`insert into users(

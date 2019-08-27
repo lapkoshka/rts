@@ -2,13 +2,13 @@ import { sleep } from '../../../lib/functions';
 import { createFakeTag } from '../../../lib/readers/main-reader.spec';
 import { TRACE_FILLING_TIMEOUT } from '../../../lib/rssi-trace';
 import RSSITracePoint from '../../../lib/rssi-trace-point';
-import { User } from '../../../lib/types';
+import { UserData } from '../../database/database';
 import Lap from './lap';
 
 jest.setTimeout(10000);
 
 describe('lap', () => {
-    const fakeUser: User = {
+    const fakeUser: UserData = {
         uid: '123',
         alreadyRegistred: true,
     };
@@ -28,11 +28,8 @@ describe('lap', () => {
 
     it('should be called onFinish', async (done) => {
         const lap = new Lap(fakeUser);
-        lap.onFinish = (tracePoint: RSSITracePoint) => {
-            expect(tracePoint.tag).toEqual({
-                uid: '123',
-                rssi: 321,
-            });
+        lap.onFinish = (user: UserData) => {
+            expect(user).toBe(fakeUser);
             done();
         };
 
@@ -45,7 +42,8 @@ describe('lap', () => {
 
     it('should be approx 5s between both timestamps', async (done) => {
         const lap = new Lap(fakeUser);
-        lap.onFinish = (tracePoint: RSSITracePoint, time: number) => {
+        lap.onFinish = (user: UserData, time: number) => {
+            expect(user).toBe(fakeUser);
             expect(time).toBeGreaterThanOrEqual(4999);
             expect(time).toBeLessThanOrEqual(5001);
             done();
