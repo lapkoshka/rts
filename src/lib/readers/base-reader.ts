@@ -6,6 +6,15 @@ export interface ProtocolMessages {
     CONTINUE_LISTEN?: string;
 }
 
+export enum READER_EVENT {
+    TAG = 'tag',
+    ON_IP_RECIEVED = 'onIpReceived',
+    CONNECTING_FAILED = 'connectingFailed',
+    CONNECTING_START = 'connectingStart',
+    CONNECTED = 'connected',
+    DISCONNECT = 'disconnect',
+}
+
 abstract class BaseReader extends EventEmitter {
     public type: string;
     public PROTOCOL: ProtocolMessages;

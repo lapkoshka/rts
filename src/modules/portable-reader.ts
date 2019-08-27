@@ -1,26 +1,26 @@
-import PortableReader from '../lib/readers/portable-reader';
+import PortableReader, { READER_EVENT } from '../lib/readers/base-reader';
 import { RootDispatcher } from '../index';
 import { getUser } from './database/database';
 
 
 const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
-    portableReader.on('connectingStart', () => {
+    portableReader.on(READER_EVENT.CONNECTING_START, () => {
         dispatcher.sendEvent('onPortableReaderConnectingStart');
     });
 
-    portableReader.on('connected', () => {
+    portableReader.on(READER_EVENT.CONNECTED, () => {
         dispatcher.sendEvent('onPortableReaderConnected');
     });
 
-    portableReader.on('connectingFailed', (message: string) => {
+    portableReader.on(READER_EVENT.CONNECTING_FAILED, (message: string) => {
         dispatcher.sendEvent('onPortableReaderConnectingFailed', message);
     });
 
-    portableReader.on('disconnected', (message: string) => {
+    portableReader.on(READER_EVENT.DISCONNECT, (message: string) => {
         dispatcher.sendEvent('onPortableReaderDisconnected', message);
     });
 
-    portableReader.on('tag', async (tag: string) => {
+    portableReader.on(READER_EVENT.TAG, async (tag: string) => {
         const user = await getUser(tag);
 
         dispatcher.sendEvent('onPortableReaderTag', user);

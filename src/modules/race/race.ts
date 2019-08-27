@@ -1,5 +1,5 @@
 import { RootDispatcher } from '../../index';
-import MainReader from '../../lib/readers/main-reader';
+import MainReader, { READER_EVENT } from '../../lib/readers/base-reader';
 import RSSITracePoint from '../../lib/rssi-trace-point';
 import { RFIDTag, User } from '../../lib/types';
 import { getUserByTag } from '../../lib/users';
@@ -51,7 +51,7 @@ const handleRecievedTag = async (tag: RFIDTag, dispatcher: RootDispatcher): Prom
 };
 
 const init = (mainReader: MainReader, dispatcher: RootDispatcher): void => {
-    mainReader.on('tag', (tag: RFIDTag) => {
+    mainReader.on(READER_EVENT.TAG, (tag: RFIDTag) => {
         handleRecievedTag(tag, dispatcher);
     });
 };

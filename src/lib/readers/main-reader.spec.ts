@@ -1,4 +1,5 @@
 import { RFIDTag } from '../types';
+import { READER_EVENT } from './base-reader';
 import MainReader from './main-reader';
 
 export const createFakeTag = (uid: string, rssi: number): RFIDTag => ({ uid, rssi });
@@ -10,7 +11,7 @@ describe('base-reader methods', () => {
     });
 
     it('should be dispatch fake tag', (done) => {
-        mainReader.on('tag', (tag) => {
+        mainReader.on(READER_EVENT.TAG, (tag) => {
             expect(tag).toEqual({
                 uid: '123',
                 rssi: 999,
