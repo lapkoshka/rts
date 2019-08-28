@@ -2,7 +2,7 @@ import { RFIDTag } from '../../../lib/readers/base-reader';
 import { getUsers, UserData } from '../../database/database';
 
 const usersMapCache = new Map();
-export const getUsersMap = (users: UserData[]) => {
+const getUsersMap = (users: UserData[]) => {
     const cached = usersMapCache.get(users);
     if (cached) {
         return cached;

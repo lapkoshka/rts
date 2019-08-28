@@ -1,6 +1,6 @@
 import MainReader, { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import RSSITracePoint from '../../lib/rssi-trace-point';
 import { UserData } from '../database/database';
+import rootDispatcher from '../dispatcher/root-dispatcher';
 import Lap from './domain/lap';
 import { getUserByTag } from './domain/users';
 
@@ -9,15 +9,7 @@ interface Laps {
 }
 const currentLaps: Laps = {};
 
-const onLapStartHandler = async (_: RSSITracePoint) => {
-    // const user = await getUserByTag(tracePoint.tag);
-};
-
-const onLapFinishHandler = async (_: UserData, __: number) => {
-    // const user = await getUserByTag(tracePoint.tag);
-};
-
-export const getLap = async (tag: RFIDTag): Promise<Lap> => {
+const getLap = async (tag: RFIDTag): Promise<Lap> => {
     const lap = currentLaps[tag.uid];
     if (lap) {
         return lap;
@@ -31,10 +23,18 @@ export const getLap = async (tag: RFIDTag): Promise<Lap> => {
     return createLap(tag, user);
 };
 
+const onLapEventHandler = (lap: Lap) =>
+    rootDispatcher.sendEvent('onUserInfo', lap);
+
 const createLap = (tag: RFIDTag, user: UserData): Lap => {
     const lap = new Lap(user);
-    lap.onStart = onLapStartHandler;
-    lap.onFinish = onLapFinishHandler;
+    // TODO:
+    lap.on('lapEvent', evt => {
+
+    });
+
+    lap.onStart = onLapEventHandler;
+    lap.onFinish = onLapEventHandler;
     currentLaps[tag.uid] = lap;
 
     return lap;

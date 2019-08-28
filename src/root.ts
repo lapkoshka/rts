@@ -12,14 +12,6 @@ import { updateUsersView } from './modules/users';
 const submitNewUser = (user: UserData): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
 
-const waitView = (): Promise<void> => {
-    return new Promise((resolve) => {
-        rootDispatcher.addPageListener('onViewReady', () => {
-            resolve();
-        });
-    });
-};
-
 const switchReader = (reader: BaseReader): void => {
     if (reader.isConnected) {
         reader.kill();
@@ -27,6 +19,14 @@ const switchReader = (reader: BaseReader): void => {
     }
 
     reader.startListen();
+};
+
+const waitView = (): Promise<void> => {
+    return new Promise((resolve) => {
+        rootDispatcher.addPageListener('onViewReady', () => {
+            resolve();
+        });
+    });
 };
 
 const root = async (mainReader: MainReader, portableReader: PortableReader) => {

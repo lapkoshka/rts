@@ -1,14 +1,13 @@
 import { RFIDTag } from '../../../lib/readers/base-reader';
 import RSSITrace, { RSSITraceEvent } from '../../../lib/rssi-trace';
-import RSSITracePoint from '../../../lib/rssi-trace-point';
 import { UserData } from '../../database/database';
 
 class Lap {
-    public onStart: (tracePoint: RSSITracePoint) => void;
-    public onFinish: (user: UserData, time: number) => void;
-    private user: UserData;
-    private startTrace: RSSITrace;
-    private finishTrace: RSSITrace;
+    public onStart: (lap: this) => void;
+    public onFinish: (lap: this) => void;
+    public user: UserData;
+    public startTrace: RSSITrace;
+    public finishTrace: RSSITrace;
 
     constructor(user: UserData) {
         this.user = user;
@@ -22,9 +21,9 @@ class Lap {
         if (!this.startTrace) {
             this.startTrace = new RSSITrace(tag);
             this.startTrace
-                .on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
+                .on(RSSITraceEvent.ON_COMPLETE, () => {
                     if (this.onStart) {
-                        this.onStart(tracePoint);
+                        this.onStart(this);
                     }
                 });
         }
@@ -39,7 +38,7 @@ class Lap {
             this.finishTrace
                 .on(RSSITraceEvent.ON_COMPLETE, () => {
                     if (this.onFinish) {
-                        this.onFinish(this.user, this.getTotalTime());
+                        this.onFinish(this);
                     }
                 });
         }
@@ -50,7 +49,7 @@ class Lap {
         }
     }
 
-    private getTotalTime(): number {
+    public getTotalTime(): number {
         const highestStart = this.startTrace.getHighestPoint();
         const highestFinish = this.finishTrace.getHighestPoint();
         return highestFinish.timestamp - highestStart.timestamp;

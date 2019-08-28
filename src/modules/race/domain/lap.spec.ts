@@ -1,7 +1,6 @@
 import { sleep } from '../../../lib/functions';
 import { createFakeTag } from '../../../lib/readers/main-reader.spec';
 import { TRACE_FILLING_TIMEOUT } from '../../../lib/rssi-trace';
-import RSSITracePoint from '../../../lib/rssi-trace-point';
 import { UserData } from '../../database/database';
 import Lap from './lap';
 
@@ -15,8 +14,8 @@ describe('lap', () => {
 
     it('should be called onStart', (done) => {
         const lap = new Lap(fakeUser);
-        lap.onStart = (tracePoint: RSSITracePoint) => {
-            expect(tracePoint.tag).toEqual({
+        lap.onStart = (lap: Lap) => {
+            expect(lap.startTrace.getHighestPoint().tag).toEqual({
                 uid: '123',
                 rssi: 999,
             });
@@ -28,8 +27,8 @@ describe('lap', () => {
 
     it('should be called onFinish', async (done) => {
         const lap = new Lap(fakeUser);
-        lap.onFinish = (user: UserData) => {
-            expect(user).toBe(fakeUser);
+        lap.onFinish = (lap: Lap) => {
+            expect(lap.user).toBe(fakeUser);
             done();
         };
 
@@ -42,10 +41,10 @@ describe('lap', () => {
 
     it('should be approx 5s between both timestamps', async (done) => {
         const lap = new Lap(fakeUser);
-        lap.onFinish = (user: UserData, time: number) => {
-            expect(user).toBe(fakeUser);
-            expect(time).toBeGreaterThanOrEqual(4999);
-            expect(time).toBeLessThanOrEqual(5001);
+        lap.onFinish = (lap: Lap) => {
+            expect(lap.user).toBe(fakeUser);
+            expect(lap.getTotalTime()).toBeGreaterThanOrEqual(4999);
+            expect(lap.getTotalTime()).toBeLessThanOrEqual(5001);
             done();
         };
 
