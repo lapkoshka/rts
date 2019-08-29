@@ -3,6 +3,10 @@
     margin-right: 16px;
 }
 
+.race-header-bold {
+    font-weight: 600;
+}
+
 table {
     min-width: 150px;
 }

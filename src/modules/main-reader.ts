@@ -1,26 +1,25 @@
-import { RootDispatcher } from '../index';
-import MainReader from '../lib/readers/main-reader';
-import { RFIDTag } from '../lib/types';
+import MainReader, { READER_EVENT } from '../lib/readers/base-reader';
+import rootDispatcher from './dispatcher/root-dispatcher';
 
-const init = (mainReader: MainReader, dispatcher: RootDispatcher) => {
-    mainReader.on('connectingStart', () => {
-        dispatcher.sendEvent('onMainReaderConnectingStart');
+const init = (mainReader: MainReader) => {
+    mainReader.on(READER_EVENT.CONNECTING_START, () => {
+        rootDispatcher.sendEvent('onMainReaderConnectingStart');
     });
 
-    mainReader.on('connected', () => {
-        dispatcher.sendEvent('onMainReaderConnected');
+    mainReader.on(READER_EVENT.CONNECTED, () => {
+        rootDispatcher.sendEvent('onMainReaderConnected');
     });
 
-    mainReader.on('connectingFailed', (message: string) => {
-        dispatcher.sendEvent('onMainReaderConnectingFailed', message);
+    mainReader.on(READER_EVENT.CONNECTING_FAILED, (message: string) => {
+        rootDispatcher.sendEvent('onMainReaderConnectingFailed', message);
     });
 
-    mainReader.on('disconnected', (message: string) => {
-        dispatcher.sendEvent('onMainReaderDisconnected', message);
+    mainReader.on(READER_EVENT.DISCONNECT, (message: string) => {
+        rootDispatcher.sendEvent('onMainReaderDisconnected', message);
     });
 
-    mainReader.on('onIpReceived', (ip: string) => {
-        dispatcher.sendEvent('onMainReaderIpReceived', ip);
+    mainReader.on(READER_EVENT.ON_IP_RECIEVED, (ip: string) => {
+        rootDispatcher.sendEvent('onMainReaderIpReceived', ip);
     });
 };
 

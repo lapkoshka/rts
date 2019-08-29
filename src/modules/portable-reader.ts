@@ -1,30 +1,31 @@
-import PortableReader from '../lib/readers/portable-reader';
-import { RootDispatcher } from '../index';
-import { getUsersMap } from '../lib/users';
-import { getUser, getUsers } from './database/database';
+import PortableReader, { READER_EVENT } from '../lib/readers/base-reader';
+import { getUser, UserData } from './database/database';
+import rootDispatcher from './dispatcher/root-dispatcher';
 
 
-const init = (portableReader: PortableReader, dispatcher: RootDispatcher) => {
-    portableReader.on('connectingStart', () => {
-        dispatcher.sendEvent('onPortableReaderConnectingStart');
+const init = (portableReader: PortableReader) => {
+    portableReader.on(READER_EVENT.CONNECTING_START, () => {
+        rootDispatcher.sendEvent('onPortableReaderConnectingStart');
     });
 
-    portableReader.on('connected', () => {
-        dispatcher.sendEvent('onPortableReaderConnected');
+    portableReader.on(READER_EVENT.CONNECTED, () => {
+        rootDispatcher.sendEvent('onPortableReaderConnected');
     });
 
-    portableReader.on('connectingFailed', (message: string) => {
-        dispatcher.sendEvent('onPortableReaderConnectingFailed', message);
+    portableReader.on(READER_EVENT.CONNECTING_FAILED, (message: string) => {
+        rootDispatcher.sendEvent('onPortableReaderConnectingFailed', message);
     });
 
-    portableReader.on('disconnected', (message: string) => {
-        dispatcher.sendEvent('onPortableReaderDisconnected', message);
+    portableReader.on(READER_EVENT.DISCONNECT, (message: string) => {
+        rootDispatcher.sendEvent('onPortableReaderDisconnected', message);
     });
 
-    portableReader.on('tag', async (tag: string) => {
-        const user = await getUser(tag);
-
-        dispatcher.sendEvent('onPortableReaderTag', user);
+    portableReader.on(READER_EVENT.TAG, async (tag: string) => {
+        getUser(tag).then((user: UserData) => {
+            rootDispatcher.sendEvent('onPortableReaderTag', user);
+        }).catch((err: Error) => {
+           throw err;
+        });
     });
 };
 

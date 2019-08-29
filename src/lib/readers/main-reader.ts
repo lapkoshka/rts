@@ -1,7 +1,6 @@
-import { ChildProcess, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import * as fs from 'fs';
-import { RFIDTag } from '../types';
-import BaseReader, { ProtocolMessages } from './base-reader';
+import BaseReader, { ProtocolMessages, READER_EVENT, RFIDTag } from './base-reader';
 
 const Q_VALUE = {
     _1: '1',
@@ -41,7 +40,7 @@ class MainReader extends BaseReader {
     }
 
     public open(): Promise<string> {
-        this.emit('connectingStart');
+        this.emit(READER_EVENT.CONNECTING_START);
         if (!fs.existsSync(this.exeFilePath)) {
             const msg = `${this.exeFilePath} not found`;
             return Promise.reject(msg);
@@ -56,18 +55,18 @@ class MainReader extends BaseReader {
                     const [status, message] = data.toString().trim().split(':');
 
                     if (status === 'found') {
-                        this.emit('onIpReceived', message);
+                        this.emit(READER_EVENT.ON_IP_RECIEVED, message);
                     }
 
                     if (status === 'error') {
-                        this.emit('connectingFailed', message);
+                        this.emit(READER_EVENT.CONNECTING_FAILED, message);
                         reject(`Connected to main reader failed, message: ${message}`);
                         return;
                     }
 
                     if (status === 'ok' && message === 'connected') {
                         this.isConnected = true;
-                        this.emit('connected');
+                        this.emit(READER_EVENT.CONNECTED);
                         resolve();
 
                         return;
@@ -78,7 +77,7 @@ class MainReader extends BaseReader {
                         const status = line.split(':')[0];
 
                         if (status === 'tag') {
-                            this.emit('tag', this.parseTag(line));
+                            this.emit(READER_EVENT.TAG, this.parseTag(line));
                         } else {
                             throw new Error('Something went wrong with tag, line: ' + line);
                         }
@@ -93,11 +92,11 @@ class MainReader extends BaseReader {
     }
 
     private parseTag(data: string): RFIDTag {
-        const [_, uid, rssi] = data.replace('\r', '')
+        const values = data.replace('\r', '')
             .split(':');
         return {
-            uid,
-            rssi,
+            uid: values[1],
+            rssi: parseInt(values[2], 10),
         };
     }
 }

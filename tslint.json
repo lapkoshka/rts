@@ -1,8 +1,8 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-shadowed-variable": false,
     "indent": [true, "spaces", 4],
-    "no-unused-variable": true,
     "max-line-length": {
       "options": [
         100

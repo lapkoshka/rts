@@ -1,9 +1,23 @@
 import * as EventEmitter from 'events';
 import { ChildProcess } from 'child_process';
 
+export interface RFIDTag {
+    uid: string;
+    rssi: number;
+}
+
 export interface ProtocolMessages {
     START_LISTEN: string;
     CONTINUE_LISTEN?: string;
+}
+
+export enum READER_EVENT {
+    TAG = 'tag',
+    ON_IP_RECIEVED = 'onIpReceived',
+    CONNECTING_FAILED = 'connectingFailed',
+    CONNECTING_START = 'connectingStart',
+    CONNECTED = 'connected',
+    DISCONNECT = 'disconnect',
 }
 
 abstract class BaseReader extends EventEmitter {
@@ -46,13 +60,16 @@ abstract class BaseReader extends EventEmitter {
 
         this.isConnected = false;
         this.process.kill();
-        this.emit('disconnected', `${this.type} app was disconnected`);
+        this.emit(READER_EVENT.DISCONNECT, `${this.type} app was disconnected`);
 
         console.log(`${this.type} process was killed`);
     }
 
-    public fakeTag(tag: string): void {
-        this.emit('tag', tag || `FAKE_${this.type}_TAG:123456789`);
+    public fakeTag(uid: string, rssi?: number): void {
+        this.emit('tag', {
+            uid: uid || `FAKE_${this.type}_TAG:123456789`,
+            rssi: rssi === undefined ? 999 : rssi,
+        });
     }
 }
 export default BaseReader;

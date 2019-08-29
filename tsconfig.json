@@ -5,6 +5,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
       "*": ["node_modules/*"]
     },
