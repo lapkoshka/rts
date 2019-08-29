@@ -1,20 +1,23 @@
 import { RFIDTag } from '../../../lib/readers/base-reader';
 import RSSITrace, { RSSITraceEvent } from '../../../lib/rssi-trace';
 import { UserData } from '../../database/database';
+import * as EventEmitter from 'events';
 
-class Lap {
-    public onStart: (lap: this) => void;
-    public onFinish: (lap: this) => void;
+export enum LAP_EVENT {
+    ON_START = 'onStart',
+    ON_FINISH = 'onFinish',
+}
+
+class Lap extends EventEmitter {
     public user: UserData;
     public startTrace: RSSITrace;
     public finishTrace: RSSITrace;
 
     constructor(user: UserData) {
+        super();
         this.user = user;
         this.startTrace = undefined;
         this.finishTrace = undefined;
-        this.onStart = undefined;
-        this.onFinish = undefined;
     }
 
     public appendTag(tag: RFIDTag): void {
@@ -22,9 +25,7 @@ class Lap {
             this.startTrace = new RSSITrace(tag);
             this.startTrace
                 .on(RSSITraceEvent.ON_COMPLETE, () => {
-                    if (this.onStart) {
-                        this.onStart(this);
-                    }
+                    this.emit(LAP_EVENT.ON_START, this);
                 });
         }
 
@@ -37,9 +38,7 @@ class Lap {
             this.finishTrace = new RSSITrace(tag);
             this.finishTrace
                 .on(RSSITraceEvent.ON_COMPLETE, () => {
-                    if (this.onFinish) {
-                        this.onFinish(this);
-                    }
+                    this.emit(LAP_EVENT.ON_FINISH, this);
                 });
         }
 

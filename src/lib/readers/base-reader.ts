@@ -60,7 +60,7 @@ abstract class BaseReader extends EventEmitter {
 
         this.isConnected = false;
         this.process.kill();
-        this.emit('disconnected', `${this.type} app was disconnected`);
+        this.emit(READER_EVENT.DISCONNECT, `${this.type} app was disconnected`);
 
         console.log(`${this.type} process was killed`);
     }

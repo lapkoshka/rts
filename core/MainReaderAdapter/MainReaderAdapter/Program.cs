@@ -10,17 +10,17 @@ namespace MainReaderAdapter
     {
         static void Main(string[] args)
         {
-            Search search = new Search();
-            bool isFound = search.Start();
-            if (isFound)
-            {
-                Console.WriteLine("found:" + search.Ip);
-                Connect(search.Ip, args);
-            }
-            else
-            {
-                Console.WriteLine("error:Reader does not found");
-            }
+            //Search search = new Search();
+            //bool isFound = search.Start();
+            //if (isFound)
+            //{
+            //    Console.WriteLine("found:" + search.Ip);
+            Connect("192.168.0.37", args);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("error:Reader does not found");
+            //}
         }
 
         static void Connect(string ip, string[] args)

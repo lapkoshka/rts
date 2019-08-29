@@ -38,7 +38,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     });
 
     onRendererEvent('onPortableReaderDisconnected', (_, message) => {
-        setStatus(portableReader, 'error');
+        setStatus(portableReader, 'disabled');
     });
 
     onRendererEvent('onMainReaderConnectingStart', _ => {
@@ -55,7 +55,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     });
 
     onRendererEvent('onMainReaderDisconnected', (_, message) => {
-        setStatus(mainReader, 'error');
+        setStatus(mainReader, 'disabled');
     });
 
     onRendererEvent('onMainReaderIpReceived', (_, message) => {

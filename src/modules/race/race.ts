@@ -1,7 +1,8 @@
 import MainReader, { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { UserData } from '../database/database';
+import { insertRace, UserData } from '../database/database';
 import rootDispatcher from '../dispatcher/root-dispatcher';
-import Lap from './domain/lap';
+import { updateUsersView } from '../users';
+import Lap, { LAP_EVENT } from './domain/lap';
 import { getUserByTag } from './domain/users';
 
 interface Laps {
@@ -23,18 +24,57 @@ const getLap = async (tag: RFIDTag): Promise<Lap> => {
     return createLap(tag, user);
 };
 
-const onLapEventHandler = (lap: Lap) =>
-    rootDispatcher.sendEvent('onUserInfo', lap);
+const view = {
+    addUser(lap: Lap): void {
+        rootDispatcher.sendEvent('onAddUser', {
+            user: lap.user,
+            timestamp: lap.startTrace.getHighestPoint().timestamp,
+        });
+    },
+    decorateUserAsFinished(lap: Lap): void {
+        rootDispatcher.sendEvent('onDecorateUserAsFinished', {
+            user: lap.user,
+            timestamp: lap.getTotalTime(),
+        });
+    },
+    removeUser(user: UserData): Promise<void> {
+        rootDispatcher.sendEvent('onRemoveUser', user);
+        return new Promise((resolve) => {
+           rootDispatcher
+               .addPageListener('onUserRemoved', (_: any, removedUser: UserData) =>{
+                  if (removedUser.uid === user.uid) {
+                      resolve();
+                  }
+               });
+        });
+    },
+};
+
+const lapEventHandler = (lap: Lap) => {
+    const {startTrace, finishTrace } = lap;
+
+    if (finishTrace && finishTrace.completed) {
+        insertRace(lap.user.uid, lap.getTotalTime());
+        view.decorateUserAsFinished(lap);
+
+        setTimeout(async () => {
+            await view.removeUser(lap.user);
+            delete currentLaps[lap.user.uid];
+            updateUsersView();
+        }, 2000);
+        return;
+    }
+
+    if (startTrace && startTrace.completed) {
+        view.addUser(lap);
+    }
+};
+
 
 const createLap = (tag: RFIDTag, user: UserData): Lap => {
     const lap = new Lap(user);
-    // TODO:
-    lap.on('lapEvent', evt => {
-
-    });
-
-    lap.onStart = onLapEventHandler;
-    lap.onFinish = onLapEventHandler;
+    lap.on(LAP_EVENT.ON_START, lapEventHandler);
+    lap.on(LAP_EVENT.ON_FINISH, lapEventHandler);
     currentLaps[tag.uid] = lap;
 
     return lap;
