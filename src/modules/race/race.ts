@@ -70,7 +70,6 @@ const lapEventHandler = (lap: Lap) => {
     }
 };
 
-
 const createLap = (tag: RFIDTag, user: UserData): Lap => {
     const lap = new Lap(user);
     lap.on(LAP_EVENT.ON_START, lapEventHandler);

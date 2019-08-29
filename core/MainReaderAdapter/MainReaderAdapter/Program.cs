@@ -15,7 +15,7 @@ namespace MainReaderAdapter
             if (isFound)
             {
                 Console.WriteLine("found:" + search.Ip);
-                Connect("192.168.0.37", args);
+                Connect(search.Ip, args);
             }
             else
             {

@@ -1,3 +1,4 @@
+// TODO: common lib for ts and js
 const toHumanReadableTime = t => {
     if (t === null) {
         return '-';
