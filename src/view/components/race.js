@@ -92,5 +92,4 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
         removeUser(table, user);
         sendRendererEvent('onUserRemoved', user);
     });
-
 };
