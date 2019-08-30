@@ -5,6 +5,7 @@ import rootDispatcher from './modules/dispatcher/root-dispatcher';
 import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
 import initRaceEvents from './modules/race/race';
+import { updateRaceHistory } from './modules/results/history';
 import initRSSIEvents from './modules/rssi';
 import { updateUser, insertUser, UserData } from './modules/database/database';
 import { updateTotalInfo } from './modules/results/total';
@@ -33,6 +34,7 @@ const root = async (mainReader: MainReader, portableReader: PortableReader) => {
     await waitView();
     // switchReader(mainReader);
 
+    updateRaceHistory();
     updateTotalInfo();
     initPortableReaderEvents(portableReader);
     initMainReaderEvents(mainReader);

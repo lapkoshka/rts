@@ -1,3 +1,4 @@
+const initRaceHistory = require('./history');
 const initTotalInfo = require('./total');
 
 const TAB = {
@@ -14,6 +15,7 @@ const showTab = id =>
     document.querySelector(`#${id}`).style.display = 'flex';
 
 module.exports = (rootElement, dispatcher) => {
+    initRaceHistory(rootElement.querySelector('#history'), dispatcher);
     initTotalInfo(rootElement.querySelector(`#total`), dispatcher);
 
     const tabs = rootElement.querySelector('.result-tabs');

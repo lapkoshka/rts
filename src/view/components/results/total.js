@@ -29,19 +29,19 @@ const render = (table, data) => {
         nameRow.className = 'total-row-name';
         nameRow.id = uid;
 
-        const time = document.createElement('td');
-        time.className = 'total-row-best-time';
+        const timeRow = document.createElement('td');
+        timeRow.className = 'total-row-best-time';
 
         const countRow = document.createElement('td');
         countRow.className = 'total-row-best-count';
 
         nameRow.innerText = `${firstname} ${lastname}`;
-        time.innerText = `${besttime}`;
-        countRow.innerText = `${count}`;
+        timeRow.innerText = besttime;
+        countRow.innerText = count;
 
         table.appendChild(tr);
         tr.appendChild(nameRow);
-        tr.appendChild(time);
+        tr.appendChild(timeRow);
         tr.appendChild(countRow);
     });
 };

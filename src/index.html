@@ -111,6 +111,7 @@
     </body>
     <script src="./view/lib/plotly-latest.min.js"></script>
     <script>
+         window.commonLib = require('./view/lib/common-lib');
          const { ipcRenderer } = require('electron');
 
          const smartbannerComponent = require('./view/components/smartbanner');

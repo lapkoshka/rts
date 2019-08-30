@@ -9,11 +9,17 @@ export interface UserData {
     alreadyRegistred: boolean;
 }
 
-export interface RaceData {
+export interface UserRacesData {
     firstname: string;
     lastname: string;
     besttime: number;
     count: number;
+}
+
+export interface RaceData {
+    firstname: string;
+    lastname: string;
+    time: number;
 }
 
 const sqlite3 = verbose();
@@ -115,7 +121,28 @@ export const getUsers = async (): Promise<UserData[]> => {
     });
 };
 
-export const getUserRaces = (): Promise<RaceData[]> => {
+export const getRaces = (): Promise<RaceData[]> => {
+    const query = `
+        select
+        u.firstname as "firstname",
+        u.lastname as "lastname",
+        r.time as "time"
+        from race r
+        join users u
+        on r.uid = u.uid`;
+
+    return new Promise((resolve, reject) => {
+        database.all(query, (err: any, rows: any) => {
+            if (err) {
+                reject(err);
+            }
+
+            resolve(rows);
+        });
+    });
+};
+
+export const getTotalUserRaces = (): Promise<UserRacesData[]> => {
     const query = `
         select u.uid as "uid",
         u.firstname as "firstname",
