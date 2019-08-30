@@ -1,4 +1,4 @@
-import BaseReader from './lib/readers/base-reader';
+import BaseReader, {RFIDTag} from './lib/readers/base-reader';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
@@ -39,12 +39,12 @@ const root = async (mainReader: MainReader, portableReader: PortableReader) => {
     initRaceEvents(mainReader);
     initRSSIEvents(mainReader);
 
-    rootDispatcher.addPageListener('fakePortableTag', (_: any, tag: string) => {
-        portableReader.fakeTag(tag);
+    rootDispatcher.addPageListener('fakePortableTag', (_: any, tag: RFIDTag) => {
+        portableReader.fakeTag(tag.uid, tag.rssi);
     });
 
-    rootDispatcher.addPageListener('fakeMainTag', (_: any, tag: string) => {
-        mainReader.fakeTag(tag);
+    rootDispatcher.addPageListener('fakeMainTag', (_: any, tag: RFIDTag) => {
+        mainReader.fakeTag(tag.uid, tag.rssi);
     });
 
     // registration events to the registration events module
