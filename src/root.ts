@@ -31,6 +31,7 @@ const root = async (): Promise<void> => {
     initSmartbannerController();
     initResultsController();
 
+    // TODO: update results main function
     updateRaceHistory();
     updateTotalInfo();
 };

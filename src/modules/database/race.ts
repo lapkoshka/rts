@@ -76,3 +76,16 @@ export const insertRace = (uid: string, timestamp: number): void => {
         }
     });
 };
+
+export const deleteRace = (id: number): Promise<void> => {
+    const query = `delete from race where id = ?`;
+    return new Promise((resolve, reject) => {
+        database.run(query, id, (err: Error) => {
+            if (err) {
+                reject(Error);
+            }
+
+            resolve();
+        });
+    });
+};

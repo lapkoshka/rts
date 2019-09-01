@@ -3,7 +3,8 @@ import { mainWindow } from '../../index';
 
 export interface RootDispatcher {
     sendEvent: (type: string, data?: any) => void;
-    addPageListener: (type: string, listener: Function) => void;
+    // TODO: type incMain event
+    addPageListener: (type: string, listener: (evt: any, data: any) => void) => void;
 }
 
 const rootDispatcher: RootDispatcher = {
