@@ -1,0 +1,36 @@
+.results {
+    width: 100%;
+}
+
+.result-tabs {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.result-tab {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, .3);
+    height: 32px;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 135px;
+    flex-grow: .3;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.result-tab:hover {
+    color: #ffffff;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.result-tab-selected {
+    color: #000000;
+    font-width: 600;
+    background-color: #ffffff;
+}

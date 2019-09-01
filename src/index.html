@@ -8,7 +8,12 @@
 
         <link rel="stylesheet" type="text/css" href="./styles/smartbanner.css">
         <link rel="stylesheet" type="text/css" href="./styles/race.css">
-        <link rel="stylesheet" type="text/css" href="./styles/users.css">
+
+        <link rel="stylesheet" type="text/css" href="./styles/results/results.css">
+        <link rel="stylesheet" type="text/css" href="./styles/results/history.css">
+        <link rel="stylesheet" type="text/css" href="./styles/results/total.css">
+        <link rel="stylesheet" type="text/css" href="./styles/results/users.css">
+
         <link rel="stylesheet" type="text/css" href="./styles/rssi.css">
 
         <link rel="stylesheet" type="text/css" href="./styles/reg-fullscreenpopup.css">
@@ -49,14 +54,45 @@
                     </table>
                 </div>
 
-                <div id="users" class="users ui-block">
-                    <table>
-                       <tr class="users-header">
-                          <th class="users-row-name">Имя</th>
-                          <th class="users-row-best-time">Лучшее время</th>
-                          <th class="users-row-best-count">Всего заездов</th>
-                       </tr>
-                    </table>
+                <div id="results" class="results">
+                    <div class="result-tabs">
+                        <div id="tab-history" class="result-tab result-tab-selected">История</div>
+                        <div id="tab-total" class="result-tab">Итого</div>
+                        <div id="tab-users" class="result-tab">Участники</div>
+                    </div>
+                    <div class="results-view ui-block">
+
+                        <div id="history" class="history">
+                            <table>
+                                <tr class="history-header">
+                                    <th class="history-row-name">Имя</th>
+                                    <th class="history-row-time">Время</th>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <div id="total" class="total">
+                            <table>
+                                <tr class="total-header">
+                                    <th class="total-row-name">Имя</th>
+                                    <th class="total-row-best-time">Лучшее время</th>
+                                    <th class="total-row-best-count">Всего заездов</th>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div id="users" class="users">
+                            <table>
+                                <tr class="users-header">
+                                    <th class="users-row-name">Имя</th>
+                                    <th class="users-row-best-time">Лучшее время</th>
+                                    <th class="users-row-best-count">Всего заездов</th>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
                 </div>
             </main>
 
@@ -75,11 +111,12 @@
     </body>
     <script src="./view/lib/plotly-latest.min.js"></script>
     <script>
+         window.commonLib = require('./view/lib/common-lib');
          const { ipcRenderer } = require('electron');
 
          const smartbannerComponent = require('./view/components/smartbanner');
          const raceComponents = require('./view/components/race');
-         const usersComponent = require('./view/components/users');
+         const resultsComponent = require('./view/components/results/results');
          const regPopupComponent = require('./view/components/reg-popup');
          const rssiComponent = require('./view/components/rssi');
 
@@ -94,12 +131,14 @@
 
          smartbannerComponent(smarbanner, windowDispatcher);
          raceComponents(race, windowDispatcher);
-         usersComponent(users, windowDispatcher);
+         resultsComponent(results, windowDispatcher);
          regPopupComponent(regPopup, windowDispatcher);
          rssiComponent(rssi, windowDispatcher);
 
-         const fakePortableTag = uid => windowDispatcher.sendRendererEvent('fakePortableTag', uid);
-         const fakeMainTag = uid => windowDispatcher.sendRendererEvent('fakeMainTag', uid);
+         window.fakePortableTag = (uid, rssi) =>
+           windowDispatcher.sendRendererEvent('fakePortableTag', { uid, rssi });
+         window.fakeMainTag = (uid, rssi) =>
+           windowDispatcher.sendRendererEvent('fakeMainTag', { uid, rssi});
 
          document.addEventListener('DOMContentLoaded', () => {
             windowDispatcher.sendRendererEvent('onViewReady');

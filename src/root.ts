@@ -1,13 +1,14 @@
-import BaseReader from './lib/readers/base-reader';
+import BaseReader, { RFIDTag } from './lib/readers/base-reader';
 import MainReader from './lib/readers/main-reader';
 import PortableReader from './lib/readers/portable-reader';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
 import initPortableReaderEvents from './modules/portable-reader';
 import initMainReaderEvents from './modules/main-reader';
 import initRaceEvents from './modules/race/race';
+import { updateRaceHistory } from './modules/results/history';
 import initRSSIEvents from './modules/rssi';
 import { updateUser, insertUser, UserData } from './modules/database/database';
-import { updateUsersView } from './modules/users';
+import { updateTotalInfo } from './modules/results/total';
 
 const submitNewUser = (user: UserData): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
@@ -33,18 +34,19 @@ const root = async (mainReader: MainReader, portableReader: PortableReader) => {
     await waitView();
     // switchReader(mainReader);
 
-    updateUsersView();
+    updateRaceHistory();
+    updateTotalInfo();
     initPortableReaderEvents(portableReader);
     initMainReaderEvents(mainReader);
     initRaceEvents(mainReader);
     initRSSIEvents(mainReader);
 
-    rootDispatcher.addPageListener('fakePortableTag', (_: any, tag: string) => {
-        portableReader.fakeTag(tag);
+    rootDispatcher.addPageListener('fakePortableTag', (_: any, tag: RFIDTag) => {
+        portableReader.fakeTag(tag.uid, tag.rssi);
     });
 
-    rootDispatcher.addPageListener('fakeMainTag', (_: any, tag: string) => {
-        mainReader.fakeTag(tag);
+    rootDispatcher.addPageListener('fakeMainTag', (_: any, tag: RFIDTag) => {
+        mainReader.fakeTag(tag.uid, tag.rssi);
     });
 
     // registration events to the registration events module
@@ -55,7 +57,7 @@ const root = async (mainReader: MainReader, portableReader: PortableReader) => {
     rootDispatcher.addPageListener('onRegistrationSubmit', (_: any, user: UserData) => {
         submitNewUser(user).then((message: string) => {
             console.log(message);
-            updateUsersView();
+            updateTotalInfo();
         })
         .catch((err: string) => {
             throw Error(err);

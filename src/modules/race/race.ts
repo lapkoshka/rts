@@ -1,7 +1,8 @@
 import MainReader, { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import { insertRace, UserData } from '../database/database';
 import rootDispatcher from '../dispatcher/root-dispatcher';
-import { updateUsersView } from '../users';
+import { updateRaceHistory } from '../results/history';
+import { updateTotalInfo } from '../results/total';
 import Lap, { LAP_EVENT } from './domain/lap';
 import { getUserByTag } from './domain/users';
 
@@ -41,7 +42,7 @@ const view = {
         rootDispatcher.sendEvent('onRemoveUser', user);
         return new Promise((resolve) => {
            rootDispatcher
-               .addPageListener('onUserRemoved', (_: any, removedUser: UserData) =>{
+               .addPageListener('onUserRemoved', (_: any, removedUser: UserData) => {
                   if (removedUser.uid === user.uid) {
                       resolve();
                   }
@@ -60,7 +61,8 @@ const lapEventHandler = (lap: Lap) => {
         setTimeout(async () => {
             await view.removeUser(lap.user);
             delete currentLaps[lap.user.uid];
-            updateUsersView();
+            updateTotalInfo();
+            updateRaceHistory();
         }, 2000);
         return;
     }

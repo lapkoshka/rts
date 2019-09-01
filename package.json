@@ -7,9 +7,8 @@
     "build": "tsc",
     "br": "npm run build && npm start",
     "test": "jest",
-    "lint": "tslint --project tsconfig.json --config tslint.json",
-    "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
+    "watch": "tsc -w",
     "start": "electron ./dist/index.js",
     "postinstall": "install-app-deps"
   },
