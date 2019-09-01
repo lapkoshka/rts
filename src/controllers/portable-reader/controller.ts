@@ -1,5 +1,5 @@
 import { READER_EVENT } from '../../lib/readers/base-reader';
-import { getUser, UserData } from '../../modules/database/database';
+import { getUser, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 

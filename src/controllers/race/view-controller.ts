@@ -1,5 +1,5 @@
 import Lap from '../../lib/domain/lap';
-import { UserData } from '../../modules/database/database';
+import { UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
 export const lapViewController = {

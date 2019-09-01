@@ -9,6 +9,7 @@ import initRSSIController from './controllers/rssi/controller';
 import initFakeTagController from './controllers/fake-tag/controller';
 import initRegistrationController from './controllers/registration/controller';
 import initSmartbannerController from './controllers/smartbanner/controller';
+import initResultsController from './controllers/results/controller';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -18,7 +19,9 @@ const waitView = (): Promise<void> => {
     });
 };
 
-const initControllers = (): void => {
+const root = async (): Promise<void> => {
+    await waitView();
+
     initPortableReaderController();
     initMainReaderController();
     initRaceController();
@@ -26,11 +29,7 @@ const initControllers = (): void => {
     initFakeTagController();
     initRegistrationController();
     initSmartbannerController();
-};
-
-const root = async (): Promise<void> => {
-    await waitView();
-    initControllers();
+    initResultsController();
 
     updateRaceHistory();
     updateTotalInfo();

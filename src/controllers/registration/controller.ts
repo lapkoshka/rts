@@ -1,4 +1,5 @@
-import { insertUser, updateUser, UserData } from '../../modules/database/database';
+
+import { insertUser, updateUser, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { updateTotalInfo } from '../results/total';
@@ -12,8 +13,7 @@ export default () => {
     });
 
     rootDispatcher.addPageListener('onRegistrationSubmit', (_: any, user: UserData) => {
-        submitNewUser(user).then((message: string) => {
-            console.log(message);
+        submitNewUser(user).then(() => {
             updateTotalInfo();
         })
         .catch((err: string) => {

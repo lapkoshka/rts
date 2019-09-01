@@ -1,5 +1,5 @@
 import { toHumanReadableTime } from '../../lib/functions';
-import { getTotalUserRaces, UserRacesData } from '../../modules/database/database';
+import { getTotalUserRaces, UserRacesData } from '../../modules/database/race';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
 export const updateTotalInfo = (): void => {

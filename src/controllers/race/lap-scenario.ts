@@ -1,6 +1,7 @@
 import Lap, { LAP_EVENT } from '../../lib/domain/lap';
 import { RFIDTag } from '../../lib/readers/base-reader';
-import { insertRace, UserData } from '../../modules/database/database';
+import { insertRace } from '../../modules/database/race';
+import { UserData } from '../../modules/database/users';
 import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
