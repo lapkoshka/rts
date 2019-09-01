@@ -17,6 +17,8 @@ export interface UserRacesData {
 }
 
 export interface RaceData {
+    id: number;
+    timestamp: string;
     firstname: string;
     lastname: string;
     time: number;
@@ -56,7 +58,8 @@ const prepareDatabase = (db: Database): void => {
   );`);
 
   db.run(`create table if not exists race(
-    id integer autoincremented,
+    id integer primary key autoincrement,
+    timestamp datetime default current_timestamp,
     uid not null,
     time integer,
     date integer,
@@ -124,12 +127,17 @@ export const getUsers = async (): Promise<UserData[]> => {
 export const getRaces = (): Promise<RaceData[]> => {
     const query = `
         select
+        r.id as "id",
+        r.timestamp as "timestamp",
         u.firstname as "firstname",
         u.lastname as "lastname",
         r.time as "time"
         from race r
         join users u
-        on r.uid = u.uid`;
+        on r.uid = u.uid
+        order by id desc
+        limit 40
+        `;
 
     return new Promise((resolve, reject) => {
         database.all(query, (err: any, rows: any) => {
