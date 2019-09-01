@@ -39,3 +39,17 @@
     margin-left: 4px;
 }
 
+.history-row-delete {
+    max-width: 20px;
+}
+
+.history-row-delete img {
+    width: 20px;
+    opacity: .3;
+    cursor: pointer;
+}
+
+.history-row-delete img:hover {
+    opacity: .7;
+}
+

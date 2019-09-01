@@ -46,10 +46,19 @@ const render = (table, data) => {
         dateRow.classList.add('history-row-date');
         dateRow.innerText = timestamp;
 
+        const deleteRow = document.createElement('td');
+        deleteRow.classList.add('history-row-delete');
+        const img = document.createElement('img');
+        img.src = './view/images/icons/delete.svg';
+        img.classList.add('history-row-delete-icon');
+        img.dataset.id = id;
+        deleteRow.appendChild(img);
+
         tr.appendChild(idRow);
         tr.appendChild(nameRow);
         tr.appendChild(timeRow);
         tr.appendChild(dateRow);
+        tr.appendChild(deleteRow);
         table.appendChild(tr);
     });
 };
@@ -70,6 +79,21 @@ const filterByName = (data, value) => {
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     const table = rootElement.querySelector('table');
+
+    table.addEventListener('click', evt => {
+        const { target } = evt;
+        const isDeleteIconClick = target.classList.contains('history-row-delete-icon');
+        if (!isDeleteIconClick) {
+            return;
+        }
+
+        const id = target.dataset.id;
+        const answer = confirm('Вы уверены что хотите удалить эту запись?');
+        if (answer) {
+            sendRendererEvent('onRaceDelete', parseInt(id, 10));
+        }
+    });
+
     const filterInput = rootElement.querySelector('.history-filter-name');
     filterInput.addEventListener('input', evt => {
         render(table, filterByName(dataCache, evt.target.value));
