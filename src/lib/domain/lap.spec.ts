@@ -1,7 +1,7 @@
-import { sleep } from '../../../lib/functions';
-import { createFakeTag } from '../../../lib/readers/main-reader.spec';
-import { TRACE_FILLING_TIMEOUT } from '../../../lib/rssi-trace';
-import { UserData } from '../../database/database';
+import { sleep } from '../functions';
+import { createFakeTag } from '../readers/main-reader.spec';
+import { TRACE_FILLING_TIMEOUT } from '../rssi-trace';
+import { UserData } from '../../modules/database/database';
 import Lap, { LAP_EVENT } from './lap';
 
 jest.setTimeout(10000);

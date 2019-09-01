@@ -1,23 +1,18 @@
 import { app, BrowserWindow } from 'electron';
+import { mainReader } from './modules/readers/main-reader';
+import { portableReader } from './modules/readers/portable-reader';
 import root from './root';
-import MainReader from './lib/readers/main-reader';
-import PortableReader from './lib/readers/portable-reader';
 import * as path from 'path';
-import { gracefulShutdown } from './modules/service';
+import { gracefulShutdown } from './lib/service';
 import { closeDatabase } from './modules/database/database';
 
 export let mainWindow: BrowserWindow;
 
-const mainReader = new MainReader('/bin/MainReaderAdapter.exe');
-const portableReader = new PortableReader('/bin/portablereader.exe');
-
 app.on('ready', () => {
+    root();
+
     mainWindow = new BrowserWindow({width: 1600, height: 800});
-    root(mainReader, portableReader);
-
     mainWindow.loadFile(path.join(__dirname, '../src/index.html'));
-
-    // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', () => {

@@ -1,7 +1,8 @@
-import MainReader, { READER_EVENT } from '../lib/readers/base-reader';
-import rootDispatcher from './dispatcher/root-dispatcher';
+import { READER_EVENT } from '../../lib/readers/base-reader';
+import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { mainReader } from '../../modules/readers/main-reader';
 
-const init = (mainReader: MainReader) => {
+export default () => {
     mainReader.on(READER_EVENT.CONNECTING_START, () => {
         rootDispatcher.sendEvent('onMainReaderConnectingStart');
     });
@@ -23,4 +24,3 @@ const init = (mainReader: MainReader) => {
     });
 };
 
-export default init;

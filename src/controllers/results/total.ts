@@ -1,6 +1,6 @@
 import { toHumanReadableTime } from '../../lib/functions';
-import { getTotalUserRaces, UserRacesData } from './../database/database';
-import rootDispatcher from './../dispatcher/root-dispatcher';
+import { getTotalUserRaces, UserRacesData } from '../../modules/database/database';
+import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
 export const updateTotalInfo = (): void => {
     getTotalUserRaces().then((userRacesData: UserRacesData[]) => {

@@ -1,6 +1,6 @@
-import { RFIDTag } from '../../../lib/readers/base-reader';
-import RSSITrace, { RSSITraceEvent } from '../../../lib/rssi-trace';
-import { UserData } from '../../database/database';
+import { RFIDTag } from '../readers/base-reader';
+import RSSITrace, { RSSITraceEvent } from '../rssi-trace';
+import { UserData } from '../../modules/database/database';
 import * as EventEmitter from 'events';
 
 export enum LAP_EVENT {

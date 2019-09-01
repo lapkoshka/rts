@@ -1,26 +1,14 @@
-import BaseReader, { RFIDTag } from './lib/readers/base-reader';
-import MainReader from './lib/readers/main-reader';
-import PortableReader from './lib/readers/portable-reader';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
-import initPortableReaderEvents from './modules/portable-reader';
-import initMainReaderEvents from './modules/main-reader';
-import initRaceEvents from './modules/race/race';
-import { updateRaceHistory } from './modules/results/history';
-import initRSSIEvents from './modules/rssi';
-import { updateUser, insertUser, UserData } from './modules/database/database';
-import { updateTotalInfo } from './modules/results/total';
+import { updateRaceHistory } from './controllers/results/history';
+import { updateTotalInfo } from './controllers/results/total';
 
-const submitNewUser = (user: UserData): Promise<string> =>
-    (user.alreadyRegistred ? updateUser : insertUser)(user);
-
-const switchReader = (reader: BaseReader): void => {
-    if (reader.isConnected) {
-        reader.kill();
-        return;
-    }
-
-    reader.startListen();
-};
+import initPortableReaderController from './controllers/portable-reader/controller';
+import initMainReaderController from './controllers/main-reader/controller';
+import initRaceController from './controllers/race/controller';
+import initRSSIController from './controllers/rssi/controller';
+import initFakeTagController from './controllers/fake-tag/controller';
+import initRegistrationController from './controllers/registration/controller';
+import initSmartbannerController from './controllers/smartbanner/controller';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -30,49 +18,22 @@ const waitView = (): Promise<void> => {
     });
 };
 
-const root = async (mainReader: MainReader, portableReader: PortableReader) => {
+const initControllers = (): void => {
+    initPortableReaderController();
+    initMainReaderController();
+    initRaceController();
+    initRSSIController();
+    initFakeTagController();
+    initRegistrationController();
+    initSmartbannerController();
+};
+
+const root = async (): Promise<void> => {
     await waitView();
-    // switchReader(mainReader);
+    initControllers();
 
     updateRaceHistory();
     updateTotalInfo();
-    initPortableReaderEvents(portableReader);
-    initMainReaderEvents(mainReader);
-    initRaceEvents(mainReader);
-    initRSSIEvents(mainReader);
-
-    rootDispatcher.addPageListener('fakePortableTag', (_: any, tag: RFIDTag) => {
-        portableReader.fakeTag(tag.uid, tag.rssi);
-    });
-
-    rootDispatcher.addPageListener('fakeMainTag', (_: any, tag: RFIDTag) => {
-        mainReader.fakeTag(tag.uid, tag.rssi);
-    });
-
-    // registration events to the registration events module
-    rootDispatcher.addPageListener('onCancelRegistration', () => {
-        portableReader.continue();
-    });
-
-    rootDispatcher.addPageListener('onRegistrationSubmit', (_: any, user: UserData) => {
-        submitNewUser(user).then((message: string) => {
-            console.log(message);
-            updateTotalInfo();
-        })
-        .catch((err: string) => {
-            throw Error(err);
-        });
-
-        portableReader.continue();
-    });
-
-    rootDispatcher.addPageListener('portableReaderTriggerClick', () => {
-        switchReader(portableReader);
-    });
-
-    rootDispatcher.addPageListener('mainReaderTriggerClick', () => {
-        switchReader(mainReader);
-    });
 };
 
 export default root;

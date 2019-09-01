@@ -123,14 +123,14 @@
          const regPopupComponent = require('./view/components/reg-popup');
          const rssiComponent = require('./view/components/rssi');
 
-         const windowDispatcher = {
-          sendRendererEvent(type, data) {
-            ipcRenderer.send(type, data);
-          },
-          onRendererEvent(type, listener) {
-            ipcRenderer.on(type, listener)
-          }
-         };
+        const windowDispatcher = {
+            sendRendererEvent(type, data) {
+                ipcRenderer.send(type, data);
+            },
+            onRendererEvent(type, listener) {
+                ipcRenderer.on(type, listener)
+            }
+        };
 
          smartbannerComponent(smarbanner, windowDispatcher);
          raceComponents(race, windowDispatcher);
@@ -138,13 +138,12 @@
          regPopupComponent(regPopup, windowDispatcher);
          rssiComponent(rssi, windowDispatcher);
 
-         window.fakePortableTag = (uid, rssi) =>
-           windowDispatcher.sendRendererEvent('fakePortableTag', { uid, rssi });
-         window.fakeMainTag = (uid, rssi) =>
-           windowDispatcher.sendRendererEvent('fakeMainTag', { uid, rssi});
+        window.fakePortableTag = (uid, rssi) =>
+            windowDispatcher.sendRendererEvent('fakePortableTag', { uid, rssi });
+        window.fakeMainTag = (uid, rssi) =>
+            windowDispatcher.sendRendererEvent('fakeMainTag', { uid, rssi});
 
-         document.addEventListener('DOMContentLoaded', () => {
+         document.addEventListener('DOMContentLoaded', () =>
             windowDispatcher.sendRendererEvent('onViewReady');
-         });
     </script>
 </html>

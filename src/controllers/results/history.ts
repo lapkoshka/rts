@@ -1,6 +1,6 @@
 import { toHumanReadableTime } from '../../lib/functions';
-import { getRaces, RaceData } from '../database/database';
-import rootDispatcher from '../dispatcher/root-dispatcher';
+import { getRaces, RaceData } from '../../modules/database/database';
+import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
 export const updateRaceHistory = (): void => {
   getRaces().then((raceData: RaceData[]) => {

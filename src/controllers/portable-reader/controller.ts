@@ -1,9 +1,9 @@
-import PortableReader, { READER_EVENT } from '../lib/readers/base-reader';
-import { getUser, UserData } from './database/database';
-import rootDispatcher from './dispatcher/root-dispatcher';
+import { READER_EVENT } from '../../lib/readers/base-reader';
+import { getUser, UserData } from '../../modules/database/database';
+import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { portableReader } from '../../modules/readers/portable-reader';
 
-
-const init = (portableReader: PortableReader) => {
+export default () => {
     portableReader.on(READER_EVENT.CONNECTING_START, () => {
         rootDispatcher.sendEvent('onPortableReaderConnectingStart');
     });
@@ -24,9 +24,8 @@ const init = (portableReader: PortableReader) => {
         getUser(tag).then((user: UserData) => {
             rootDispatcher.sendEvent('onPortableReaderTag', user);
         }).catch((err: Error) => {
-           throw err;
+            throw err;
         });
     });
 };
 
-export default init;

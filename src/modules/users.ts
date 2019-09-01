@@ -1,5 +1,5 @@
-import { RFIDTag } from '../../../lib/readers/base-reader';
-import { getUsers, UserData } from '../../database/database';
+import { RFIDTag } from '../lib/readers/base-reader';
+import { getUsers, UserData } from './database/database';
 
 const usersMapCache = new Map();
 const getUsersMap = (users: UserData[]) => {
