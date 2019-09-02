@@ -1,3 +1,4 @@
+import { updateUsers } from './controllers/results/users';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
 import { updateRaceHistory } from './controllers/results/history';
 import { updateTotalInfo } from './controllers/results/total';
@@ -34,6 +35,7 @@ const root = async (): Promise<void> => {
     // TODO: update results main function
     updateRaceHistory();
     updateTotalInfo();
+    updateUsers();
 };
 
 export default root;

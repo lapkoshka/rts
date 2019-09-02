@@ -100,3 +100,17 @@ export const insertUser = (user: UserData): Promise<string> => {
         });
     });
 };
+
+export const deleteUser = (uid: string): Promise<void> => {
+    const query = `delete from users where uid = (?);`;
+    return new Promise((resolve, reject) => {
+        database.run(query, uid, (err: Error) => {
+            if (err) {
+                reject(err);
+            }
+
+            databaseCache.clear();
+            resolve();
+        });
+    });
+};

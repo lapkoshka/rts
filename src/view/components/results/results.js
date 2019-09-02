@@ -1,5 +1,6 @@
 const initRaceHistory = require('./history');
 const initTotalInfo = require('./total');
+const initUsers = require('./users');
 
 const TAB = {
     HISTORY: 'history',
@@ -17,6 +18,7 @@ const showTab = id =>
 module.exports = (rootElement, dispatcher) => {
     initRaceHistory(rootElement.querySelector('#history'), dispatcher);
     initTotalInfo(rootElement.querySelector(`#total`), dispatcher);
+    initUsers(rootElement.querySelector('#users'), dispatcher);
 
     const tabs = rootElement.querySelector('.result-tabs');
     hideAllTabs();

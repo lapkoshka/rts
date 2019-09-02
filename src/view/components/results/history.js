@@ -79,7 +79,6 @@ const filterByName = (data, value) => {
 
 module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     const table = rootElement.querySelector('table');
-
     table.addEventListener('click', evt => {
         const { target } = evt;
         const isDeleteIconClick = target.classList.contains('history-row-delete-icon');
