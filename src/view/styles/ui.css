@@ -53,3 +53,16 @@
     padding: 0 10px;
     width: 100%;
 }
+
+.ui-setting-icon,
+.ui-delete-icon {
+    width: 20px;
+    height: 20px;
+    opacity: .3;
+    cursor: pointer;
+}
+
+.ui-setting-icon:hover,
+.ui-delete-icon:hover {
+    opacity: .7;
+}

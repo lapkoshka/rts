@@ -50,7 +50,7 @@ const render = (table, data) => {
         deleteRow.classList.add('history-row-delete');
         const img = document.createElement('img');
         img.src = './view/images/icons/delete.svg';
-        img.classList.add('history-row-delete-icon');
+        img.classList.add('ui-delete-icon');
         img.dataset.id = id;
         deleteRow.appendChild(img);
 
@@ -81,7 +81,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     const table = rootElement.querySelector('table');
     table.addEventListener('click', evt => {
         const { target } = evt;
-        const isDeleteIconClick = target.classList.contains('history-row-delete-icon');
+        const isDeleteIconClick = target.classList.contains('ui-delete-icon');
         if (!isDeleteIconClick) {
             return;
         }
