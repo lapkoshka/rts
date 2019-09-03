@@ -34,7 +34,7 @@ class PortableReader extends BaseReader {
                 const [status, message] = data.toString().trim().split(':');
 
                 if (status === 'tag') {
-                    this.emit(READER_EVENT.TAG, message);
+                    this.emit(READER_EVENT.TAG, { uid: message });
 
                     return;
                 }

@@ -3,7 +3,7 @@ import { ChildProcess } from 'child_process';
 
 export interface RFIDTag {
     uid: string;
-    rssi: number;
+    rssi?: number;
 }
 
 export interface ProtocolMessages {
