@@ -11,8 +11,8 @@ export let mainWindow: BrowserWindow;
 app.on('ready', () => {
     root();
 
-    mainWindow = new BrowserWindow({width: 1600, height: 800});
-    mainWindow.loadFile(path.join(__dirname, '../src/index.html'));
+    mainWindow = new BrowserWindow({ width: 1600, height: 800 });
+    mainWindow.loadFile(path.join(__dirname, '../dist/view/index.html'));
     mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', () => {
