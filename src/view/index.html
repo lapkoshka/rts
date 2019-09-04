@@ -12,6 +12,18 @@
 <div id="root">
 
 </div>
+    <script>
+      const { ipcRenderer } = require('electron');
+      window.windowDispatcher = {
+        sendRendererEvent(type, data) {
+          ipcRenderer.send(type, data);
+        },
+        onRendererEvent(type, listener) {
+          ipcRenderer.on(type, listener)
+        }
+      };
+
+    </script>
     <script src="bundle.js"></script>
 </body>
 
