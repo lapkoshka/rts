@@ -3,18 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <title>RTS</title>
-        <link rel="stylesheet" type="text/css" href="./view/styles/base.css">
-        <link rel="stylesheet" type="text/css" href="./view/styles/ui.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/base.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/ui.css">
 
-        <link rel="stylesheet" type="text/css" href="./view/styles/smartbanner.css">
-        <link rel="stylesheet" type="text/css" href="./view/styles/race.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/smartbanner.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/race.css">
 
-        <link rel="stylesheet" type="text/css" href="./view/styles/results/results.css">
-        <link rel="stylesheet" type="text/css" href="./view/styles/results/tables.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/results/results.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/results/tables.css">
 
-        <link rel="stylesheet" type="text/css" href="./view/styles/rssi.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/rssi.css">
 
-        <link rel="stylesheet" type="text/css" href="./view/styles/reg-fullscreenpopup.css">
+        <link rel="stylesheet" type="text/css" href="./view-deprecated/styles/reg-fullscreenpopup.css">
     </head>
     <body>
         <div class="content">
@@ -112,14 +112,14 @@
     <!-- TEMPORARY DISABLED -->
     <!-- <script src="./view/lib/plotly-latest.min.js"></script> -->
     <script>
-         window.commonLib = require('./view/lib/common-lib');
+         window.commonLib = require('./view-deprecated/lib/common-lib');
          const { ipcRenderer } = require('electron');
 
-         const smartbannerComponent = require('./view/components/smartbanner');
-         const raceComponents = require('./view/components/race');
-         const resultsComponent = require('./view/components/results/results');
-         const regPopupComponent = require('./view/components/reg-popup');
-         const rssiComponent = require('./view/components/rssi');
+         const smartbannerComponent = require('./view-deprecated/components/smartbanner');
+         const raceComponents = require('./view-deprecated/components/race');
+         const resultsComponent = require('./view-deprecated/components/results/results');
+         const regPopupComponent = require('./view-deprecated/components/reg-popup');
+         const rssiComponent = require('./view-deprecated/components/rssi');
 
         const windowDispatcher = {
             sendRendererEvent(type, data) {

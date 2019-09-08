@@ -14,15 +14,14 @@
 </div>
     <script>
       const { ipcRenderer } = require('electron');
-      window.windowDispatcher = {
-        sendRendererEvent(type, data) {
+      window.ipc = {
+        send(type, data) {
           ipcRenderer.send(type, data);
         },
-        onRendererEvent(type, listener) {
+        on(type, listener) {
           ipcRenderer.on(type, listener)
         }
       };
-
     </script>
     <script src="bundle.js"></script>
 </body>

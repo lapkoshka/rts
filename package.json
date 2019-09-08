@@ -9,7 +9,9 @@
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "watch": "tsc -w",
-    "start": "electron ./dist/index.js",
+    "start": "webpack && electron ./dist/index.js",
+    "start-old": "OLD_VIEW=true electron ./dist/index.js",
+    "watch": "webpack",
     "postinstall": "install-app-deps"
   },
   "author": "",

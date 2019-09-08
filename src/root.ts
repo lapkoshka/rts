@@ -1,5 +1,5 @@
 import { updateUsers } from './controllers/results/users';
-import rootDispatcher from './modules/dispatcher/root-dispatcher';
+// import rootDispatcher from './modules/dispatcher/root-dispatcher';
 import { updateRaceHistory } from './controllers/results/history';
 import { updateTotalInfo } from './controllers/results/total';
 
@@ -12,16 +12,16 @@ import initRegistrationController from './controllers/registration/controller';
 import initSmartbannerController from './controllers/smartbanner/controller';
 import initResultsController from './controllers/results/controller';
 
-const waitView = (): Promise<void> => {
-    return new Promise((resolve) => {
-        rootDispatcher.addPageListener('onViewReady', () => {
-            resolve();
-        });
-    });
-};
+// const waitView = (): Promise<void> => {
+//     return new Promise((resolve) => {
+//         rootDispatcher.addPageListener('onViewReady', () => {
+//             resolve();
+//         });
+//     });
+// };
 
 const root = async (): Promise<void> => {
-    await waitView();
+    // await waitView();
 
     initPortableReaderController();
     initMainReaderController();

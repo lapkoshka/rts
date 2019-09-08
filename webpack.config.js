@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require("webpack");
 
 module.exports = {
     mode: 'development',
@@ -26,5 +27,10 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new webpack.ExternalsPlugin('commonjs', [
+            'electron'
+        ])
+    ],
     watch: false,
 };

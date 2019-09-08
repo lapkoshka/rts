@@ -1,0 +1,35 @@
+$bg-color: #f2f1f0;
+
+//@font-face {
+//    font-family: 'OpenSans';
+//    src: url('../static/fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+//}
+//
+//@font-face {
+//    font-family: 'OpenSans SemiBold';
+//    src: url('../static/fonts/Open_Sans/OpenSans-SemiBold.ttf') format('truetype');
+//}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'OpenSans';
+    padding: 32px 16px;
+    background: $bg-color;
+    height: 100%;
+}
+
+.app-layout {
+    display: flex;
+}
+
+.app-layout-left {
+    width: 300px;
+}
+
+.app-layout-right {
+    width: 300px;
+    flex-grow: 1;
+}
