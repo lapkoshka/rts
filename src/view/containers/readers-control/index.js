@@ -1,7 +1,6 @@
 import React from 'react';
 import ReaderControl from '../../components/readers-control';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { setMainReaderStatus, setPortableReaderStatus } from '../../store/readers-control'
 import { ipcRenderer as ipc} from "electron";
 import store from '../../store';

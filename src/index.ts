@@ -14,7 +14,7 @@ const PATH_TO_HTML_PAGE = process.env.OLD_VIEW ?
 app.on('ready', () => {
     root();
 
-    mainWindow = new BrowserWindow({ width: 1600, height: 800 });
+    mainWindow = new BrowserWindow({ width: 1200, height: 800 });
     mainWindow.loadFile(path.join(__dirname, PATH_TO_HTML_PAGE));
     mainWindow.webContents.openDevTools();
 

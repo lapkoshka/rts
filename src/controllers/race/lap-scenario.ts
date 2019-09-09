@@ -5,11 +5,12 @@ import { UserData } from '../../modules/database/users';
 import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
-import { lapViewController } from './view-controller';
+import { updateRaceInfoView } from './view';
 
-interface Laps {
+export interface Laps {
     [key: string]: Lap;
 }
+
 const currentLaps: Laps = {};
 
 export const getLap = async (tag: RFIDTag): Promise<Lap> => {
@@ -31,11 +32,12 @@ const lapEventHandler = (lap: Lap) => {
 
     if (finishTrace && finishTrace.completed) {
         insertRace(lap.user.uid, lap.getTotalTime());
-        lapViewController.decorateUserAsFinished(lap);
+        // TODO: decorate as finished
+        updateRaceInfoView(currentLaps);
 
-        setTimeout(async () => {
-            await lapViewController.removeUser(lap.user);
+        setTimeout(() => {
             delete currentLaps[lap.user.uid];
+            updateRaceInfoView(currentLaps);
             updateTotalInfo();
             updateRaceHistory();
         }, 2000);
@@ -43,7 +45,7 @@ const lapEventHandler = (lap: Lap) => {
     }
 
     if (startTrace && startTrace.completed) {
-        lapViewController.addUser(lap);
+        updateRaceInfoView(currentLaps);
     }
 };
 

@@ -1,6 +1,10 @@
 import {combineReducers, createStore} from 'redux';
 import readersControl from './readers-control';
+import raceInfo from './race-info';
 
-export default createStore(combineReducers({
+const store = createStore(combineReducers({
   readersControl,
+  raceInfo
 }));
+
+export default store;
