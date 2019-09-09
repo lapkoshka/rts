@@ -2,7 +2,7 @@ import React from 'react';
 import ReaderControl from '../components/readers-control/readers-control';
 import { connect } from 'react-redux';
 import { setMainReaderStatus, setPortableReaderStatus } from '../store/reader-control-actions'
-import { ipcRenderer as ipc} from "electron";
+import { ipcRenderer as ipc} from 'electron';
 import store from '../store';
 
 const mapStateToProps = state => ({
@@ -15,7 +15,6 @@ const mapStateToProps = state => ({
 // const mapDispatchToProps = dispatch => ({
 //   setMainReaderStatus: status => dispatch(setMainReaderStatus(status))
 // });
-
 
 const { dispatch } = store;
 ipc.on('onPortableReaderConnectingStart', () =>
@@ -44,6 +43,5 @@ ipc.on('onMainReaderDisconnected', () =>
 
 ipc.on('onMainReaderIpReceived', (_, message) =>
    console.log(message));
-
 
 export default connect(mapStateToProps)(ReaderControl);
