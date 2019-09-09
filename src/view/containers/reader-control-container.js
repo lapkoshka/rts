@@ -1,9 +1,9 @@
 import React from 'react';
-import ReaderControl from '../../components/readers-control/readers-control';
+import ReaderControl from '../components/readers-control/readers-control';
 import { connect } from 'react-redux';
-import { setMainReaderStatus, setPortableReaderStatus } from '../../store/readers-control/reader-control-actions'
+import { setMainReaderStatus, setPortableReaderStatus } from '../store/reader-control-actions'
 import { ipcRenderer as ipc} from "electron";
-import store from '../../store';
+import store from '../store';
 
 const mapStateToProps = state => ({
   main: state.readersControl.main,

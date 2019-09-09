@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import style from './style.scss';
-import ReadersControlContainer from '../../containers/readers-control/reader-control-container';
-import RaceInfoContainer from '../../containers/race-info/race-info-container';
+import ReadersControlContainer from '../../containers/reader-control-container';
+import RaceInfoContainer from '../../containers/race-info-container';
+import ResultsInfoContainer from '../../containers/results-info-container';
 
 
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
                   <RaceInfoContainer />
                 </div>
                 <div className="app-layout-right">
-                    {/*<ResultsInfo/>*/}
+                    <ResultsInfoContainer />
                 </div>
             </div>
         );

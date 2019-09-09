@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ipcRenderer as ipc} from "electron";
-import store from '../../store';
-import RaceInfo from '../../components/race-info/race-info';
-import { setCurrentRaces } from '../../store/race-info/race-info-actions';
+import store from '../store';
+import RaceInfo from '../components/race-info/race-info';
+import { setCurrentRaces } from '../store/race-info-actions';
 
 const mapStateToProps = state => ({
     currentRaces: state.raceInfo.currentRaces    
