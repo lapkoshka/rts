@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style.scss';
-import Block from '../ui/block';
+import Block from '../ui/block/block';
 
 const ReaderButton = props => (
   <div className="reader-button" onClick={props.onClick}>

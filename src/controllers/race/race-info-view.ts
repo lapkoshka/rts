@@ -1,4 +1,4 @@
-import rootDispatcher from './../../modules/dispatcher/root-dispatcher';
+import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { Laps } from './lap-scenario';
 
 export const updateRaceInfoView = (laps: Laps) => {

@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import Block from '../ui/block';
+import Block from '../ui/block/block';
 
 const getColumns = () => ([
     {

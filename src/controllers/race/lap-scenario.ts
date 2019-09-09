@@ -5,7 +5,7 @@ import { UserData } from '../../modules/database/users';
 import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
-import { updateRaceInfoView } from './view';
+import { updateRaceInfoView } from './race-info-view';
 
 export interface Laps {
     [key: string]: Lap;
