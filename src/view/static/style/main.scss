@@ -20,16 +20,3 @@ body {
     background: $bg-color;
     height: 100%;
 }
-
-.app-layout {
-    display: flex;
-}
-
-.app-layout-left {
-    width: 300px;
-}
-
-.app-layout-right {
-    width: 300px;
-    flex-grow: 1;
-}

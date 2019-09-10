@@ -1,20 +1,20 @@
 export const setMainReaderStatus = status => ({
   type: 'RECEIVE_MAIN_READER_STATUS',
-  status
+  status,
 });
 
 export const setPortableReaderStatus = status => ({
   type: 'RECEIVE_PORTABLE_READER_STATUS',
-  status
+  status,
 });
 
 export const initialState = {
   main: {
-    status: 'disabled'
+    status: 'disabled',
   },
   portable: {
-    status: 'disabled'
-  }
+    status: 'disabled',
+  },
 };
 
 export default (state = initialState, action) => {
@@ -23,17 +23,17 @@ export default (state = initialState, action) => {
        return {
          ...state,
          main: {
-           status: action.status
-         }
+           status: action.status,
+         },
        };
     case 'RECEIVE_PORTABLE_READER_STATUS':
        return {
          ...state,
          portable: {
-           status: action.status
-         }
+           status: action.status,
+         },
        };
     default:
       return state;
   }
-}
+};

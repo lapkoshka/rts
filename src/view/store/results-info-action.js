@@ -5,23 +5,23 @@
 
 export const setRaceHistory = history => ({
     type: 'SET_RACE_HISTORY',
-    history
+    history,
 });
-  
+
 export const initialState = {
     history: [],
     users: [],
-    total: []
+    total: [],
 };
-  
+
 export default (state = initialState, action) => {
     switch (action.type) {
         case 'SET_RACE_HISTORY':
             return {
                 ...state,
-                history: action.history
-            }
+                history: action.history,
+            };
         default:
             return state;
     }
-}
+};

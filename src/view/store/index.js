@@ -6,7 +6,7 @@ import resultsInfo from './results-info-action';
 const store = createStore(combineReducers({
   readersControl,
   raceInfo,
-  resultsInfo
+  resultsInfo,
 }));
 
 export default store;

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { ipcRenderer as ipc} from 'electron';
 import 'antd/dist/antd.css';
+import './static/style/main.scss';
 
 // TEMP UTILS
 window.fakePortableTag = (uid, rssi) =>

@@ -10,7 +10,7 @@
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "watch": "webpack",
-    "start": "npm run cih && webpack && electron ./dist/index.js",
+    "start": "webpack && electron ./dist/index.js",
     "postinstall": "install-app-deps"
   },
   "author": "",
