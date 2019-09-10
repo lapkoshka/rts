@@ -15,12 +15,13 @@ const addKeys = data => data.map((item, index) => ({
     key: index,
 }));
 
-const RaceInfo = props =>
-    (<Block>
-        <Table 
-            columns={getColumns()} 
-            dataSource={addKeys(props.currentRaces)} 
+const RaceInfo = props => (
+    <Block>
+        <Table
+            columns={getColumns()}
+            dataSource={addKeys(props.currentRaces)}
         />
-    </Block>);
+    </Block>
+);
 
 export default RaceInfo;

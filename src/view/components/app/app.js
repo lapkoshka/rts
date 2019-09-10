@@ -6,7 +6,7 @@ import { ipcRenderer as ipc } from 'electron';
 import './app.scss';
 
 const App = props => {
-    useEffect(() => ipc.send('onViewReady'));
+    useEffect(() => ipc.send('viewDidMount'));
 
     return (
         <div className='app-layout'>
