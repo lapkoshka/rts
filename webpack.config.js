@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require("webpack");
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
@@ -25,12 +25,23 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192,
+                        },
+                    },
+                ],
+            },
         ],
     },
     plugins: [
         new webpack.ExternalsPlugin('commonjs', [
-            'electron'
-        ])
+            'electron',
+        ]),
     ],
     watch: false,
 };

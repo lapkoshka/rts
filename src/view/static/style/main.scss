@@ -1,14 +1,14 @@
 $bg-color: #f2f1f0;
 
-//@font-face {
-//    font-family: 'OpenSans';
-//    src: url('../static/fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
-//}
-//
-//@font-face {
-//    font-family: 'OpenSans SemiBold';
-//    src: url('../static/fonts/Open_Sans/OpenSans-SemiBold.ttf') format('truetype');
-//}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'OpenSans SemiBold';
+    src: url('../fonts/Open_Sans/OpenSans-SemiBold.ttf') format('truetype');
+}
 
 html {
     height: 100%;
