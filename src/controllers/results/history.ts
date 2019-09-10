@@ -5,8 +5,9 @@ import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 export const updateRaceHistory = (): void => {
     getRaces().then((raceData: RaceData[]) => {
         const updateData = raceData.map((race: RaceData) => ({
-          ...race,
-          time: toHumanReadableTime(race.time),
+            ...race,
+            username: race.firstname + ' ' + race.lastname,
+            time: toHumanReadableTime(race.time),
         }));
         rootDispatcher.sendEvent('onRaceHistoryUpdate', updateData);
     }).catch((err: Error) => {

@@ -25,9 +25,14 @@ const renderRaceHistory = history => {
             dataIndex: 'timestamp',
             key: 'date',
         }];
+
+    const historyWithKeys = history.map(item => ({
+        ...item,
+        key: item.id,
+    }));
     return (<Table
         columns={columns}
-        dataSource={history}
+        dataSource={historyWithKeys}
     />);
 };
 

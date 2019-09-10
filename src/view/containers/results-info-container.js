@@ -14,4 +14,4 @@ const { dispatch } = store;
 ipc.on('onRaceHistoryUpdate', (_, history) =>
     dispatch(setRaceHistory(history)));
 
-export default connect()(ResultsInfo);
+export default connect(mapStateToProps)(ResultsInfo);
