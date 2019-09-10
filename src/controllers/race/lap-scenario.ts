@@ -6,6 +6,7 @@ import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
 import { updateRaceInfoView } from './race-info-view';
+import { lapViewController } from './view-controller-deprecated';
 
 export interface Laps {
     [key: string]: Lap;
@@ -32,12 +33,28 @@ const lapEventHandler = (lap: Lap) => {
 
     if (finishTrace && finishTrace.completed) {
         insertRace(lap.user.uid, lap.getTotalTime());
-        // TODO: decorate as finished
-        updateRaceInfoView(currentLaps);
 
-        setTimeout(() => {
-            delete currentLaps[lap.user.uid];
+        // TODO: Should be remove after migrate to react
+        if (process.env.OLD_VIEW) {
+            lapViewController.decorateUserAsFinished(lap);
+        } else {
+            // TODO: decorate as finished
             updateRaceInfoView(currentLaps);
+        }
+
+        setTimeout(async () => {
+            // TODO: Should be remove after migrate to react
+            if (process.env.OLD_VIEW) {
+                await lapViewController.removeUser(lap.user);
+            }
+
+            delete currentLaps[lap.user.uid];
+
+            // TODO: Should be remove after migrate to react
+            if (!process.env.OLD_VIEW) {
+                updateRaceInfoView(currentLaps);
+            }
+
             updateTotalInfo();
             updateRaceHistory();
         }, 2000);
@@ -45,7 +62,12 @@ const lapEventHandler = (lap: Lap) => {
     }
 
     if (startTrace && startTrace.completed) {
-        updateRaceInfoView(currentLaps);
+        // TODO: Should be remove after migrate to react
+        if (process.env.OLD_VIEW) {
+            lapViewController.addUser(lap);
+        } else {
+            updateRaceInfoView(currentLaps);
+        }
     }
 };
 

@@ -8,3 +8,4 @@ dist/
 core/*/*/bin
 core/*/*/obj
 .DS_Store
+.env

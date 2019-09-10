@@ -5,6 +5,8 @@ import root from './root';
 import * as path from 'path';
 import { gracefulShutdown } from './lib/service';
 import { closeDatabase } from './modules/database/database';
+import { config } from 'dotenv';
+config();
 
 export let mainWindow: BrowserWindow;
 
