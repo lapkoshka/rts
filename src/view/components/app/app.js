@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import ReadersControlContainer from '../../containers/reader-control-container';
-import RaceInfoContainer from '../../containers/race-info-container';
-import ResultsInfoContainer from '../../containers/results-info-container';
+import ReadersControlContainer from '../readers-control/reader-control-container';
+import RaceInfoContainer from '../race-info/race-info-container';
+import ResultsInfoContainer from '../results-info/results-info-container';
 import { ipcRenderer as ipc } from 'electron';
 import './app.scss';
 

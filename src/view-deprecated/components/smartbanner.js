@@ -21,7 +21,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     });
 
     mainReaderButton.addEventListener('click', () => {
-       sendRendererEvent('mainReaderTriggerClick');
+        sendRendererEvent('mainReaderTriggerClick');
     });
 
     onRendererEvent('onPortableReaderConnectingStart', _ => {

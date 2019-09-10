@@ -1,40 +1,9 @@
 import React from 'react';
-import { Tabs, Table } from 'antd';
+import { Tabs } from 'antd';
 import Block from '../ui/block/block';
+import renderRaceHistory from './tabs/history';
+import renderUsers from './tabs/users';
 const { TabPane } = Tabs;
-
-const renderRaceHistory = history => {
-    const columns = [
-        {
-            title: 'N',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Имя',
-            dataIndex: 'username',
-            key: 'username',
-        },
-        {
-            title: 'Время',
-            dataIndex: 'time',
-            key: 'time',
-        },
-        {
-            title: 'Дата',
-            dataIndex: 'timestamp',
-            key: 'date',
-        }];
-
-    const historyWithKeys = history.map(item => ({
-        ...item,
-        key: item.id,
-    }));
-    return (<Table
-        columns={columns}
-        dataSource={historyWithKeys}
-    />);
-};
 
 const ResultsInfo = props => (
     <Block>
@@ -42,10 +11,10 @@ const ResultsInfo = props => (
             <TabPane tab='История' key='1'>
                 { renderRaceHistory(props.history) }
             </TabPane>
-            <TabPane tab='Tab 2' key='2'>
-                Content of Tab Pane 2
+            <TabPane tab='Участники' key='2'>
+                { renderUsers(props.users, props.usersActions) }
             </TabPane>
-            <TabPane tab='Tab 3' key='3'>
+            <TabPane tab='Итого' key='3'>
                 Content of Tab Pane 3
             </TabPane>
         </Tabs>

@@ -1,9 +1,9 @@
 import React from 'react';
-import ReaderControl from '../components/readers-control/readers-control';
+import ReaderControl from './readers-control';
 import { connect } from 'react-redux';
-import { setMainReaderStatus, setPortableReaderStatus } from '../store/reader-control-actions';
+import { setMainReaderStatus, setPortableReaderStatus } from '../../store/reader-control-actions';
 import { ipcRenderer as ipc} from 'electron';
-import store from '../store';
+import store from '../../store';
 
 const mapStateToProps = state => ({
   main: state.readersControl.main,
@@ -11,10 +11,6 @@ const mapStateToProps = state => ({
   triggerMainReader: () => ipc.send('mainReaderTriggerClick'),
   triggerPortableReader: () => ipc.send('portableReaderTriggerClick'),
 });
-
-// const mapDispatchToProps = dispatch => ({
-//   setMainReaderStatus: status => dispatch(setMainReaderStatus(status))
-// });
 
 const { dispatch } = store;
 ipc.on('onPortableReaderConnectingStart', () =>
