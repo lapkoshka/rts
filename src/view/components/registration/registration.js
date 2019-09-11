@@ -4,6 +4,7 @@ import { Modal, Input, Form } from 'antd';
 const ENTER_KEY_CODE = 13;
 
 const Registration = props => {
+    const userForm = {...props.user};
     useEffect(() => {
         const keyupHandler = evt => {
             const isPressEnterWhenPopupOpened =
