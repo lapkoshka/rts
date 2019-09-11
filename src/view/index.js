@@ -7,7 +7,7 @@ import { ipcRenderer as ipc} from 'electron';
 import 'antd/dist/antd.css';
 import './static/style/main.scss';
 
-// TEMP UTILS
+// TODO make a component with fields and buttons
 window.fakePortableTag = (uid, rssi) =>
   ipc.send('fakePortableTag', { uid, rssi });
 window.fakeMainTag = (uid, rssi) =>
