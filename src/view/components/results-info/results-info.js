@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import Block from '../ui/block/block';
 import renderRaceHistory from './tabs/history';
 import renderUsers from './tabs/users';
+import renderTotalInfo from './tabs/total';
 const { TabPane } = Tabs;
 
 const ResultsInfo = props => (
@@ -15,7 +16,7 @@ const ResultsInfo = props => (
                 { renderUsers(props.users, props.usersActions) }
             </TabPane>
             <TabPane tab='Итого' key='3'>
-                Content of Tab Pane 3
+                { renderTotalInfo(props.total) }
             </TabPane>
         </Tabs>
     </Block>

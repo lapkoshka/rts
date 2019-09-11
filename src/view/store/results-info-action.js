@@ -8,6 +8,11 @@ export const setUsers = users => ({
     users,
 });
 
+export const setTotalInfo = info => ({
+   type: 'SET_TOTAL_INFO',
+   info,
+});
+
 export const initialState = {
     history: [],
     users: [],
@@ -25,6 +30,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 users: action.users,
+            };
+        case 'SET_TOTAL_INFO':
+            return {
+                ...state,
+                total: action.info,
             };
         default:
             return state;
