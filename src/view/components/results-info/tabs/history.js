@@ -1,39 +1,30 @@
-import { Table } from 'antd';
+import {Icon, Popconfirm, Table} from 'antd';
 import React from 'react';
+import renderDeleteButton from '../../ui/delete/delete';
 
-const COLUMNS = [
-    {
-        title: 'N',
-        dataIndex: 'id',
-        key: 'id',
-    },
-    {
-        title: 'Имя',
-        dataIndex: 'username',
-        key: 'username',
-    },
-    {
-        title: 'Время',
-        dataIndex: 'time',
-        key: 'time',
-    },
-    {
-        title: 'Дата',
-        dataIndex: 'timestamp',
-        key: 'date',
-    },
-];
-
-const renderRaceHistory = history => {
+const renderRaceHistory = (history, actions) => {
     const historyWithKeys = history.map(item => ({
         ...item,
         key: item.id,
     }));
 
-    return (<Table
-        columns={COLUMNS}
-        dataSource={historyWithKeys}
-    />);
+    const deleteTitle = 'Вы уверены что хотите удалить эту гонку?';
+    return (
+        <Table dataSource={historyWithKeys}>
+            <Table.Column key='id' title='N' dataIndex='id'/>
+            <Table.Column key='username' title='Имя' dataIndex='username'/>
+            <Table.Column key='time' title='Время' dataIndex='time'/>
+            <Table.Column key='date' title='Дата' dataIndex='timestamp'/>
+            <Table.Column
+                key='delete'
+                title='Удаление'
+                render={
+                    text => renderDeleteButton(deleteTitle, () =>
+                        actions.deleteRace(text.id))
+                }
+            />
+        </Table>
+    );
 };
 
 export default renderRaceHistory;

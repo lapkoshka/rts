@@ -9,7 +9,7 @@ const ResultsInfo = props => (
     <Block>
         <Tabs defaultActiveKey='1'>
             <TabPane tab='История' key='1'>
-                { renderRaceHistory(props.history) }
+                { renderRaceHistory(props.history, props.historyActions) }
             </TabPane>
             <TabPane tab='Участники' key='2'>
                 { renderUsers(props.users, props.usersActions) }

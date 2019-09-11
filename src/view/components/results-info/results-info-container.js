@@ -11,6 +11,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    historyActions: {
+        deleteRace: id => ipc.send('onRaceDelete', id),
+    },
     usersActions: {
         deleteUser: uid => ipc.send('onUserDelete', uid),
     },

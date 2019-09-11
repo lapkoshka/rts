@@ -1,16 +1,6 @@
-import { Table, Icon, Popconfirm, message } from 'antd';
+import { Table } from 'antd';
 import React from 'react';
-
-const renderDeleteButton = callback => (
-    <Popconfirm
-        title='Вы уверены что хотите удалить пользователя?'
-        onConfirm={() => message.success('Участник удалён')}
-        okText='Да'
-        cancelText='Нет'
-    >
-        <Icon type='delete' onClick={callback} />
-    </Popconfirm>
-);
+import renderDeleteButton from '../../ui/delete/delete';
 
 const renderUsers = (users, actions) => {
     const usersWithKeys = users.map(item => ({
@@ -18,6 +8,7 @@ const renderUsers = (users, actions) => {
         key: item.uid,
     }));
 
+    const deleteTitle = 'Вы уверены что хотите удалить пользователя?';
     return (
         <Table dataSource={usersWithKeys}>
             <Table.Column key='uid' title='Метка' dataIndex='uid'/>
@@ -26,7 +17,7 @@ const renderUsers = (users, actions) => {
                 key='delete'
                 title='Удаление'
                 render={
-                    text => renderDeleteButton(() =>
+                    text => renderDeleteButton(deleteTitle, () =>
                         actions.deleteUser(text.uid))
                 }
             />
