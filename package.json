@@ -9,7 +9,6 @@
     "br": "npm run build && npm start",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "watch": "webpack",
     "start": "webpack && electron ./dist/index.js",
     "postinstall": "install-app-deps"
   },
