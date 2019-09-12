@@ -9,6 +9,8 @@ jest.setTimeout(10000);
 describe('lap', () => {
     const fakeUser: UserData = {
         uid: '123',
+        firstname: '',
+        lastname: '',
         alreadyRegistred: true,
     };
 

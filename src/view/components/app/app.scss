@@ -1,0 +1,17 @@
+.app-layout {
+    display: flex;
+}
+
+.app-layout-left {
+    width: 300px;
+    margin-right: 16px;
+}
+
+.app-layout-right {
+    width: 300px;
+    flex-grow: 1;
+
+    .ui-block {
+        padding-top: 62px;
+    }
+}

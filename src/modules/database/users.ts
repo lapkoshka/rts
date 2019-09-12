@@ -3,14 +3,16 @@ import { database } from './database';
 
 export interface UserData {
     uid: string;
-    firstname?: string;
-    lastname?: string;
+    firstname: string;
+    lastname: string;
     alreadyRegistred: boolean;
 }
 
 export const getUser = async (uid: string): Promise<UserData> => {
     const query = `select * from users where uid = (?)`;
     const user: UserData = {
+        firstname: '',
+        lastname: '',
         uid,
         alreadyRegistred: false,
     };

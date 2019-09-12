@@ -14,7 +14,7 @@ import initResultsController from './controllers/results/controller';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
-        rootDispatcher.addPageListener('onViewReady', () => {
+        rootDispatcher.addPageListener('viewDidMount', () => {
             resolve();
         });
     });

@@ -4,7 +4,7 @@ const intervals = {};
 const createRow = user => {
     const tr = document.createElement('tr');
     tr.classList.add('race-header');
-    tr.id = user.uid;
+    tr.id = `user-${user.uid}`;
 
     const name = document.createElement('td');
     name.classList.add('race-row-name');
@@ -30,13 +30,13 @@ const addUser = (table, startInfo) => {
 };
 
 const removeUser = (table, user) => {
-    table.querySelector(`#${user.uid}`).remove();
+    table.querySelector(`#user-${user.uid}`).remove();
 };
 
 const decorateUserAsFinished = (table, finishInfo) => {
     const { user, timestamp } = finishInfo;
     clearInterval(intervals[user.uid]);
-    const row = table.querySelector(`#${user.uid}`);
+    const row = table.querySelector(`#user-${user.uid}`);
     row.classList.add('race-header-bold');
 
     row.querySelector('.race-row-time').innerText =

@@ -33,7 +33,7 @@ const render = (table, data) => {
         deleteRow.classList.add('users-row-delete');
         const img = document.createElement('img');
         img.src = './view/images/icons/delete.svg';
-        img.classList.add('users-row-delete-icon');
+        img.classList.add('ui-delete-icon');
         img.dataset.uid = uid;
         deleteRow.appendChild(img);
 
@@ -50,7 +50,7 @@ module.exports = (rootElement, { sendRendererEvent, onRendererEvent }) => {
     table.addEventListener('click', evt => {
 
         const { target } = evt;
-        const isDeleteIconClick = target.classList.contains('users-row-delete-icon');
+        const isDeleteIconClick = target.classList.contains('ui-delete-icon');
         if (!isDeleteIconClick) {
             return;
         }

@@ -6,6 +6,7 @@ export const updateTotalInfo = (): void => {
     getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
         const updateData = userRacesData.map((row: UserRacesData) => ({
                 ...row,
+                username: row.firstname + ' ' + row.lastname,
                 besttime: toHumanReadableTime(row.besttime),
         }));
         rootDispatcher.sendEvent('onTotalInfoUpdate', updateData);
