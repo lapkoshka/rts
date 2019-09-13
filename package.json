@@ -6,10 +6,11 @@
     "ub": "node scripts/updatebin.js",
     "cih": "node scripts/copy-index-html.js",
     "build": "tsc",
-    "br": "npm run build && npm start",
+    "br": "npm run build && npm run vr && npm start",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "start": "webpack && electron ./dist/index.js",
+    "start": "electron ./dist/index.js",
+    "vr": "webpack && npm start",
     "postinstall": "install-app-deps"
   },
   "author": "",
