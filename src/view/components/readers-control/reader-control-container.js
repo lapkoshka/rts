@@ -1,15 +1,36 @@
 import React from 'react';
 import ReaderControl from './readers-control';
 import { connect } from 'react-redux';
-import { setMainReaderStatus, setPortableReaderStatus } from '../../store/reader-control-actions';
+import {
+    showMainReaderSettings,
+    setMainReaderStatus,
+    setPortableReaderStatus,
+    setIpAdress,
+    setIpAuto,
+} from '../../store/reader-control-actions';
 import { ipcRenderer as ipc} from 'electron';
 import store from '../../store';
+import { message } from 'antd';
 
 const mapStateToProps = state => ({
   main: state.readersControl.main,
   portable: state.readersControl.portable,
-  triggerMainReader: () => ipc.send('mainReaderTriggerClick'),
+  mainReaderSettings: state.readersControl.mainReaderSettings,
+  triggerMainReader: settings => ipc.send('mainReaderTriggerClick', settings),
   triggerPortableReader: () => ipc.send('portableReaderTriggerClick'),
+});
+
+const mapDispatchToProps = dispatch => ({
+    mainReaderActions: {
+        showMainReaderSettings: enable => dispatch(showMainReaderSettings(enable)),
+        setIpAddress: address => dispatch(setIpAdress(address)),
+        setIpAuto: enable => {
+            dispatch(setIpAuto(enable));
+            if (enable) {
+                dispatch(setIpAdress('0.0.0.0'));
+            }
+        },
+    },
 });
 
 const { dispatch } = store;
@@ -19,8 +40,10 @@ ipc.on('onPortableReaderConnectingStart', () =>
 ipc.on('onPortableReaderConnected', () =>
   dispatch(setPortableReaderStatus('ok')));
 
-ipc.on('onPortableReaderConnectingFailed', () =>
-  dispatch(setPortableReaderStatus('error')));
+ipc.on('onPortableReaderConnectingFailed', (_, msg) => {
+  dispatch(setPortableReaderStatus('error'));
+  message.error(msg);
+});
 
 ipc.on('onPortableReaderDisconnected', () =>
   dispatch(setPortableReaderStatus('disabled')));
@@ -31,8 +54,10 @@ ipc.on('onMainReaderConnectingStart', () =>
 ipc.on('onMainReaderConnected', () =>
   dispatch(setMainReaderStatus('ok')));
 
-ipc.on('onMainReaderConnectingFailed', () =>
-  dispatch(setMainReaderStatus('error')));
+ipc.on('onMainReaderConnectingFailed', (_, msg) => {
+    dispatch(setMainReaderStatus('error'));
+    message.error(msg);
+});
 
 ipc.on('onMainReaderDisconnected', () =>
   dispatch(setMainReaderStatus('disabled')));
@@ -40,4 +65,4 @@ ipc.on('onMainReaderDisconnected', () =>
 ipc.on('onMainReaderIpReceived', (_, message) =>
    console.log(message));
 
-export default connect(mapStateToProps)(ReaderControl);
+export default connect(mapStateToProps, mapDispatchToProps)(ReaderControl);
