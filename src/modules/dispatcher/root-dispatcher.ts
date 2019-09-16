@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { mainWindow } from '../../index';
+import { mainWindow } from '../../window';
 
 export interface RootDispatcher {
     sendEvent: (type: string, data?: any) => void;
