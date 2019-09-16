@@ -47,6 +47,15 @@
     display: flex;
 }
 
+.readers-main-settings {
+    opacity: .5;
+    padding-top: 2px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
 
 
 
