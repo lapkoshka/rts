@@ -2,6 +2,18 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import BaseReader, { ProtocolMessages, READER_EVENT, RFIDTag } from './base-reader';
 
+export interface MainReaderSettings {
+    ip: {
+        auto: boolean;
+        address: string;
+    };
+    params: {
+        qvalue: string;
+        session: string;
+        scantime: string;
+    };
+}
+
 const Q_VALUE = {
     _1: '1',
     _2: '2',
@@ -32,11 +44,26 @@ const M_READER_MSG: ProtocolMessages = {
     START_LISTEN: 'start_listen\r\n',
 };
 
+const defaultSettings: MainReaderSettings = {
+    ip: {
+        auto: true,
+        address: '0.0.0.0',
+    },
+    params: {
+        qvalue: Q_VALUE._4,
+        session: SESSION.AUTO,
+        scantime: '20',
+    },
+};
+
 class MainReader extends BaseReader {
+    public settings: MainReaderSettings;
+
     constructor(path: string) {
         super(path);
         this.type = 'MAIN_READER';
         this.PROTOCOL = M_READER_MSG;
+        this.settings = defaultSettings;
     }
 
     public open(): Promise<string> {
@@ -47,8 +74,10 @@ class MainReader extends BaseReader {
         }
 
         return new Promise((resolve, reject) => {
-            const scantime = '20';
-            const args = [Q_VALUE._4, SESSION.AUTO, scantime];
+            const { qvalue, session, scantime } = this.settings.params;
+            const { address } = this.settings.ip;
+            const args = [qvalue, session, scantime, address];
+
             this.process = spawn(this.exeFilePath, args);
             this.process.stdout.on('data', (data: string) => {
                 if (!this.isConnected) {

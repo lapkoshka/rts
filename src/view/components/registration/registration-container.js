@@ -4,7 +4,7 @@ import {
     closeRegistrationPopup,
     openRegistrationPopup,
     setRegistrationUser,
-} from '../../store/registration';
+} from '../../store/registration-actions';
 import { ipcRenderer as ipc } from 'electron';
 import store from '../../store';
 

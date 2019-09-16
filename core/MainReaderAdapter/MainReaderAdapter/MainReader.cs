@@ -14,7 +14,7 @@ namespace MainReaderAdapter
     public class MainReader
     {
         private static RFIDCallBack delegateRFIDCallBack;
-        public bool Connect(string ipAddress)
+        public ErrorCode Connect(string ipAddress)
         {
             int nPort = 27011;
             byte fComAdr = 255;
@@ -24,13 +24,9 @@ namespace MainReaderAdapter
             {
                 delegateRFIDCallBack = new RFIDCallBack(RFIDTagCallback);
                 RWDev.InitRFIDCallBack(delegateRFIDCallBack, true, frmPortIndex);
-                return true;
             }
-            else
-            {
-                //Console.Write(fCmdRet.GetDescription());
-                return false;
-            }
+
+            return fCmdRet;
         }
         
         protected virtual void RFIDTagCallback(IntPtr p, Int32 nEvt)

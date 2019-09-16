@@ -10,56 +10,88 @@ namespace MainReaderAdapter
     {
         static void Main(string[] args)
         {
-            Search search = new Search();
-            bool isFound = search.Start();
-            if (isFound)
+            ReaderConnectingParams parameters = parseArgsAsParams(args);
+
+            if (parameters.isIpUnknown())
             {
-                Console.WriteLine("found:" + search.Ip);
-                Connect(search.Ip, args);
+                Search search = new Search();
+                bool isFound = search.Start();
+                if (isFound)
+                {
+                    parameters.ip = search.Ip;
+                    Console.WriteLine("found:" + parameters.ip);
+                }
+                else
+                {
+                    Console.WriteLine("error:Reader does not found");
+                    return;
+                }
             }
-            else
-            {
-                Console.WriteLine("error:Reader does not found");
-            }
+
+            Connect(parameters);
         }
 
-        static void Connect(string ip, string[] args)
+        static void Connect(ReaderConnectingParams parameters)
         {
             MainReader reader = new MainReader();
-            //1 - 15
-            byte Qvalue = 4;
 
-            // 0,1,3, 255: auto
-            byte Session = 255;
 
-            //20 * 100ms, total 0 - 255
-            byte Scantime = 20;
+            ErrorCode response = reader.Connect(parameters.ip);
+            if (response == ErrorCode.Success)
+            {
+                Console.WriteLine("ok:connected");
+                string input = Console.ReadLine();
+                if (input == "start_listen")
+                {
+                    reader.ListenReader(parameters.qvalue, parameters.session, parameters.scantime);
+                }
+
+                return;
+            }
+            Console.WriteLine("error:" + response);
+        }
+
+        static ReaderConnectingParams parseArgsAsParams(string[] args)
+        {
+            byte qvalue = 4;
+            byte session = 255;
+            byte scantime = 20;
+            string ip = "";
 
             if (args.Length > 0)
             {
-                byte.TryParse(args[0], out Qvalue);
-                byte.TryParse(args[1], out Session);
-                byte.TryParse(args[2], out Scantime);
+                byte.TryParse(args[0], out qvalue);
+                byte.TryParse(args[1], out session);
+                byte.TryParse(args[2], out scantime);
+                ip = args[3];
             }
             else
             {
                 Console.WriteLine("error:missed arguments");
             }
 
-            bool status = reader.Connect(ip);
-            if (status)
-            {
-                Console.WriteLine("ok:connected");
-                string input = Console.ReadLine();
-                if (input == "start_listen")
-                {
-                    reader.ListenReader(Qvalue, Session, Scantime);
-                }
-            }
-            else
-            {
-                Console.WriteLine("error:reader does not connected");
-            }
+            return new ReaderConnectingParams(qvalue, session, scantime, ip);
+        }
+    }
+
+    public class ReaderConnectingParams
+    {
+        public byte qvalue;
+        public byte session;
+        public byte scantime;
+        public string ip;
+
+        public ReaderConnectingParams(byte Qvalue, byte Session, byte Scantime, string Ip)
+        {
+            qvalue = Qvalue;
+            session = Session;
+            scantime = Scantime;
+            ip = Ip;
+        }
+
+        public bool isIpUnknown()
+        {
+            return ip == "0.0.0.0" || ip == "";
         }
     }
 }

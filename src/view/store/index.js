@@ -2,7 +2,7 @@ import {combineReducers, createStore} from 'redux';
 import readersControl from './reader-control-actions';
 import raceInfo from './race-info-actions';
 import resultsInfo from './results-info-action';
-import registration from './registration';
+import registration from './registration-actions';
 
 const store = createStore(combineReducers({
     readersControl,

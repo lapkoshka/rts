@@ -1,5 +1,7 @@
 import React from 'react';
 import Block from '../ui/block/block';
+import ReaderSettings from './reader-settings/reader-settings';
+import { Icon } from 'antd';
 import './readers-control.scss';
 
 const ReaderButton = props => (
@@ -12,15 +14,37 @@ const ReaderButton = props => (
 const ReaderControl = props => (
   <Block>
     <div className='readers-buttons'>
-      <ReaderButton
-        name='Главный считыватель'
-        status={props.main.status}
-        onClick={props.triggerMainReader}/>
+        <div className='readers-main-wrapper'>
+            <ReaderButton
+                name='Главный считыватель'
+                status={props.main.status}
+                onClick={() => props.triggerMainReader({
+                    ip: props.mainReaderSettings.ip,
+                    params: props.mainReaderSettings.params,
+                })}
+            />
 
-      <ReaderButton
-        name='Портативный считыватель'
-        status={props.portable.status}
-        onClick={props.triggerPortableReader}/>
+            <div onClick={() => props.mainReaderActions.showMainReaderSettings(true)}>
+                <Icon
+                    type='setting'
+                    style={{
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                    }}
+                />
+            </div>
+        </div>
+
+        <ReaderButton
+            name='Портативный считыватель'
+            status={props.portable.status}
+            onClick={props.triggerPortableReader}
+        />
+
+        <ReaderSettings
+            settings={props.mainReaderSettings}
+            actions={props.mainReaderActions}
+        />
     </div>
   </Block>
 );

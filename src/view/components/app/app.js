@@ -5,7 +5,6 @@ import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
 import { ipcRenderer as ipc } from 'electron';
 import { connect } from 'react-redux';
-
 import './app.scss';
 
 const App = props => {
