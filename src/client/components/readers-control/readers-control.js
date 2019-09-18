@@ -24,7 +24,10 @@ const ReaderControl = props => (
                 })}
             />
 
-            <div onClick={() => props.mainReaderActions.showMainReaderSettings(true)}>
+            <div
+                className='readers-main-settings'
+                onClick={() => props.mainReaderActions.showMainReaderSettings(true)}
+            >
                 <Icon
                     type='setting'
                     style={{
@@ -41,10 +44,12 @@ const ReaderControl = props => (
             onClick={props.triggerPortableReader}
         />
 
-        <ReaderSettings
-            settings={props.mainReaderSettings}
-            actions={props.mainReaderActions}
-        />
+        {props.mainReaderSettings.shouldShowPopup && (
+            <ReaderSettings
+                settings={props.mainReaderSettings}
+                actions={props.mainReaderActions}
+            />
+        )}
     </div>
   </Block>
 );

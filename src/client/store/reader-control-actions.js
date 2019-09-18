@@ -23,6 +23,21 @@ export const setIpAuto = enable => ({
     enable,
 });
 
+export const setMainReaderParams = params => ({
+    type: 'SET_MAIN_READER_PARAMS',
+    params,
+});
+
+export const setDefaultMainReaderParams = () => ({
+    type: 'SET_DEFAULT_MAIN_READER_PARAMS',
+});
+
+const initialMainReaderParams = {
+    qvalue: '4',
+    session: '255',
+    scantime: '20',
+};
+
 export const initialState = {
   main: {
     status: 'disabled',
@@ -36,13 +51,7 @@ export const initialState = {
         auto: true,
         address: '0.0.0.0',
     },
-    params: {
-        params: {
-            qvalue: '4',
-            session: '255',
-            scantime: '20',
-        },
-    },
+    params: initialMainReaderParams,
   },
 };
 
@@ -90,6 +99,22 @@ export default (state = initialState, action) => {
                       ...state.mainReaderSettings.ip,
                       auto: action.enable,
                   },
+              },
+          };
+      case 'SET_MAIN_READER_PARAMS':
+          return {
+              ...state,
+              mainReaderSettings: {
+                  ...state.mainReaderSettings,
+                  params: action.params,
+              },
+          };
+      case 'SET_DEFAULT_MAIN_READER_PARAMS':
+          return {
+              ...state,
+              mainReaderSettings: {
+                  ...state.mainReaderSettings,
+                  params: initialMainReaderParams,
               },
           };
     default:

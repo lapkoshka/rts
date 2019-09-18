@@ -6,6 +6,8 @@ import {
     setPortableReaderStatus,
     setIpAdress,
     setIpAuto,
+    setMainReaderParams,
+    setDefaultMainReaderParams,
 } from '../../store/reader-control-actions';
 import store from '../../store';
 import { message } from 'antd';
@@ -29,6 +31,8 @@ const mapDispatchToProps = dispatch => ({
                 dispatch(setIpAdress('0.0.0.0'));
             }
         },
+        setMainReaderParams: params => dispatch(setMainReaderParams(params)),
+        setDefaultMainReaderParams: () => dispatch(setDefaultMainReaderParams()),
     },
 });
 
