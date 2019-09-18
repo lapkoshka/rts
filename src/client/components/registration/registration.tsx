@@ -12,8 +12,7 @@ interface RegistrationProps {
 const Registration: React.FC<RegistrationProps> = React.memo((props) => {
     const userForm = {...props.user};
 
-    const keyUpHandler = React.useCallback(
-        (evt: any) => {
+    const keyUpHandler = React.useCallback((evt: KeyboardEvent) => {
             const isPressEnterWhenPopupOpened =
                 evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
             if (isPressEnterWhenPopupOpened) {

@@ -6,7 +6,6 @@ import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
 import { updateRaceInfoView } from './race-info-view';
-import { lapViewController } from './view-controller-deprecated';
 
 export interface Laps {
     [key: string]: Lap;
@@ -14,7 +13,7 @@ export interface Laps {
 
 const currentLaps: Laps = {};
 
-export const getLap = async (tag: RFIDTag): Promise<Lap> => {
+export const getLap = async (tag: RFIDTag): Promise<Lap|undefined> => {
     const lap = currentLaps[tag.uid];
     if (lap) {
         return lap;
@@ -33,28 +32,10 @@ const lapEventHandler = (lap: Lap) => {
 
     if (finishTrace && finishTrace.completed) {
         insertRace(lap.user.uid, lap.getTotalTime());
-
-        // TODO: Should be remove after migrate to react
-        if (process.env.OLD_VIEW) {
-            lapViewController.decorateUserAsFinished(lap);
-        } else {
-            // TODO: decorate as finished
-            updateRaceInfoView(currentLaps);
-        }
-
+        updateRaceInfoView(currentLaps);
         setTimeout(async () => {
-            // TODO: Should be remove after migrate to react
-            if (process.env.OLD_VIEW) {
-                await lapViewController.removeUser(lap.user);
-            }
-
             delete currentLaps[lap.user.uid];
-
-            // TODO: Should be remove after migrate to react
-            if (!process.env.OLD_VIEW) {
-                updateRaceInfoView(currentLaps);
-            }
-
+            updateRaceInfoView(currentLaps);
             updateTotalInfo();
             updateRaceHistory();
         }, 2000);
@@ -62,12 +43,7 @@ const lapEventHandler = (lap: Lap) => {
     }
 
     if (startTrace && startTrace.completed) {
-        // TODO: Should be remove after migrate to react
-        if (process.env.OLD_VIEW) {
-            lapViewController.addUser(lap);
-        } else {
-            updateRaceInfoView(currentLaps);
-        }
+        updateRaceInfoView(currentLaps);
     }
 };
 

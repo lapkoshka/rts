@@ -19,11 +19,7 @@ export default () => {
     });
 
     rootDispatcher.addPageListener('mainReaderTriggerClick', (_, settings: MainReaderSettings) => {
-        // TODO: condition for support OLD_VIEW
-        if (settings) {
-            mainReader.settings = settings;
-        }
-
+        mainReader.settings = settings;
         switchReader(mainReader);
     });
 };

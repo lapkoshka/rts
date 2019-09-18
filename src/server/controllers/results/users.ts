@@ -8,7 +8,7 @@ export const updateUsers = (): void => {
           username: user.firstname + ' ' + user.lastname,
       }));
 
-      rootDispatcher.sendEvent('onUsersDataUpdate', process.env.OLD_VIEW ? users : updatedData);
+      rootDispatcher.sendEvent('onUsersDataUpdate', updatedData);
   }).catch((err: Error) => {
       throw err;
   });

@@ -21,18 +21,18 @@ Run `npm install` for install dependencies
 в корень проекта в папку bin
 
 - Либо собери в Visual Studio файлы проектов `.sln` из папки `core`, затем скопируй скомпилированные приложения
-и библиотеки в папку bin командой  `npm run ub` скопирует скомпилированные бинари приложений ядра в папку bin 
-                                                (выполнять после перекомпиляции .NET приложений)
+и библиотеки в папку bin командой  `npm run ub` скопирует скомпилированные бинари приложений ядра в папку bin
+(выполнять после перекомпиляции .NET приложений)
 
 ## Development
 
 For development first run backend services by command
 
-`npm server-watch`
+`npm run server-watch`
 
 Then run client and electron
 
-`npm dev`
+`npm run dev`
 
 Enjoy developing ;)
 
@@ -48,7 +48,7 @@ Backend services restarts automatically by tsc watcher, but `electron` imports o
 ## Main concepts
 
 ### Database
-- Если не ставится sqlite3:
+- If sqlite3 was crashed with exception: \node_modules\sqlite3\lib\binding\electron-v2.0-win32-x64\node_sqlite3.node' run `install-app-deps`
 https://stackoverflow.com/questions/32504307/how-to-use-sqlite3-module-with-electron
 
 - В качестве обозревателя на Windows отлично подходит SQLite Database Browser

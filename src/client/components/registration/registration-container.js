@@ -7,10 +7,7 @@ import {
 } from '../../store/registration-actions';
 import store from '../../store';
 
-const electron = window.require('electron');
-//const fs = electron.remote.require('fs');
-
-const ipc  = electron.ipcRenderer;
+const ipc = window.require('electron').ipcRenderer;
 
 const mapStateToProps = state => ({
     shouldShowPopup: state.registration.shouldShowPopup,

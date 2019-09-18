@@ -6,10 +6,7 @@ import {
     setUsers,
     setTotalInfo,
 } from '../../store/results-info-action';
-const electron = window.require('electron');
-//const fs = electron.remote.require('fs');
-
-const ipc  = electron.ipcRenderer;
+const ipc = window.require('electron').ipcRenderer;
 
 const mapStateToProps = state => ({
     history: state.resultsInfo.history,

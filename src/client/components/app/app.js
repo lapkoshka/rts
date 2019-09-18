@@ -5,10 +5,7 @@ import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
 import { connect } from 'react-redux';
 import './app.scss';
-const electron = window.require('electron');
-//const fs = electron.remote.require('fs');
-
-const ipc  = electron.ipcRenderer;
+const ipc = window.require('electron').ipcRenderer;
 
 const App = props => {
     useEffect(() => ipc.send('viewDidMount'));

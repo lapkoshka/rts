@@ -16,7 +16,7 @@ const ReaderControl = props => (
     <div className='readers-buttons'>
         <div className='readers-main-wrapper'>
             <ReaderButton
-                name='Главный считыватель'
+                name='Главный считыватель!'
                 status={props.main.status}
                 onClick={() => props.triggerMainReader({
                     ip: props.mainReaderSettings.ip,
