@@ -11,6 +11,9 @@ import initFakeTagController from './controllers/fake-tag/controller';
 import initRegistrationController from './controllers/registration/controller';
 import initSmartbannerController from './controllers/smartbanner/controller';
 import initResultsController from './controllers/results/controller';
+import { mainReader } from './modules/readers/main-reader';
+import { portableReader } from './modules/readers/portable-reader';
+import { closeDatabase } from './modules/database/database';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -20,7 +23,7 @@ const waitView = (): Promise<void> => {
     });
 };
 
-const root = async (): Promise<void> => {
+const start = async (): Promise<void> => {
     await waitView();
 
     initPortableReaderController();
@@ -38,4 +41,13 @@ const root = async (): Promise<void> => {
     updateUsers();
 };
 
-export default root;
+const shutdown = () => {
+    mainReader.kill();
+    portableReader.kill();
+    closeDatabase();
+};
+
+export const services = {
+    start,
+    shutdown,
+};

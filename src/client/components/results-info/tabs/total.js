@@ -1,5 +1,4 @@
 import {Table} from 'antd';
-import renderDeleteButton from '../../ui/delete/delete';
 import React from 'react';
 
 const renderTotalInfo = info => {

@@ -1,21 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Modal, Input, Form } from 'antd';
 
 const ENTER_KEY_CODE = 13;
 
-const Registration = props => {
+interface RegistrationProps {
+    shouldShowPopup: boolean;
+    user: any;
+    actions: any;
+}
+
+const Registration: React.FC<RegistrationProps> = React.memo((props) => {
     const userForm = {...props.user};
-    useEffect(() => {
-        const keyupHandler = evt => {
+
+    const keyUpHandler = React.useCallback(
+        (evt: any) => {
             const isPressEnterWhenPopupOpened =
                 evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
             if (isPressEnterWhenPopupOpened) {
                 props.actions.submitUser(userForm);
             }
-        };
+        },
+        [props.actions, props.shouldShowPopup, userForm],
+    );
 
-        document.addEventListener('keyup', keyupHandler);
-        return () => document.removeEventListener('keyup', keyupHandler);
+    useEffect(() => {
+        document.addEventListener('keyup', keyUpHandler);
+        return () => document.removeEventListener('keyup', keyUpHandler);
     });
 
     return (
@@ -51,6 +61,6 @@ const Registration = props => {
             </div>
         </Modal>
     );
-};
+});
 
 export default Registration;

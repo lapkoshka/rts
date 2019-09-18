@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "src",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "target": "es6"
+  },
+  "include": [
+    "src/server"
+  ],
+  "exclude": [
+    "src/client"
+  ]
+}

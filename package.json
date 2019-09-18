@@ -9,6 +9,8 @@
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "electron": "electron .",
+    "server": "tsc -p tsconfig.server.json",
+    "server-watch": "tsc -p tsconfig.server.json -w",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "dev": "nf start -p 3000"

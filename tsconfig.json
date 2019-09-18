@@ -26,9 +26,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "outDir": "dist"
+    "outDir": "build"
   },
   "include": [
-    "src"
+    "src/client",
+  ],
+  "exclude": [
+    "src/server"
   ]
 }

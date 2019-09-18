@@ -1,4 +1,4 @@
-import {Icon, Popconfirm, Table} from 'antd';
+import { Table } from 'antd';
 import React from 'react';
 import renderDeleteButton from '../../ui/delete/delete';
 

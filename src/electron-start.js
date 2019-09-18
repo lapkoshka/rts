@@ -1,19 +1,23 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
-//import { mainReader } from './modules/readers/main-reader';
-//import { portableReader } from './modules/readers/portable-reader';
-//import root from './root';
-//import { gracefulShutdown } from './lib/service';
-//import { closeDatabase } from './modules/database/database';
+const { services } = require('../dist/services');
 
-const {app, BrowserWindow} = electron;
+const { app, BrowserWindow } = electron;
 
 let mainWindow;
 
 function createWindow() {
+    services.start();
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        title: 'main',
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
 
     // and load the index.html of the app.
     const startUrl = process.env.ELECTRON_START_URL || url.format({
@@ -34,7 +38,7 @@ function createWindow() {
     });
 }
 
-// This method will be called when Electron has finished
+// This method will be called when Electron has finished\
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
@@ -46,6 +50,18 @@ app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         app.quit()
     }
+
+    services.shutdown();
+});
+
+// Close application over CTRL+C or kill process
+app.on('before-quit', () => {
+    services.shutdown()
+});
+
+// Close over kill process
+app.on('will-quit', () => {
+    services.shutdown();
 });
 
 app.on('activate', function () {
@@ -58,8 +74,3 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-//gracefulShutdown(app,  () => {
-//    mainReader.kill();
-//    portableReader.kill();
-//    closeDatabase();
-//});

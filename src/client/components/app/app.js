@@ -3,9 +3,12 @@ import ReadersControlContainer from '../readers-control/reader-control-container
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
-import { ipcRenderer as ipc } from 'electron';
 import { connect } from 'react-redux';
 import './app.scss';
+const electron = window.require('electron');
+//const fs = electron.remote.require('fs');
+
+const ipc  = electron.ipcRenderer;
 
 const App = props => {
     useEffect(() => ipc.send('viewDidMount'));

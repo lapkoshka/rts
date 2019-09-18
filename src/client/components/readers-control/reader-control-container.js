@@ -1,4 +1,3 @@
-import React from 'react';
 import ReaderControl from './readers-control';
 import { connect } from 'react-redux';
 import {
@@ -8,9 +7,12 @@ import {
     setIpAdress,
     setIpAuto,
 } from '../../store/reader-control-actions';
-import { ipcRenderer as ipc} from 'electron';
 import store from '../../store';
 import { message } from 'antd';
+const electron = window.require('electron');
+//const fs = electron.remote.require('fs');
+
+const ipc  = electron.ipcRenderer;
 
 const mapStateToProps = state => ({
   main: state.readersControl.main,

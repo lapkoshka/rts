@@ -1,12 +1,15 @@
 import { connect } from 'react-redux';
 import ResultsInfo from './results-info';
-import { ipcRenderer as ipc } from 'electron';
 import store from '../../store';
 import {
     setRaceHistory,
     setUsers,
     setTotalInfo,
 } from '../../store/results-info-action';
+const electron = window.require('electron');
+//const fs = electron.remote.require('fs');
+
+const ipc  = electron.ipcRenderer;
 
 const mapStateToProps = state => ({
     history: state.resultsInfo.history,

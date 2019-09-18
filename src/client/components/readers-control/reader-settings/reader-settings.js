@@ -1,5 +1,4 @@
 import { Drawer, Switch, Input, Form } from 'antd';
-import Block from '../../ui/block/block';
 import React from 'react';
 import './reader-settings.scss';
 
