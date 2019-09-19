@@ -36,6 +36,14 @@ Then run client and electron
 
 Enjoy developing ;)
 
+## Troubleshooting
+- In case of sqlite3 crash with exception: \node_modules\sqlite3\lib\binding\electron-v2.0-win32-x64\node_sqlite3.node' run 
+
+`install-app-deps`
+
+https://stackoverflow.com/questions/32504307/how-to-use-sqlite3-module-with-electron
+
+
 ### NOTE about development
 
 Backend services restarts automatically by tsc watcher, but `electron` imports older version and needs restart completely :(
@@ -48,9 +56,6 @@ Backend services restarts automatically by tsc watcher, but `electron` imports o
 ## Main concepts
 
 ### Database
-- If sqlite3 was crashed with exception: \node_modules\sqlite3\lib\binding\electron-v2.0-win32-x64\node_sqlite3.node' run `install-app-deps`
-https://stackoverflow.com/questions/32504307/how-to-use-sqlite3-module-with-electron
-
 - В качестве обозревателя на Windows отлично подходит SQLite Database Browser
 
 ### Core (rename plz)
