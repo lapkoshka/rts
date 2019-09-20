@@ -13,7 +13,7 @@ const renderRaceHistory = (history, actions) => {
         <Table dataSource={historyWithKeys}>
             <Table.Column key='id' title='N' dataIndex='id'/>
             <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column key='time' title='Время' dataIndex='time'/>
+            <Table.Column key='time' title='Время' dataIndex='formattedTIme'/>
             <Table.Column key='date' title='Дата' dataIndex='timestamp'/>
             <Table.Column
                 key='delete'

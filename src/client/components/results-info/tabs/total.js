@@ -10,7 +10,7 @@ const renderTotalInfo = info => {
     return (
         <Table dataSource={infoWithKeys}>
             <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column key='time' title='Лучшее время' dataIndex='besttime'/>
+            <Table.Column key='time' title='Лучшее время' dataIndex='formattedTime'/>
             <Table.Column key='count' title='Всего заездов' dataIndex='count'/>
         </Table>
     );

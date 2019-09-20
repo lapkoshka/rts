@@ -3,6 +3,7 @@ import { getIpcRenderer } from '../../../electron/ipc';
 import store from '../../store';
 import RaceInfo from './race-info';
 import { setCurrentRaces } from '../../store/race-info-actions';
+import {CurrentRace} from "../../../server/controllers/race/race-info-view";
 const ipc = getIpcRenderer();
 
 const mapStateToProps = state => ({
@@ -10,7 +11,7 @@ const mapStateToProps = state => ({
 });
 
 const { dispatch } = store;
-ipc.on('onCurrentRacesChanged', (_, currentRaces) =>
+ipc.on('onCurrentRacesChanged', (_, currentRaces: CurrentRace) =>
   dispatch(setCurrentRaces(currentRaces)));
 
 export default connect(mapStateToProps)(RaceInfo);

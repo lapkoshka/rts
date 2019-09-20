@@ -1,14 +1,18 @@
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { Laps } from './lap-scenario';
 
+export interface CurrentRaceLine {
+    username: string;
+}
+
 export const updateRaceInfoView = (laps: Laps) => {
-    const currentRaces = Object.keys(laps).reduce((usernames: Object[], uid: string) => {
+    const currentRaces = Object.keys(laps).reduce((races: CurrentRaceLine[], uid: string) => {
         const lap = laps[uid];
-        usernames.push({
+        races.push({
             username: lap.user.firstname + ' ' + lap.user.lastname
         });
 
-        return usernames;
+        return races;
     }, []);
 
     rootDispatcher.sendEvent('onCurrentRacesChanged', {

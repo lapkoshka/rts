@@ -6,6 +6,7 @@ import {
     setRegistrationUser,
 } from '../../store/registration-actions';
 import store from '../../store';
+import { UserData } from '../../../server/modules/database/users';
 
 const ipc = window.require('electron').ipcRenderer;
 
@@ -28,7 +29,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const { dispatch } = store;
-ipc.on('onPortableReaderTag', (_, user) => {
+ipc.on('onPortableReaderTag', (_, user: UserData) => {
     dispatch(setRegistrationUser(user));
     dispatch(openRegistrationPopup());
 });
