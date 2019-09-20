@@ -44,7 +44,7 @@ const ReaderControl = props => (
             onClick={props.triggerPortableReader}
         />
 
-        {props.mainReaderSettings.shouldShowPopup && (
+        {props.shouldShowPopup && (
             <ReaderSettings
                 settings={props.mainReaderSettings}
                 actions={props.mainReaderActions}

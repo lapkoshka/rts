@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
+import { getIpcRenderer } from '../../../electron/ipc';
 import store from '../../store';
 import RaceInfo from './race-info';
 import { setCurrentRaces } from '../../store/race-info-actions';
-const ipc = window.require('electron').ipcRenderer;
+const ipc = getIpcRenderer();
 
 const mapStateToProps = state => ({
     currentRaces: state.raceInfo.currentRaces,
