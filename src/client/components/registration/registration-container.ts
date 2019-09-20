@@ -1,16 +1,17 @@
-import Registration from './registration';
+import Registration, {RegistrationProps} from './registration';
 import { connect } from 'react-redux';
 import {
     closeRegistrationPopup,
     openRegistrationPopup,
     setRegistrationUser,
 } from '../../store/registration-actions';
-import store from '../../store';
+import store, {RootState} from '../../store';
 import { UserData } from '../../../server/modules/database/users';
+import {getIpcRenderer} from "../../../electron/ipc";
 
-const ipc = window.require('electron').ipcRenderer;
+const ipc = getIpcRenderer();
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: RootState): RegistrationProps => ({
     shouldShowPopup: state.registration.shouldShowPopup,
     user: state.registration.user,
 });

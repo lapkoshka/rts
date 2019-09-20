@@ -3,9 +3,12 @@ import { Modal, Input, Form } from 'antd';
 
 const ENTER_KEY_CODE = 13;
 
-interface RegistrationProps {
+export interface RegistrationProps {
     shouldShowPopup: boolean;
     user: any;
+}
+
+export interface RegistrationActions {
     actions: any;
 }
 
