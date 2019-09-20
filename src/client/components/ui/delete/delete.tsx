@@ -1,7 +1,7 @@
 import { Icon, Popconfirm } from 'antd';
 import React from 'react';
 
-const renderDeleteButton = (title, callback) => (
+const renderDeleteButton = (title: string, callback: () => void) => (
     <Popconfirm
         title={title}
         onConfirm={callback}

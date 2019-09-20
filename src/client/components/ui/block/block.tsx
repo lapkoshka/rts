@@ -1,7 +1,7 @@
 import React from 'react';
 import './block.scss';
 
-const Block = props => (
+const Block: React.FC = (props) => (
     <div className='ui-block'>
         {props.children}
     </div>

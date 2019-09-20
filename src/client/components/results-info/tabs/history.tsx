@@ -1,9 +1,13 @@
 import { Table } from 'antd';
 import React from 'react';
+import {
+    RaceHistory,
+    RaceHistoryRow,
+} from '../../../../server/controllers/results/history';
 import renderDeleteButton from '../../ui/delete/delete';
 
-const renderRaceHistory = (history, actions) => {
-    const historyWithKeys = history.map(item => ({
+const renderRaceHistory = (history: RaceHistory, deleteRace: (id: number) => void) => {
+    const historyWithKeys = history.map((item: RaceHistoryRow) => ({
         ...item,
         key: item.id,
     }));
@@ -18,9 +22,8 @@ const renderRaceHistory = (history, actions) => {
             <Table.Column
                 key='delete'
                 title='Удаление'
-                render={
-                    text => renderDeleteButton(deleteTitle, () =>
-                        actions.deleteRace(text.id))
+                render={(text) => renderDeleteButton(deleteTitle,
+                    () => deleteRace(text.id))
                 }
             />
         </Table>

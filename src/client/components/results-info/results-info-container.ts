@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import ResultsInfo from './results-info';
-import store from '../../store';
+import { getIpcRenderer } from '../../../electron/ipc';
+import ResultsInfo, { ResultsInfoProps } from './results-info';
+import store, { RootState } from '../../store';
 import {
     setRaceHistory,
     setUsers,
@@ -9,31 +10,24 @@ import {
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { Users } from '../../../server/controllers/results/users';
 import { TotalInfo } from '../../../server/controllers/results/total';
-const ipc = window.require('electron').ipcRenderer;
+const ipc = getIpcRenderer();
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: RootState): ResultsInfoProps => ({
     history: state.resultsInfo.history,
     users: state.resultsInfo.users,
     total: state.resultsInfo.total,
-});
-
-const mapDispatchToProps = dispatch => ({
-    historyActions: {
-        deleteRace: id => ipc.send('onRaceDelete', id),
-    },
-    usersActions: {
-        deleteUser: uid => ipc.send('onUserDelete', uid),
-    },
+    deleteRace: (id: number) => ipc.send('onRaceDelete', id),
+    deleteUser: (uid: string) => ipc.send('onUserDelete', uid),
 });
 
 const { dispatch } = store;
-ipc.on('onRaceHistoryUpdate', (_, history: RaceHistory) =>
+ipc.on('onRaceHistoryUpdate', (_: Event, history: RaceHistory) =>
     dispatch(setRaceHistory(history)));
 
-ipc.on('onUsersDataUpdate', (_, users: Users) =>
+ipc.on('onUsersDataUpdate', (_: Event, users: Users) =>
     dispatch(setUsers(users)));
 
-ipc.on('onTotalInfoUpdate', (_, info: TotalInfo) =>
+ipc.on('onTotalInfoUpdate', (_: Event, info: TotalInfo) =>
     dispatch(setTotalInfo(info)));
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResultsInfo);
+export default connect(mapStateToProps)(ResultsInfo);

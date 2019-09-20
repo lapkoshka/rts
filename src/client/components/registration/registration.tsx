@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Input, Form } from 'antd';
+import { UserData } from '../../../server/modules/database/users';
 
 const ENTER_KEY_CODE = 13;
 
@@ -9,20 +10,21 @@ export interface RegistrationProps {
 }
 
 export interface RegistrationActions {
-    actions: any;
+    onCancelRegistration: () => void;
+    submitUser: (user: UserData) => void;
 }
 
-const Registration: React.FC<RegistrationProps> = React.memo((props) => {
+const Registration: React.FC<RegistrationProps & RegistrationActions> = React.memo((props) => {
     const userForm = {...props.user};
 
     const keyUpHandler = React.useCallback((evt: KeyboardEvent) => {
             const isPressEnterWhenPopupOpened =
                 evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
             if (isPressEnterWhenPopupOpened) {
-                props.actions.submitUser(userForm);
+                props.submitUser(userForm);
             }
         },
-        [props.actions, props.shouldShowPopup, userForm],
+        [props, props.shouldShowPopup, userForm],
     );
 
     useEffect(() => {
@@ -34,8 +36,8 @@ const Registration: React.FC<RegistrationProps> = React.memo((props) => {
         <Modal
             title='Регистрация нового участника'
             visible={props.shouldShowPopup}
-            onOk={() => props.actions.submitUser(userForm)}
-            onCancel={() => props.actions.onCancelRegistration()}
+            onOk={() => props.submitUser(userForm)}
+            onCancel={() => props.onCancelRegistration()}
         >
             <Form.Item label='UID'>
                 <Input size='large' value={userForm.uid} disabled/>

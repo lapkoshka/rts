@@ -2,7 +2,7 @@ import { toHumanReadableTime } from '../../lib/functions';
 import { getTotalUserRaces, UserRacesData } from '../../modules/database/race';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
-interface TotalInfoRow extends UserRacesData {
+export interface TotalInfoRow extends UserRacesData {
   username: string;
   formattedTime: string;
 }

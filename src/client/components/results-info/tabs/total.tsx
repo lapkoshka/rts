@@ -1,10 +1,11 @@
-import {Table} from 'antd';
+import { Table } from 'antd';
 import React from 'react';
+import { TotalInfo, TotalInfoRow } from '../../../../server/controllers/results/total';
 
-const renderTotalInfo = info => {
-    const infoWithKeys = info.map(item => ({
+const renderTotalInfo = (info: TotalInfo) => {
+    const infoWithKeys = info.map((item: TotalInfoRow, index: number) => ({
         ...item,
-        key: item.uid,
+        key: index,
     }));
 
     return (

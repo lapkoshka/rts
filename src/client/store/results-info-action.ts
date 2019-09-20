@@ -6,9 +6,9 @@ import { TotalInfo } from '../../server/controllers/results/total';
 type ResultsInfoAction = Action<RaceHistory | Users | TotalInfo>;
 
 export interface ResultsInfoState {
-    history: RaceHistory,
-    users: Users,
-    total: TotalInfo,
+    history: RaceHistory;
+    users: Users;
+    total: TotalInfo;
 }
 
 export const setRaceHistory = (payload: RaceHistory) => ({

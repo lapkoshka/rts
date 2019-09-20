@@ -3,8 +3,8 @@ import React from 'react';
 import Block from '../ui/block/block';
 import {
   CurrentRaceRow,
-  CurrentRaces
-} from "../../../server/controllers/race/race-info-view";
+  CurrentRaces,
+} from '../../../server/controllers/race/race-info-view';
 
 export interface RaceInfoProps {
   currentRaces: CurrentRaces;

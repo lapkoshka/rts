@@ -1,7 +1,8 @@
 import { getUsers, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
-interface UserRow {
+// TODO: rewrite ant tables, remove export from (.*)Row interfaces
+export interface UserRow {
   uid: string;
   username: string;
 }
