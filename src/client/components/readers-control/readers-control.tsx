@@ -71,17 +71,15 @@ const ReaderControl: React.FC<ReaderControlProps & ReaderControlActions> = (prop
             onClick={props.triggerPortableReader}
         />
 
-        {props.shouldShowPopup && (
-            <ReaderSettings
-                shouldShowPopup={props.shouldShowPopup}
-                settings={props.mainReaderSettings}
-                showMainReaderSettings={props.showMainReaderSettings}
-                setIpAuto={props.setIpAuto}
-                setIpAddress={props.setIpAddress}
-                setMainReaderParams={props.setMainReaderParams}
-                setDefaultMainReaderParams={props.setDefaultMainReaderParams}
-            />
-        )}
+        <ReaderSettings
+            shouldShowPopup={props.shouldShowPopup}
+            settings={props.mainReaderSettings}
+            showMainReaderSettings={props.showMainReaderSettings}
+            setIpAuto={props.setIpAuto}
+            setIpAddress={props.setIpAddress}
+            setMainReaderParams={props.setMainReaderParams}
+            setDefaultMainReaderParams={props.setDefaultMainReaderParams}
+        />
     </div>
   </Block>
 );
