@@ -1,83 +1,87 @@
-export const setMainReaderStatus = status => ({
+import {
+    defaultMainReaderSettings, MainReaderParams,
+    MainReaderSettings,
+} from '../../server/lib/readers/main-reader';
+import { Action } from './index';
+
+type ReaderControlAction = Action<string | boolean | MainReaderParams>;
+
+export interface ReaderControlState {
+    main: {
+        status: string;
+    };
+    portable: {
+        status: string;
+    };
+    mainReaderSettings: MainReaderSettings;
+    shouldShowPopup: boolean;
+}
+
+export const setMainReaderStatus = (payload: string) => ({
   type: 'RECEIVE_MAIN_READER_STATUS',
-  status,
+  payload,
 });
 
-export const setPortableReaderStatus = status => ({
+export const setPortableReaderStatus = (payload: string) => ({
   type: 'RECEIVE_PORTABLE_READER_STATUS',
-  status,
+  payload,
 });
 
-export const showMainReaderSettings = enable => ({
+export const showMainReaderSettings = (payload: boolean) => ({
    type: 'SHOW_MAIN_READER_SETTINGS',
-   enable,
+   payload,
 });
 
-export const setIpAdress = address => ({
+export const setIpAdress = (payload: string) => ({
     type: 'SET_IP_ADDRESS',
-    address,
+    payload,
 });
 
-export const setIpAuto = enable => ({
+export const setIpAuto = (payload: boolean) => ({
     type: 'SET_IP_AUTO',
-    enable,
+    payload,
 });
 
-export const setMainReaderParams = params => ({
+export const setMainReaderParams = (payload: MainReaderParams) => ({
     type: 'SET_MAIN_READER_PARAMS',
-    params,
+    payload,
 });
 
 export const setDefaultMainReaderParams = () => ({
     type: 'SET_DEFAULT_MAIN_READER_PARAMS',
 });
 
-const initialMainReaderParams = {
-    qvalue: '4',
-    session: '255',
-    scantime: '20',
-};
-
 export const initialState = {
-  main: {
-    status: 'disabled',
-  },
-  portable: {
-    status: 'disabled',
-  },
-  mainReaderSettings: {
-    shouldShowPopup: false,
-    ip: {
-        auto: true,
-        address: '0.0.0.0',
+    main: {
+        status: 'disabled',
     },
-    params: initialMainReaderParams,
-  },
+    portable: {
+        status: 'disabled',
+    },
+    mainReaderSettings: defaultMainReaderSettings,
+    shouldShowPopup: false,
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: ReaderControlAction): ReaderControlState => {
   switch (action.type) {
     case 'RECEIVE_MAIN_READER_STATUS':
        return {
          ...state,
          main: {
-           status: action.status,
+           status: action.payload as string,
          },
        };
     case 'RECEIVE_PORTABLE_READER_STATUS':
        return {
          ...state,
          portable: {
-           status: action.status,
+           status: action.payload as string,
          },
        };
       case 'SHOW_MAIN_READER_SETTINGS':
         return {
             ...state,
-            mainReaderSettings: {
-                ...state.mainReaderSettings,
-                shouldShowPopup: action.enable,
-            },
+            shouldShowPopup: action.payload as boolean,
         };
       case 'SET_IP_ADDRESS':
           return {
@@ -86,7 +90,7 @@ export default (state = initialState, action) => {
                   ...state.mainReaderSettings,
                   ip: {
                       ...state.mainReaderSettings.ip,
-                      address: action.address,
+                      address: action.payload as string,
                   },
               },
           };
@@ -97,7 +101,7 @@ export default (state = initialState, action) => {
                   ...state.mainReaderSettings,
                   ip: {
                       ...state.mainReaderSettings.ip,
-                      auto: action.enable,
+                      auto: action.payload as boolean,
                   },
               },
           };
@@ -106,7 +110,7 @@ export default (state = initialState, action) => {
               ...state,
               mainReaderSettings: {
                   ...state.mainReaderSettings,
-                  params: action.params,
+                  params: action.payload as MainReaderParams,
               },
           };
       case 'SET_DEFAULT_MAIN_READER_PARAMS':
@@ -114,7 +118,7 @@ export default (state = initialState, action) => {
               ...state,
               mainReaderSettings: {
                   ...state.mainReaderSettings,
-                  params: initialMainReaderParams,
+                  params: defaultMainReaderSettings.params,
               },
           };
     default:

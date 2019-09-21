@@ -1,6 +1,14 @@
 import { Table } from 'antd';
 import React from 'react';
 import Block from '../ui/block/block';
+import {
+  CurrentRaceRow,
+  CurrentRaces,
+} from '../../../server/controllers/race/race-info-view';
+
+export interface RaceInfoProps {
+  currentRaces: CurrentRaces;
+}
 
 const getColumns = () => ([
     {
@@ -10,12 +18,13 @@ const getColumns = () => ([
     },
 ]);
 
-const addKeys = data => data.map((item, index) => ({
-    ...item,
-    key: index,
-}));
+const addKeys = (data: CurrentRaces) =>
+    data.map((item: CurrentRaceRow, index: number) => ({
+        ...item,
+        key: index,
+    }));
 
-const RaceInfo = props => (
+const RaceInfo: React.FC<RaceInfoProps> = (props: RaceInfoProps) => (
     <Block>
         <Table
             columns={getColumns()}

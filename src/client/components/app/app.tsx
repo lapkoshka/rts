@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
+import { getIpcRenderer } from '../../../electron/ipc';
 import ReadersControlContainer from '../readers-control/reader-control-container';
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
 import { connect } from 'react-redux';
 import './app.scss';
-const ipc = window.require('electron').ipcRenderer;
 
-const App = props => {
+const ipc = getIpcRenderer();
+
+const App: React.FC = () => {
     useEffect(() => ipc.send('viewDidMount'));
 
     return (
@@ -24,4 +26,4 @@ const App = props => {
     );
 };
 
-export default connect(state => state)(App);
+export default connect((state) => state)(App);

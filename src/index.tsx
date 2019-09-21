@@ -2,14 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './client/components/app/app';
 import { Provider } from 'react-redux';
-import store from './client/store/index';
+import store from './client/store';
 import 'antd/dist/antd.css';
 import './client/static/style/main.scss';
-// @ts-ignore
-const electron = window.require('electron');
-// const fs = electron.remote.require('fs');
-
-const ipc  = electron.ipcRenderer;
+import { getIpcRenderer } from './electron/ipc';
+const ipc = getIpcRenderer();
 
 // TODO make a component with fields and buttons
 // @ts-ignore
