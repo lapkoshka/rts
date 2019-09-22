@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { getIpcRenderer } from '../../../electron/ipc';
-import ReadersControlContainer from '../readers-control/reader-control-container';
+import { getIpcRenderer } from '../../../common/ipc';
+import ControlPanelContainer from '../control-panel/control-panel-container';
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
@@ -15,7 +15,7 @@ const App: React.FC = () => {
     return (
         <div className='app-layout'>
             <div className='app-layout-left'>
-                <ReadersControlContainer/>
+                <ControlPanelContainer/>
                 <RaceInfoContainer />
             </div>
             <div className='app-layout-right'>

@@ -1,0 +1,60 @@
+.control-reader-buttons {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.control-reader-button {
+    opacity: .5;
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 16px;
+    margin-right: 8px;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:nth-last-child(1) {
+        margin-bottom: 0;
+    }
+}
+
+.control-reader-button-status {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 16px;
+
+    &-disabled {
+        background: black;
+        opacity: .5;
+    }
+
+    &-ok {
+        background: green;
+    }
+
+    &-error {
+        background: red;
+    }
+
+    &-wait {
+        background: yellow;
+    }
+}
+
+.readers-main-settings {
+    opacity: .5;
+    padding-top: 2px;
+    position: absolute;
+    right: 8px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
+
+
