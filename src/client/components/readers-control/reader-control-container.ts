@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { getIpcRenderer } from '../../../electron/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 import {
     MainReaderParams,
     MainReaderSettings,

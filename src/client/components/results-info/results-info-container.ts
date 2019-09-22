@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIpcRenderer } from '../../../electron/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 import ResultsInfo, { ResultsInfoProps } from './results-info';
 import store, { RootState } from '../../store';
 import {

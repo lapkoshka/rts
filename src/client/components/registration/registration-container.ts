@@ -8,7 +8,7 @@ import {
 } from '../../store/registration-actions';
 import store, { RootState } from '../../store';
 import { UserData } from '../../../server/modules/database/users';
-import { getIpcRenderer } from '../../../electron/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 
 const ipc = getIpcRenderer();
 

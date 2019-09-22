@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getIpcRenderer } from '../../../electron/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 import ReadersControlContainer from '../readers-control/reader-control-container';
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';

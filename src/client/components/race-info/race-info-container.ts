@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIpcRenderer } from '../../../electron/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 import store, { RootState } from '../../store';
 import RaceInfo, { RaceInfoProps } from './race-info';
 import { setCurrentRaces } from '../../store/race-info-actions';
