@@ -4,10 +4,10 @@ import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
-import ReaderControl, {
-    ReaderControlActions,
-    ReaderControlProps,
-} from './readers-control';
+import ControlPanel, {
+    ControlPanelActions,
+    ControlPanelProps,
+} from './control-panel';
 import { connect } from 'react-redux';
 import {
     showMainReaderSettings,
@@ -22,7 +22,7 @@ import store, { RootState } from '../../store';
 import { message } from 'antd';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): ReaderControlProps => ({
+const mapStateToProps = (state: RootState): ControlPanelProps => ({
     mainStatus: state.readersControl.main.status,
     portableStatus: state.readersControl.portable.status,
     mainReaderSettings: state.readersControl.mainReaderSettings,
@@ -31,7 +31,7 @@ const mapStateToProps = (state: RootState): ReaderControlProps => ({
     triggerPortableReader: () => ipc.send('portableReaderTriggerClick'),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): ReaderControlActions => ({
+const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
     showMainReaderSettings: (enable: boolean) => dispatch(showMainReaderSettings(enable)),
     setIpAddress: (address: string) => dispatch(setIpAdress(address)),
     setIpAuto: (enable: boolean) => {
@@ -76,4 +76,4 @@ ipc.on('onMainReaderDisconnected', () =>
 ipc.on('onMainReaderIpReceived', (_: Event, msg: string) =>
    console.log(msg));
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReaderControl);
+export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

@@ -10,39 +10,47 @@ import {
 } from '@blueprintjs/core';
 import React, { FormEvent } from 'react';
 import './reader-settings.scss';
-import {
-    MainReaderParams,
-    MainReaderSettings,
-} from '../../../../server/lib/readers/main-reader';
+import { MainReaderParams } from '../../../../server/lib/readers/main-reader';
+import { ControlPanelActions, ControlPanelProps } from '../control-panel';
 import ReaderParams from './reader-params';
 
+const ReaderSettings: React.FC<ControlPanelProps & ControlPanelActions> = React.memo((props) => {
+    const onCloseHandler = React.useCallback(
+        () => {
+            props.showMainReaderSettings(false);
+        },
+        [],
+    );
 
-interface ReaderSettingsProps {
-    settings: MainReaderSettings;
-    showMainReaderSettings: (enable: boolean) => void;
-    setIpAddress: (address: string) => void;
-    setIpAuto: (enable: boolean) => void;
-    setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
-    shouldShowPopup: boolean;
-}
+    const onSwitchChange = React.useCallback(
+        (evt: FormEvent) => {
+            props.setIpAuto((evt.target as HTMLInputElement).checked);
+        },
+        [],
+    );
 
-const ReaderSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
-    const onCloseHandler = React.useCallback(() =>
-        props.showMainReaderSettings(false), []);
+    const onIpAddressInputChange = React.useCallback(
+        (evt: FormEvent) => {
+            props.setIpAddress((evt.target as HTMLInputElement).value);
+        },
+        [],
+    );
 
-    const onSwitchChange = React.useCallback((evt: FormEvent) =>
-        props.setIpAuto((evt.target as HTMLInputElement).checked), []);
+    const onMenuItemClickHandler = React.useCallback(
+        (event) => {
+            props.setIpAddress(event.target.innerText);
+        },
+        [],
+    );
 
-    const onIpAddressInputChange = React.useCallback((evt: FormEvent) =>
-        props.setIpAddress((evt.target as HTMLInputElement).value), []);
+    const onReaderParamsChange = React.useCallback(
+        (params: MainReaderParams) => {
+            props.setMainReaderParams(params);
+        },
+        [],
+    );
 
-    const onMenuItemClickHandler = React.useCallback((event) =>
-        props.setIpAddress(event.target.innerText), []);
-
-    const onReaderParamsChange = React.useCallback((params: MainReaderParams) =>
-        props.setMainReaderParams(params), []);
-
+    const { auto, address} = props.mainReaderSettings.ip;
     return (
         <Drawer
             title='Настройки главного приемника'
@@ -53,19 +61,19 @@ const ReaderSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
         >
             <div className='reader-settings-drawer-content'>
                 <Switch
-                    checked={props.settings.ip.auto}
+                    checked={auto}
                     label='Определять автоматически'
                     onChange={onSwitchChange}
                 />
                 <InputGroup
-                    disabled={props.settings.ip.auto}
-                    value={props.settings.ip.address}
+                    disabled={auto}
+                    value={address}
                     placeholder='0.0.0.0'
                     onChange={onIpAddressInputChange}
                     large={true}
                     rightElement={(
                         <Popover
-                            content={!props.settings.ip.auto && (
+                            content={!auto && (
                                 <Menu>
                                     <MenuItem text='0.0.0.0' onClick={onMenuItemClickHandler}/>
                                     <MenuItem text='192.168.0.37' onClick={onMenuItemClickHandler}/>
@@ -74,7 +82,7 @@ const ReaderSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
                             position={Position.BOTTOM_RIGHT}
                         >
                             <Button
-                                disabled={props.settings.ip.auto}
+                                disabled={auto}
                                 minimal={true}
                                 rightIcon='caret-down'
                             >
@@ -85,7 +93,7 @@ const ReaderSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
                 />
 
                 <ReaderParams
-                    params={props.settings.params}
+                    params={props.mainReaderSettings.params}
                     onChange={onReaderParamsChange}
                     onSetDefault={props.setDefaultMainReaderParams}
                 />
