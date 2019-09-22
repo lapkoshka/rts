@@ -116,10 +116,7 @@ export default (state = initialState, action: ReaderControlAction): ReaderContro
       case 'SET_DEFAULT_MAIN_READER_PARAMS':
           return {
               ...state,
-              mainReaderSettings: {
-                  ...state.mainReaderSettings,
-                  params: defaultMainReaderSettings.params,
-              },
+              mainReaderSettings: defaultMainReaderSettings,
           };
     default:
       return state;

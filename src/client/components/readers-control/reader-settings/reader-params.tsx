@@ -85,6 +85,9 @@ const ReaderParams: React.FC<ReaderParamsProps> = (props) => {
                     />
                 </Select>
             </div>
+            <div className='reader-params-input-group'>
+                <Button onClick={props.onSetDefault}>По-умолчанию</Button>
+            </div>
         </>
     );
 };
