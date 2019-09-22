@@ -20,8 +20,13 @@ export enum READER_EVENT {
     DISCONNECT = 'disconnect',
 }
 
+export enum READER_TYPE {
+    MAIN = 'MAIN_READER',
+    PORTABLE = 'PORTABLE_READER',
+}
+
 abstract class BaseReader extends EventEmitter {
-    public type: string;
+    public type: READER_TYPE;
     public PROTOCOL: ProtocolMessages;
     public isConnected: boolean;
     public process: ChildProcess;

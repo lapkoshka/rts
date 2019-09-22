@@ -17,7 +17,7 @@ import {
     setIpAuto,
     setMainReaderParams,
     setDefaultMainReaderParams,
-} from '../../store/reader-control-actions';
+} from '../../store/control-panel-store';
 import store, { RootState } from '../../store';
 import { message } from 'antd';
 const ipc = getIpcRenderer();

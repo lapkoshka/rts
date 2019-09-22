@@ -20,31 +20,32 @@
     }
 }
 
+@mixin button-status($color) {
+    outline: none !important;
+    background: $color !important;
+    opacity: .5 !important;
+}
+
 .control-reader-button-status {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    margin-right: 16px;
-
-    &-disabled {
-        background: black;
-        opacity: .5;
+    &-disabled > span {
+        @include button-status(black)
     }
 
-    &-ok {
-        background: green;
+    &-ok > span {
+        @include button-status(green)
     }
 
-    &-error {
-        background: red;
+    &-error > span {
+        @include button-status(red)
     }
 
-    &-wait {
-        background: yellow;
+    &-wait > span {
+        @include button-status(yellow)
     }
 }
 
 .readers-main-settings {
+    cursor: pointer;
     opacity: .5;
     padding-top: 2px;
     position: absolute;

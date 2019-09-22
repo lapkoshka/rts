@@ -4,25 +4,26 @@ import {
 } from '../../server/lib/readers/main-reader';
 import { Action } from './index';
 
-type ReaderControlAction = Action<string | boolean | MainReaderParams>;
+type ReaderControlAction = Action<string | boolean | MainReaderParams | ReaderStatus>;
+type ReaderStatus = 'disabled' | 'ok' | 'error' | 'wait';
 
 export interface ReaderControlState {
     main: {
-        status: string;
+        status: ReaderStatus;
     };
     portable: {
-        status: string;
+        status: ReaderStatus;
     };
     mainReaderSettings: MainReaderSettings;
     shouldShowPopup: boolean;
 }
 
-export const setMainReaderStatus = (payload: string) => ({
+export const setMainReaderStatus = (payload: ReaderStatus) => ({
   type: 'RECEIVE_MAIN_READER_STATUS',
   payload,
 });
 
-export const setPortableReaderStatus = (payload: string) => ({
+export const setPortableReaderStatus = (payload: ReaderStatus) => ({
   type: 'RECEIVE_PORTABLE_READER_STATUS',
   payload,
 });
@@ -53,10 +54,10 @@ export const setDefaultMainReaderParams = () => ({
 
 export const initialState = {
     main: {
-        status: 'disabled',
+        status: 'disabled' as ReaderStatus,
     },
     portable: {
-        status: 'disabled',
+        status: 'disabled' as ReaderStatus,
     },
     mainReaderSettings: defaultMainReaderSettings,
     shouldShowPopup: false,
@@ -68,14 +69,14 @@ export default (state = initialState, action: ReaderControlAction): ReaderContro
        return {
          ...state,
          main: {
-           status: action.payload as string,
+           status: action.payload as ReaderStatus,
          },
        };
     case 'RECEIVE_PORTABLE_READER_STATUS':
        return {
          ...state,
          portable: {
-           status: action.payload as string,
+           status: action.payload as ReaderStatus,
          },
        };
       case 'SHOW_MAIN_READER_SETTINGS':
@@ -106,6 +107,7 @@ export default (state = initialState, action: ReaderControlAction): ReaderContro
               },
           };
       case 'SET_MAIN_READER_PARAMS':
+          console.log(action.payload);
           return {
               ...state,
               mainReaderSettings: {

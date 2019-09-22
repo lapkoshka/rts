@@ -1,7 +1,7 @@
 import { Action } from './index';
 import { UserData } from '../../server/modules/database/users';
 
-type RegistrationActions = Action<UserData>
+type RegistrationStore = Action<UserData>
 
 export interface RegistrationState {
     shouldShowPopup: boolean;
@@ -36,7 +36,7 @@ const initialState: RegistrationState = {
     },
 };
 
-export default (state = initialState, action: RegistrationActions) => {
+export default (state = initialState, action: RegistrationStore) => {
     switch (action.type) {
         case 'CLOSE_REGISTRATION_POPUP':
             return {

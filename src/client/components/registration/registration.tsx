@@ -24,8 +24,7 @@ const Registration: React.FC<RegistrationProps & RegistrationActions> = React.me
                 props.submitUser(userForm);
             }
         },
-        [props, props.shouldShowPopup, userForm],
-    );
+        [props, props.shouldShowPopup, userForm]);
 
     useEffect(() => {
         document.addEventListener('keyup', keyUpHandler);

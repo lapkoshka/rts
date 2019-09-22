@@ -1,8 +1,8 @@
 import { combineReducers, createStore, Store } from 'redux';
-import readersControl, { ReaderControlState } from './reader-control-actions';
-import raceInfo, { RaceInfoState } from './race-info-actions';
-import resultsInfo, { ResultsInfoState } from './results-info-action';
-import registration, { RegistrationState } from './registration-actions';
+import readersControl, { ReaderControlState } from './control-panel-store';
+import raceInfo, { RaceInfoState } from './race-info-store';
+import resultsInfo, { ResultsInfoState } from './results-info-store';
+import registration, { RegistrationState } from './registration-store';
 
 export interface Action<T> {
     type: string;
