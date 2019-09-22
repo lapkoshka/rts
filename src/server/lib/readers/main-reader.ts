@@ -96,7 +96,7 @@ class MainReader extends BaseReader {
 
                     if (status === 'error') {
                         this.emit(READER_EVENT.CONNECTING_FAILED, message);
-                        reject(`Connected to main reader failed, message: ${message}`);
+                        reject(message);
                         return;
                     }
 

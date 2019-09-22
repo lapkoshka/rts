@@ -71,6 +71,7 @@ const ReaderSettings: React.FC<ControlPanelProps & ControlPanelActions> = React.
                             content={!auto && (
                                 <Menu>
                                     <MenuItem text='0.0.0.0' onClick={onMenuItemClickHandler}/>
+                                    <MenuItem text='192.168.0.36' onClick={onMenuItemClickHandler}/>
                                     <MenuItem text='192.168.0.37' onClick={onMenuItemClickHandler}/>
                                 </Menu>
                             )}

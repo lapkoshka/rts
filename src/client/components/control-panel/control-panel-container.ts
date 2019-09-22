@@ -1,3 +1,4 @@
+import { Intent, Toaster } from '@blueprintjs/core';
 import { Dispatch } from 'redux';
 import { getIpcRenderer } from '../../../common/ipc';
 import {
@@ -19,7 +20,6 @@ import {
     setDefaultMainReaderParams,
 } from '../../store/control-panel-store';
 import store, { RootState } from '../../store';
-import { message } from 'antd';
 const ipc = getIpcRenderer();
 
 const mapStateToProps = (state: RootState): ControlPanelProps => ({
@@ -46,34 +46,42 @@ const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
 
 const { dispatch } = store;
 ipc.on('onPortableReaderConnectingStart', () =>
-  dispatch(setPortableReaderStatus('wait')));
+    dispatch(setPortableReaderStatus('wait')));
 
 ipc.on('onPortableReaderConnected', () =>
-  dispatch(setPortableReaderStatus('ok')));
+    dispatch(setPortableReaderStatus('ok')));
 
 ipc.on('onPortableReaderConnectingFailed', (_: Event, msg: string) => {
-  dispatch(setPortableReaderStatus('error'));
-  message.error(msg);
+    dispatch(setPortableReaderStatus('error'));
+    Toaster.create().show({
+        icon: 'warning-sign',
+        intent: Intent.DANGER,
+        message: msg,
+    });
 });
 
 ipc.on('onPortableReaderDisconnected', () =>
-  dispatch(setPortableReaderStatus('disabled')));
+    dispatch(setPortableReaderStatus('disabled')));
 
 ipc.on('onMainReaderConnectingStart', () =>
-  dispatch(setMainReaderStatus('wait')));
+    dispatch(setMainReaderStatus('wait')));
 
 ipc.on('onMainReaderConnected', () =>
-  dispatch(setMainReaderStatus('ok')));
+    dispatch(setMainReaderStatus('ok')));
 
 ipc.on('onMainReaderConnectingFailed', (_: Event, msg: string) => {
     dispatch(setMainReaderStatus('error'));
-    message.error(msg);
+    Toaster.create().show({
+        icon: 'warning-sign',
+        intent: Intent.DANGER,
+        message: msg,
+    });
 });
 
 ipc.on('onMainReaderDisconnected', () =>
-  dispatch(setMainReaderStatus('disabled')));
+    dispatch(setMainReaderStatus('disabled')));
 
 ipc.on('onMainReaderIpReceived', (_: Event, msg: string) =>
-   console.log(msg));
+    console.log(msg));
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

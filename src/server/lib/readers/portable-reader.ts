@@ -40,8 +40,7 @@ class PortableReader extends BaseReader {
                 }
 
                 if (status === 'error') {
-                    this.emit(READER_EVENT.CONNECTING_FAILED, message);
-                    reject(`Connected to portable reader failed, message: ${message}`);
+                    reject(message);
                     return;
                 }
 
