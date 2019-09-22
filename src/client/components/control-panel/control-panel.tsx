@@ -57,10 +57,8 @@ export interface ControlPanelActions {
 
 const ControlPanel: React.FC<ControlPanelProps & ControlPanelActions> = (props) => {
     const { mainReaderSettings } = props;
-    console.log('render', mainReaderSettings);
     const triggerReader = React.useCallback(
         (type: READER_TYPE) => {
-            console.log('callback', mainReaderSettings);
             if (type === READER_TYPE.MAIN) {
                 props.triggerMainReader(mainReaderSettings);
                 return;
