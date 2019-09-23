@@ -1,10 +1,11 @@
-import { Intent, Toaster } from '@blueprintjs/core';
 import { Dispatch } from 'redux';
 import { getIpcRenderer } from '../../../common/ipc';
+import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
+import Notification from '../../lib/notification';
 import ControlPanel, {
     ControlPanelActions,
     ControlPanelProps,
@@ -46,40 +47,33 @@ const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
 
 const { dispatch } = store;
 ipc.on('onPortableReaderConnectingStart', () =>
-    dispatch(setPortableReaderStatus('wait')));
+    dispatch(setPortableReaderStatus(READER_STATUS.WAIT)));
 
 ipc.on('onPortableReaderConnected', () =>
-    dispatch(setPortableReaderStatus('ok')));
+    dispatch(setPortableReaderStatus(READER_STATUS.OK)));
 
 ipc.on('onPortableReaderConnectingFailed', (_: Event, msg: string) => {
-    dispatch(setPortableReaderStatus('error'));
-    Toaster.create().show({
-        icon: 'warning-sign',
-        intent: Intent.DANGER,
-        message: msg,
-    });
+    dispatch(setPortableReaderStatus(READER_STATUS.ERROR));
+    Notification.error(msg);
 });
 
 ipc.on('onPortableReaderDisconnected', () =>
-    dispatch(setPortableReaderStatus('disabled')));
+    dispatch(setPortableReaderStatus(READER_STATUS.DISABLED)));
 
 ipc.on('onMainReaderConnectingStart', () =>
-    dispatch(setMainReaderStatus('wait')));
+    dispatch(setMainReaderStatus(READER_STATUS.WAIT)));
 
 ipc.on('onMainReaderConnected', () =>
-    dispatch(setMainReaderStatus('ok')));
+    dispatch(setMainReaderStatus(READER_STATUS.OK)));
 
 ipc.on('onMainReaderConnectingFailed', (_: Event, msg: string) => {
-    dispatch(setMainReaderStatus('error'));
-    Toaster.create().show({
-        icon: 'warning-sign',
-        intent: Intent.DANGER,
-        message: msg,
-    });
+    dispatch(setMainReaderStatus(READER_STATUS.ERROR));
+    console.log(msg);
+    Notification.error(msg);
 });
 
 ipc.on('onMainReaderDisconnected', () =>
-    dispatch(setMainReaderStatus('disabled')));
+    dispatch(setMainReaderStatus(READER_STATUS.DISABLED)));
 
 ipc.on('onMainReaderIpReceived', (_: Event, msg: string) =>
     console.log(msg));

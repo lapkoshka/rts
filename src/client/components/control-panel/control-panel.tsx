@@ -2,7 +2,7 @@ import { Switch, Icon } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 
 import React from 'react';
-import { READER_TYPE } from '../../../server/lib/readers/base-reader';
+import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
     MainReaderParams,
     MainReaderSettings,
@@ -12,35 +12,28 @@ import './control-panel.scss';
 import ReaderSettings from './reader-settings/reader-settings';
 
 interface ReaderButtonProps {
-    type: READER_TYPE;
-    status: string;
-    onClick: (type: READER_TYPE) => void;
+    status: READER_STATUS;
+    name: string;
+    onClick: () => void;
 }
 
 const ReaderButton: React.FC<ReaderButtonProps> = (props) => {
-    const { type, status, onClick } = props;
-    const handleChange = React.useCallback(
-        () => {
-                onClick(type);
-        },
-    [onClick]);
+    const { name, status, onClick } = props;
 
-    const label = type === READER_TYPE.MAIN ?
-        'Главный считыватель' : 'Портативный считыватель';
     return (
         <Switch
-            disabled={status === 'wait'}
+            disabled={status === READER_STATUS.WAIT}
             className={`control-reader-button-status-${status}`}
-            checked={status === 'ok' || status === 'wait'}
-            label={label}
-            onChange={handleChange}
+            checked={status === READER_STATUS.OK || status === READER_STATUS.WAIT}
+            label={name}
+            onChange={onClick}
         />
     );
 };
 
 export interface ControlPanelProps {
-    mainStatus: string;
-    portableStatus: string;
+    mainStatus: READER_STATUS;
+    portableStatus: READER_STATUS;
     mainReaderSettings: MainReaderSettings;
     shouldShowPopup: boolean;
     triggerMainReader: (settings: MainReaderSettings) => void;
@@ -57,38 +50,38 @@ export interface ControlPanelActions {
 
 const ControlPanel: React.FC<ControlPanelProps & ControlPanelActions> = (props) => {
     const { mainReaderSettings } = props;
-    const triggerReader = React.useCallback(
-        (type: READER_TYPE) => {
-            if (type === READER_TYPE.MAIN) {
+    const triggerMainReader = React.useCallback(
+        () => {
                 props.triggerMainReader(mainReaderSettings);
-                return;
-            }
-
-            if (type === READER_TYPE.PORTABLE) {
-                props.triggerPortableReader();
-                return;
-            }
         },
-    [mainReaderSettings]);
+    [props, mainReaderSettings],
+    );
+
+    const triggerPortableReader = React.useCallback(
+        () => {
+            props.triggerPortableReader();
+        },
+        [props],
+    );
 
     const onSettingsClickHandler = React.useCallback(
         () => {
             props.showMainReaderSettings(true);
         },
-        []);
+        [props]);
 
     return (
         <Block>
             <div className='control-reader-buttons'>
                 <ReaderButton
-                    type={READER_TYPE.MAIN}
+                    name='Главный считыватель'
                     status={props.mainStatus}
-                    onClick={triggerReader}
+                    onClick={triggerMainReader}
                 />
                 <ReaderButton
-                    type={READER_TYPE.PORTABLE}
+                    name='Портативный считыватель'
                     status={props.portableStatus}
-                    onClick={triggerReader}
+                    onClick={triggerPortableReader}
                 />
 
                 <Icon

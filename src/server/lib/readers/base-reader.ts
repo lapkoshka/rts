@@ -25,6 +25,13 @@ export enum READER_TYPE {
     PORTABLE = 'PORTABLE_READER',
 }
 
+export enum READER_STATUS {
+    WAIT = 'wait',
+    OK = 'ok',
+    ERROR = 'error',
+    DISABLED = 'disabled',
+}
+
 abstract class BaseReader extends EventEmitter {
     public type: READER_TYPE;
     public PROTOCOL: ProtocolMessages;
