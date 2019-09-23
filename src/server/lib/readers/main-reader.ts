@@ -1,6 +1,11 @@
 import { spawn } from 'child_process';
 import * as fs from 'fs';
-import BaseReader, { ProtocolMessages, READER_EVENT, RFIDTag } from './base-reader';
+import BaseReader, {
+    ProtocolMessages,
+    READER_EVENT,
+    READER_TYPE,
+    RFIDTag,
+} from './base-reader';
 
 export interface MainReaderParams {
     qvalue: string;
@@ -63,7 +68,7 @@ class MainReader extends BaseReader {
 
     constructor(path: string) {
         super(path);
-        this.type = 'MAIN_READER';
+        this.type = READER_TYPE.MAIN;
         this.PROTOCOL = M_READER_MSG;
         this.settings = defaultMainReaderSettings;
     }
@@ -90,8 +95,7 @@ class MainReader extends BaseReader {
                     }
 
                     if (status === 'error') {
-                        this.emit(READER_EVENT.CONNECTING_FAILED, message);
-                        reject(`Connected to main reader failed, message: ${message}`);
+                        reject(message);
                         return;
                     }
 

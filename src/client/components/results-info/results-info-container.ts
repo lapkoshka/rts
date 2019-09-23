@@ -6,7 +6,7 @@ import {
     setRaceHistory,
     setUsers,
     setTotalInfo,
-} from '../../store/results-info-action';
+} from '../../store/results-info-store';
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { Users } from '../../../server/controllers/results/users';
 import { TotalInfo } from '../../../server/controllers/results/total';

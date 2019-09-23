@@ -19,36 +19,31 @@ const ReaderSettings: React.FC<ControlPanelProps & ControlPanelActions> = React.
         () => {
             props.showMainReaderSettings(false);
         },
-        [],
-    );
+        []);
 
     const onSwitchChange = React.useCallback(
         (evt: FormEvent) => {
             props.setIpAuto((evt.target as HTMLInputElement).checked);
         },
-        [],
-    );
+        []);
 
     const onIpAddressInputChange = React.useCallback(
         (evt: FormEvent) => {
             props.setIpAddress((evt.target as HTMLInputElement).value);
         },
-        [],
-    );
+        []);
 
     const onMenuItemClickHandler = React.useCallback(
         (event) => {
             props.setIpAddress(event.target.innerText);
         },
-        [],
-    );
+        []);
 
     const onReaderParamsChange = React.useCallback(
         (params: MainReaderParams) => {
             props.setMainReaderParams(params);
         },
-        [],
-    );
+        []);
 
     const { auto, address} = props.mainReaderSettings.ip;
     return (
@@ -76,6 +71,7 @@ const ReaderSettings: React.FC<ControlPanelProps & ControlPanelActions> = React.
                             content={!auto && (
                                 <Menu>
                                     <MenuItem text='0.0.0.0' onClick={onMenuItemClickHandler}/>
+                                    <MenuItem text='192.168.0.36' onClick={onMenuItemClickHandler}/>
                                     <MenuItem text='192.168.0.37' onClick={onMenuItemClickHandler}/>
                                 </Menu>
                             )}

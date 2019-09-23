@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { getIpcRenderer } from '../../../common/ipc';
 import store, { RootState } from '../../store';
 import RaceInfo, { RaceInfoProps } from './race-info';
-import { setCurrentRaces } from '../../store/race-info-actions';
+import { setCurrentRaces } from '../../store/race-info-store';
 import { CurrentRaces } from '../../../server/controllers/race/race-info-view';
 const ipc = getIpcRenderer();
 

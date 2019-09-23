@@ -5,7 +5,7 @@ import {
     closeRegistrationPopup,
     openRegistrationPopup,
     setRegistrationUser,
-} from '../../store/registration-actions';
+} from '../../store/registration-store';
 import store, { RootState } from '../../store';
 import { UserData } from '../../../server/modules/database/users';
 import { getIpcRenderer } from '../../../common/ipc';

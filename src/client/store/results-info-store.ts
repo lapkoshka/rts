@@ -3,7 +3,7 @@ import { RaceHistory } from '../../server/controllers/results/history';
 import { Users } from '../../server/controllers/results/users';
 import { TotalInfo } from '../../server/controllers/results/total';
 
-type ResultsInfoAction = Action<RaceHistory | Users | TotalInfo>;
+type ResultsInfoStore = Action<RaceHistory | Users | TotalInfo>;
 
 export interface ResultsInfoState {
     history: RaceHistory;
@@ -32,7 +32,7 @@ export const initialState: ResultsInfoState = {
     total: [],
 };
 
-export default (state = initialState, action: ResultsInfoAction) => {
+export default (state = initialState, action: ResultsInfoStore) => {
     switch (action.type) {
         case 'SET_RACE_HISTORY':
             return {

@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@blueprintjs/core": "3.18.1",
+    "@blueprintjs/icons": "^3.10.0",
     "@blueprintjs/select": "^3.10.0",
     "antd": "3.23.2",
     "dotenv": "8.1.0",

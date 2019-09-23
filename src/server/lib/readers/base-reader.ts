@@ -20,8 +20,20 @@ export enum READER_EVENT {
     DISCONNECT = 'disconnect',
 }
 
+export enum READER_TYPE {
+    MAIN = 'MAIN_READER',
+    PORTABLE = 'PORTABLE_READER',
+}
+
+export enum READER_STATUS {
+    WAIT = 'wait',
+    OK = 'ok',
+    ERROR = 'error',
+    DISABLED = 'disabled',
+}
+
 abstract class BaseReader extends EventEmitter {
-    public type: string;
+    public type: READER_TYPE;
     public PROTOCOL: ProtocolMessages;
     public isConnected: boolean;
     public process: ChildProcess;
@@ -38,7 +50,10 @@ abstract class BaseReader extends EventEmitter {
         this.open().then(() => {
             this.sendMessage(this.PROTOCOL.START_LISTEN);
         }).catch((msg: string) => {
-            this.emit('connectingFailed', msg);
+            const readerName = this.type
+                .toLowerCase().replace('_', ' ');
+            this.emit(READER_EVENT.CONNECTING_FAILED,
+                `Connected to ${readerName} failed, message: ${msg}`);
             console.log(msg);
         });
     }

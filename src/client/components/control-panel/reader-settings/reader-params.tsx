@@ -23,8 +23,7 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
                 qvalue: value.toString(),
             });
     },
-        [params],
-    );
+        [params]);
 
     const onScantimeChange = React.useCallback(
         (value) => {
@@ -33,8 +32,7 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
                 scantime: value.toString(),
             });
     },
-        [params],
-    );
+        [params]);
 
     const onSessionChange = React.useCallback(
         (value) => {
@@ -43,8 +41,7 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
                 session: value.toString(),
             });
     },
-        [params],
-    );
+        [params]);
 
     const { qvalue, session, scantime } = props.params;
     return (
