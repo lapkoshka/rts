@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIpcRenderer } from '../../../common/ipc';
+import { getIpcRenderer, IPC_RACE } from '../../../common/ipc';
 import store, { RootState } from '../../store';
 import RaceInfo, { RaceInfoProps } from './race-info';
 import { setCurrentRaces } from '../../store/race-info-store';
@@ -11,7 +11,7 @@ const mapStateToProps = (state: RootState): RaceInfoProps => ({
 });
 
 const { dispatch } = store;
-ipc.on('onCurrentRacesChanged', (_: Event, currentRaces: CurrentRaces) =>
+ipc.on(IPC_RACE.CURRENT_RACES_CHANGED, (_: Event, currentRaces: CurrentRaces) =>
   dispatch(setCurrentRaces(currentRaces)));
 
 export default connect(mapStateToProps)(RaceInfo);

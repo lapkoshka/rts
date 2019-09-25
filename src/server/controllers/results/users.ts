@@ -1,3 +1,4 @@
+import { IPC_RESULTS } from '../../../common/ipc';
 import { getUsers, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 
@@ -16,7 +17,7 @@ export const updateUsers = (): void => {
           username: user.firstname + ' ' + user.lastname,
       }));
 
-      rootDispatcher.sendEvent('onUsersDataUpdate', updatedData);
+      rootDispatcher.sendEvent(IPC_RESULTS.USERS_DATA_UPDATE, updatedData);
   }).catch((err: Error) => {
       throw err;
   });

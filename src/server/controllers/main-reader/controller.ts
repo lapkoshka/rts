@@ -1,26 +1,29 @@
+import { IPC_MAIN_READER } from '../../../common/ipc';
 import { READER_EVENT } from '../../lib/readers/base-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 
 export default () => {
     mainReader.on(READER_EVENT.CONNECTING_START, () => {
-        rootDispatcher.sendEvent('onMainReaderConnectingStart');
+        rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     });
 
     mainReader.on(READER_EVENT.CONNECTED, () => {
-        rootDispatcher.sendEvent('onMainReaderConnected');
+        rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     });
 
     mainReader.on(READER_EVENT.CONNECTING_FAILED, (message: string) => {
-        rootDispatcher.sendEvent('onMainReaderConnectingFailed', message);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.ERROR, message);
     });
 
     mainReader.on(READER_EVENT.DISCONNECT, (message: string) => {
-        rootDispatcher.sendEvent('onMainReaderDisconnected', message);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.ERROR, message);
     });
 
     mainReader.on(READER_EVENT.ON_IP_RECIEVED, (ip: string) => {
-        rootDispatcher.sendEvent('onMainReaderIpReceived', ip);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.IP_RECIEVED, ip);
     });
 };
 

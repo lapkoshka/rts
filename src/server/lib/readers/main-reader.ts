@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import BaseReader, {
     ProtocolMessages,
     READER_EVENT,
+    READER_STATUS,
     READER_TYPE,
     RFIDTag,
 } from './base-reader';
@@ -75,6 +76,7 @@ class MainReader extends BaseReader {
 
     public open(): Promise<string> {
         this.emit(READER_EVENT.CONNECTING_START);
+        this.status = READER_STATUS.WAIT;
         if (!fs.existsSync(this.exeFilePath)) {
             const msg = `${this.exeFilePath} not found`;
             return Promise.reject(msg);
@@ -102,6 +104,7 @@ class MainReader extends BaseReader {
                     if (status === 'ok' && message === 'connected') {
                         this.isConnected = true;
                         this.emit(READER_EVENT.CONNECTED);
+                        this.status = READER_STATUS.OK;
                         resolve();
 
                         return;

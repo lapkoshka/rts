@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIpcRenderer } from '../../../common/ipc';
+import { getIpcRenderer, IPC_RESULTS } from '../../../common/ipc';
 import ResultsInfo, { ResultsInfoProps } from './results-info';
 import store, { RootState } from '../../store';
 import {
@@ -21,13 +21,13 @@ const mapStateToProps = (state: RootState): ResultsInfoProps => ({
 });
 
 const { dispatch } = store;
-ipc.on('onRaceHistoryUpdate', (_: Event, history: RaceHistory) =>
+ipc.on(IPC_RESULTS.RACE_HISTORY_UPDATE, (_: Event, history: RaceHistory) =>
     dispatch(setRaceHistory(history)));
 
-ipc.on('onUsersDataUpdate', (_: Event, users: Users) =>
+ipc.on(IPC_RESULTS.USERS_DATA_UPDATE, (_: Event, users: Users) =>
     dispatch(setUsers(users)));
 
-ipc.on('onTotalInfoUpdate', (_: Event, info: TotalInfo) =>
+ipc.on(IPC_RESULTS.TOTAL_INFO_UPDATE, (_: Event, info: TotalInfo) =>
     dispatch(setTotalInfo(info)));
 
 export default connect(mapStateToProps)(ResultsInfo);

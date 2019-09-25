@@ -38,6 +38,7 @@ abstract class BaseReader extends EventEmitter {
     public isConnected: boolean;
     public process: ChildProcess;
     public exeFilePath: string;
+    public status: READER_STATUS;
 
     constructor(path: string) {
         super();
@@ -54,6 +55,7 @@ abstract class BaseReader extends EventEmitter {
                 .toLowerCase().replace('_', ' ');
             this.emit(READER_EVENT.CONNECTING_FAILED,
                 `Connected to ${readerName} failed, message: ${msg}`);
+            this.status = READER_STATUS.ERROR;
             console.log(msg);
         });
     }
@@ -76,6 +78,7 @@ abstract class BaseReader extends EventEmitter {
         this.isConnected = false;
         this.process.kill();
         this.emit(READER_EVENT.DISCONNECT, `${this.type} app was disconnected`);
+        this.status = READER_STATUS.DISABLED;
 
         console.log(`${this.type} process was killed`);
     }
