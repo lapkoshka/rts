@@ -1,5 +1,5 @@
 
-import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../../common/ipc';
+import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import BaseReader from '../../lib/readers/base-reader';
 import { MainReaderSettings } from '../../lib/readers/main-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';

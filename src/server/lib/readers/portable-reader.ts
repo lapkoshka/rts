@@ -26,8 +26,8 @@ class PortableReader extends BaseReader {
     }
 
     public open(): Promise<string> {
-        this.emit(READER_EVENT.CONNECTING_START);
         this.status = READER_STATUS.WAIT;
+        this.emit(READER_EVENT.CONNECTING_START);
         if (!fs.existsSync(this.exeFilePath)) {
             const msg = `${this.exeFilePath} not found`;
             return Promise.reject(msg);
@@ -52,8 +52,8 @@ class PortableReader extends BaseReader {
 
                 if (status === 'ok' && message === 'connected') {
                     this.isConnected = true;
-                    this.emit(READER_EVENT.CONNECTED);
                     this.status = READER_STATUS.OK;
+                    this.emit(READER_EVENT.CONNECTED);
                     resolve();
 
                     return;

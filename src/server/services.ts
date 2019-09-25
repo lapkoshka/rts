@@ -1,5 +1,5 @@
 import { updateUsers } from './controllers/results/users';
-import { IPC_APP } from '../common/ipc';
+import { IPC_APP } from './ipc/ipc-events';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
 import { updateRaceHistory } from './controllers/results/history';
 import { updateTotalInfo } from './controllers/results/total';
@@ -18,7 +18,7 @@ import { closeDatabase } from './modules/database/database';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
-        rootDispatcher.addPageListener(IPC_APP.VIEW_DID_MOUNT, () => resolve);
+        rootDispatcher.addPageListener(IPC_APP.VIEW_DID_MOUNT, resolve);
     });
 };
 
@@ -31,24 +31,19 @@ const updateView = (): void => {
 };
 
 const start = async (): Promise<void> => {
-    try {
-        console.log('hi');
-        rootDispatcher.addPageListener(IPC_APP.START, () => {
-            updateView();
-        });
+    rootDispatcher.addPageListener(IPC_APP.START, async () => {
         await waitView();
+        updateView();
+    });
 
-        initPortableReaderController();
-        initMainReaderController();
-        initRaceController();
-        initRSSIController();
-        initFakeTagController();
-        initRegistrationController();
-        initSmartbannerController();
-        initResultsController();
-    } catch (e) {
-        throw Error(e);
-    }
+    initPortableReaderController();
+    initMainReaderController();
+    initRaceController();
+    initRSSIController();
+    initFakeTagController();
+    initRegistrationController();
+    initSmartbannerController();
+    initResultsController();
 };
 
 const shutdown = () => {

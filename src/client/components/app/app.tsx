@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { getIpcRenderer, IPC_APP } from '../../../common/ipc';
+import { getIpcRenderer} from '../../../common/ipc';
+import { IPC_APP } from '../../../server/ipc/ipc-events';
 import ControlPanelContainer from '../control-panel/control-panel-container';
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';

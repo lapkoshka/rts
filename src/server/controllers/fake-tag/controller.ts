@@ -1,4 +1,4 @@
-import { IPC_APP } from '../../../common/ipc';
+import { IPC_APP } from '../../ipc/ipc-events';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';

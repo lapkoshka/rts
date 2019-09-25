@@ -1,4 +1,4 @@
-import { IPC_RESULTS } from '../../../common/ipc';
+import { IPC_RESULTS } from '../../ipc/ipc-events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { getRaces, RaceData } from '../../modules/database/race';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';

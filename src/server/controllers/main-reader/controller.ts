@@ -1,4 +1,4 @@
-import { IPC_MAIN_READER } from '../../../common/ipc';
+import { IPC_MAIN_READER } from '../../ipc/ipc-events';
 import { READER_EVENT } from '../../lib/readers/base-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
@@ -19,7 +19,7 @@ export default () => {
 
     mainReader.on(READER_EVENT.DISCONNECT, (message: string) => {
         rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
-        rootDispatcher.sendEvent(IPC_MAIN_READER.ERROR, message);
+        rootDispatcher.sendEvent(IPC_MAIN_READER.DISCONNECT, message);
     });
 
     mainReader.on(READER_EVENT.ON_IP_RECIEVED, (ip: string) => {

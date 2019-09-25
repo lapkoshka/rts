@@ -1,4 +1,4 @@
-import { IPC_PORTABLE_READER } from '../../../common/ipc';
+import { IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import { getUser, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
@@ -20,7 +20,7 @@ export default () => {
 
     portableReader.on(READER_EVENT.DISCONNECT, (message: string) => {
         rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.ERROR, message);
+        rootDispatcher.sendEvent(IPC_PORTABLE_READER.DISCONNECT, message);
     });
 
     portableReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {

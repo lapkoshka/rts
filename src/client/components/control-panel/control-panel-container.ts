@@ -1,9 +1,6 @@
 import { Dispatch } from 'redux';
-import {
-    getIpcRenderer,
-    IPC_MAIN_READER,
-    IPC_PORTABLE_READER,
-} from '../../../common/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
+import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../../server/ipc/ipc-events';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
     MainReaderParams,
@@ -54,24 +51,32 @@ const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
 });
 
 const { dispatch } = store;
-ipc.on(IPC_MAIN_READER.STATUS_CHANGE, (status: READER_STATUS) => {
+ipc.on(IPC_MAIN_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
     dispatch(setMainReaderStatus(status));
 });
 
-ipc.on(IPC_MAIN_READER.ERROR, (msg: string) => {
+ipc.on(IPC_MAIN_READER.ERROR, (_: Event, msg: string) => {
     Notification.error(msg);
 });
 
-ipc.on(IPC_MAIN_READER.IP_RECIEVED, (ip: string) => {
+ipc.on(IPC_MAIN_READER.DISCONNECT, (_: Event, msg: string) => {
+    Notification.warn(msg, 2000);
+});
+
+ipc.on(IPC_MAIN_READER.IP_RECIEVED, (_: Event, ip: string) => {
     console.log(ip);
 });
 
-ipc.on(IPC_PORTABLE_READER.STATUS_CHANGE, (status: READER_STATUS) => {
+ipc.on(IPC_PORTABLE_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
     dispatch(setPortableReaderStatus(status));
 });
 
-ipc.on(IPC_PORTABLE_READER.ERROR, (msg: string) => {
+ipc.on(IPC_PORTABLE_READER.ERROR, (_: Event, msg: string) => {
     Notification.error(msg);
+});
+
+ipc.on(IPC_PORTABLE_READER.DISCONNECT, (_: Event, msg: string) => {
+    Notification.warn(msg, 2000);
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

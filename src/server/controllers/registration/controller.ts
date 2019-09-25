@@ -1,5 +1,5 @@
 
-import { IPC_REGISTRATION } from '../../../common/ipc';
+import { IPC_REGISTRATION } from '../../ipc/ipc-events';
 import { insertUser, updateUser, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';

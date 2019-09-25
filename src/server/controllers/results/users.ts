@@ -1,4 +1,4 @@
-import { IPC_RESULTS } from '../../../common/ipc';
+import { IPC_RESULTS } from '../../ipc/ipc-events';
 import { getUsers, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 

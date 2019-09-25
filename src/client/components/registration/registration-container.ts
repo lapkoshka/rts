@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
 import Registration, { RegistrationActions, RegistrationProps } from './registration';
 import { connect } from 'react-redux';
 import {
@@ -8,11 +9,7 @@ import {
 } from '../../store/registration-store';
 import store, { RootState } from '../../store';
 import { UserData } from '../../../server/modules/database/users';
-import {
-    getIpcRenderer,
-    IPC_PORTABLE_READER,
-    IPC_REGISTRATION,
-} from '../../../common/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 
 const ipc = getIpcRenderer();
 

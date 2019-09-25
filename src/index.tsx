@@ -7,7 +7,8 @@ import 'antd/dist/antd.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import './client/static/style/main.scss';
-import { getIpcRenderer, IPC_APP } from './common/ipc';
+import { getIpcRenderer} from './common/ipc';
+import { IPC_APP } from './server/ipc/ipc-events';
 const ipc = getIpcRenderer();
 
 // TODO make a component with fields and buttons

@@ -1,4 +1,4 @@
-import { IPC_RACE } from '../../../common/ipc';
+import { IPC_RACE } from '../../ipc/ipc-events';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { Laps } from './lap-scenario';
 
