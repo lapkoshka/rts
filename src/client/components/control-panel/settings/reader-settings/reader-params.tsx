@@ -1,10 +1,10 @@
 import { MenuItem, Button, NumericInput } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
 import React from 'react';
-import { makeArr } from '../../../../common/helpers';
+import { makeArr } from '../../../../../common/helpers';
 import {
     MainReaderParams,
-} from '../../../../server/lib/readers/main-reader';
+} from '../../../../../server/lib/readers/main-reader';
 
 interface ReaderParamsProps {
     params: MainReaderParams;

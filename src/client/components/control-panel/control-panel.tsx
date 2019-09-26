@@ -9,7 +9,7 @@ import {
 } from '../../../server/lib/readers/main-reader';
 import Block from '../ui/block/block';
 import './control-panel.scss';
-import ReaderSettings from './reader-settings/reader-settings';
+import Settings from './settings/settings';
 
 interface ReaderButtonProps {
     status: READER_STATUS;
@@ -48,7 +48,9 @@ export interface ControlPanelActions {
     setDefaultMainReaderParams: () => void;
 }
 
-const ControlPanel: React.FC<ControlPanelProps & ControlPanelActions> = (props) => {
+export type ControlPanelPropsAndActions = ControlPanelProps & ControlPanelActions;
+
+const ControlPanel: React.FC<ControlPanelPropsAndActions> = (props) => {
     const { mainReaderSettings } = props;
     const triggerMainReader = React.useCallback(
         () => {
@@ -90,7 +92,7 @@ const ControlPanel: React.FC<ControlPanelProps & ControlPanelActions> = (props) 
                     icon={IconNames.SETTINGS}
                     iconSize={Icon.SIZE_LARGE}
                 />
-                <ReaderSettings {...props}/>
+                <Settings {...props}/>
             </div>
         </Block>
     );

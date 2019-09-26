@@ -107,7 +107,6 @@ export default (state = initialState, action: ReaderControlAction): ReaderContro
               },
           };
       case 'SET_MAIN_READER_PARAMS':
-          console.log(action.payload);
           return {
               ...state,
               mainReaderSettings: {
