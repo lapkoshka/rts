@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import { getIpcRenderer } from '../../../common/ipc';
+import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../../server/ipc/ipc-events';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
     MainReaderParams,
@@ -28,8 +29,12 @@ const mapStateToProps = (state: RootState): ControlPanelProps => ({
     portableStatus: state.readersControl.portable.status,
     mainReaderSettings: state.readersControl.mainReaderSettings,
     shouldShowPopup: state.readersControl.shouldShowPopup,
-    triggerMainReader: (settings: MainReaderSettings) => ipc.send('mainReaderTriggerClick', settings),
-    triggerPortableReader: () => ipc.send('portableReaderTriggerClick'),
+    triggerMainReader: (settings: MainReaderSettings) => {
+        ipc.send(IPC_MAIN_READER.TRIGGER_CLICK, settings);
+    },
+    triggerPortableReader: () => {
+        ipc.send(IPC_PORTABLE_READER.TRIGGER_CLICK);
+    },
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
@@ -46,36 +51,32 @@ const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
 });
 
 const { dispatch } = store;
-ipc.on('onPortableReaderConnectingStart', () =>
-    dispatch(setPortableReaderStatus(READER_STATUS.WAIT)));
+ipc.on(IPC_MAIN_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
+    dispatch(setMainReaderStatus(status));
+});
 
-ipc.on('onPortableReaderConnected', () =>
-    dispatch(setPortableReaderStatus(READER_STATUS.OK)));
-
-ipc.on('onPortableReaderConnectingFailed', (_: Event, msg: string) => {
-    dispatch(setPortableReaderStatus(READER_STATUS.ERROR));
+ipc.on(IPC_MAIN_READER.ERROR, (_: Event, msg: string) => {
     Notification.error(msg);
 });
 
-ipc.on('onPortableReaderDisconnected', () =>
-    dispatch(setPortableReaderStatus(READER_STATUS.DISABLED)));
+ipc.on(IPC_MAIN_READER.DISCONNECT, (_: Event, msg: string) => {
+    Notification.warn(msg, 2000);
+});
 
-ipc.on('onMainReaderConnectingStart', () =>
-    dispatch(setMainReaderStatus(READER_STATUS.WAIT)));
+ipc.on(IPC_MAIN_READER.IP_RECIEVED, (_: Event, ip: string) => {
+    console.log(ip);
+});
 
-ipc.on('onMainReaderConnected', () =>
-    dispatch(setMainReaderStatus(READER_STATUS.OK)));
+ipc.on(IPC_PORTABLE_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
+    dispatch(setPortableReaderStatus(status));
+});
 
-ipc.on('onMainReaderConnectingFailed', (_: Event, msg: string) => {
-    dispatch(setMainReaderStatus(READER_STATUS.ERROR));
-    console.log(msg);
+ipc.on(IPC_PORTABLE_READER.ERROR, (_: Event, msg: string) => {
     Notification.error(msg);
 });
 
-ipc.on('onMainReaderDisconnected', () =>
-    dispatch(setMainReaderStatus(READER_STATUS.DISABLED)));
-
-ipc.on('onMainReaderIpReceived', (_: Event, msg: string) =>
-    console.log(msg));
+ipc.on(IPC_PORTABLE_READER.DISCONNECT, (_: Event, msg: string) => {
+    Notification.warn(msg, 2000);
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

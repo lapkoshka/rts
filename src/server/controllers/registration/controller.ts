@@ -1,4 +1,5 @@
 
+import { IPC_REGISTRATION } from '../../ipc/ipc-events';
 import { insertUser, updateUser, UserData } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
@@ -10,11 +11,11 @@ const submitNewUser = (user: UserData): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
 
 export default () => {
-    rootDispatcher.addPageListener('onCancelRegistration', () => {
+    rootDispatcher.addPageListener(IPC_REGISTRATION.CANCEL, () => {
         portableReader.continue();
     });
 
-    rootDispatcher.addPageListener('onRegistrationSubmit', (_: any, user: UserData) => {
+    rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_: any, user: UserData) => {
         submitNewUser(user).then(() => {
             updateRaceHistory();
             updateTotalInfo();

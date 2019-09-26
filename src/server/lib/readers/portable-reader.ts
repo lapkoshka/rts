@@ -1,6 +1,11 @@
 import { spawn } from 'child_process';
 import * as fs from 'fs';
-import BaseReader, { ProtocolMessages, READER_EVENT, READER_TYPE } from './base-reader';
+import BaseReader, {
+    ProtocolMessages,
+    READER_EVENT,
+    READER_STATUS,
+    READER_TYPE,
+} from './base-reader';
 
 const P_READER_MSG: ProtocolMessages = {
     START_LISTEN: 'start_listen\r\n',
@@ -21,6 +26,7 @@ class PortableReader extends BaseReader {
     }
 
     public open(): Promise<string> {
+        this.status = READER_STATUS.WAIT;
         this.emit(READER_EVENT.CONNECTING_START);
         if (!fs.existsSync(this.exeFilePath)) {
             const msg = `${this.exeFilePath} not found`;
@@ -46,6 +52,7 @@ class PortableReader extends BaseReader {
 
                 if (status === 'ok' && message === 'connected') {
                     this.isConnected = true;
+                    this.status = READER_STATUS.OK;
                     this.emit(READER_EVENT.CONNECTED);
                     resolve();
 

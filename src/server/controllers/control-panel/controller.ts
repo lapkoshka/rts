@@ -1,3 +1,5 @@
+
+import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import BaseReader from '../../lib/readers/base-reader';
 import { MainReaderSettings } from '../../lib/readers/main-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
@@ -14,11 +16,11 @@ const switchReader = (reader: BaseReader): void => {
 };
 
 export default () => {
-    rootDispatcher.addPageListener('portableReaderTriggerClick', () => {
+    rootDispatcher.addPageListener(IPC_PORTABLE_READER.TRIGGER_CLICK, () => {
         switchReader(portableReader);
     });
 
-    rootDispatcher.addPageListener('mainReaderTriggerClick', (_, settings: MainReaderSettings) => {
+    rootDispatcher.addPageListener(IPC_MAIN_READER.TRIGGER_CLICK, (_, settings: MainReaderSettings) => {
         mainReader.settings = settings;
         switchReader(mainReader);
     });

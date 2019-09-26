@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
 import Registration, { RegistrationActions, RegistrationProps } from './registration';
 import { connect } from 'react-redux';
 import {
@@ -19,17 +20,17 @@ const mapStateToProps = (state: RootState): RegistrationProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
     onCancelRegistration: () => {
-        ipc.send('onCancelRegistration');
+        ipc.send(IPC_REGISTRATION.CANCEL);
         dispatch(closeRegistrationPopup());
     },
     submitUser: (user: UserData) => {
-        ipc.send('onRegistrationSubmit', user);
+        ipc.send(IPC_REGISTRATION.SUBMIT, user);
         dispatch(closeRegistrationPopup());
     },
 });
 
 const { dispatch } = store;
-ipc.on('onPortableReaderTag', (_: Event, user: UserData) => {
+ipc.on(IPC_PORTABLE_READER.TAG, (_: Event, user: UserData) => {
     dispatch(setRegistrationUser(user));
     dispatch(openRegistrationPopup());
 });

@@ -1,3 +1,4 @@
+import { IPC_RESULTS } from '../../ipc/ipc-events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { getTotalUserRaces, UserRacesData } from '../../modules/database/race';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
@@ -16,7 +17,7 @@ export const updateTotalInfo = (): void => {
                 username: row.firstname + ' ' + row.lastname,
                 formattedTime: toHumanReadableTime(row.besttime),
         }));
-        rootDispatcher.sendEvent('onTotalInfoUpdate', updateData);
+        rootDispatcher.sendEvent(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
     }).catch((err: Error) => {
         throw err;
     });
