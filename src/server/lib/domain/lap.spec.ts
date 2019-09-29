@@ -56,11 +56,3 @@ describe('lap', () => {
         lap.appendTag(createFakeTag('123', 123));
     });
 });
-
-
-// TODO:
-// pick props for other components
-// onclick on all menu of ip addresses
-// TODO: value from html?
-//  -fix broken tests
-//  -add new tests with params
