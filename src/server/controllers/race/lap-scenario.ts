@@ -2,9 +2,9 @@ import Lap, { LAP_EVENT } from '../../lib/domain/lap';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import { insertRace } from '../../modules/database/race';
 import { UserData } from '../../modules/database/users';
-import { getUserByTag } from '../../modules/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
+import { RaceParams } from './controller';
 import { updateRaceInfoView } from './race-info-view';
 
 export interface Laps {
@@ -13,18 +13,13 @@ export interface Laps {
 
 const currentLaps: Laps = {};
 
-export const getLap = async (tag: RFIDTag): Promise<Lap|undefined> => {
+export const getLap = async (tag: RFIDTag, user: UserData, params: RaceParams): Promise<Lap> => {
     const lap = currentLaps[tag.uid];
     if (lap) {
         return lap;
     }
 
-    const user = await getUserByTag(tag);
-    if (!user) {
-        return;
-    }
-
-    return createLap(tag, user);
+    return createLap(tag, user, params);
 };
 
 const lapEventHandler = (lap: Lap) => {
@@ -47,8 +42,8 @@ const lapEventHandler = (lap: Lap) => {
     }
 };
 
-const createLap = (tag: RFIDTag, user: UserData): Lap => {
-    const lap = new Lap(user);
+const createLap = (tag: RFIDTag, user: UserData, params: RaceParams): Lap => {
+    const lap = new Lap(user, params);
     lap.on(LAP_EVENT.ON_START, lapEventHandler);
     lap.on(LAP_EVENT.ON_FINISH, lapEventHandler);
     currentLaps[tag.uid] = lap;

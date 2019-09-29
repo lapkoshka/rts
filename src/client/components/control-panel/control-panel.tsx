@@ -3,13 +3,9 @@ import { IconNames } from '@blueprintjs/icons';
 
 import React from 'react';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
-import {
-    MainReaderParams,
-    MainReaderSettings,
-} from '../../../server/lib/readers/main-reader';
+import { MainReaderSettings } from '../../../server/lib/readers/main-reader';
 import Block from '../ui/block/block';
 import './control-panel.scss';
-import Settings from './settings/settings';
 
 interface ReaderButtonProps {
     status: READER_STATUS;
@@ -35,22 +31,12 @@ export interface ControlPanelProps {
     mainStatus: READER_STATUS;
     portableStatus: READER_STATUS;
     mainReaderSettings: MainReaderSettings;
-    shouldShowPopup: boolean;
     triggerMainReader: (settings: MainReaderSettings) => void;
     triggerPortableReader: () => void;
-}
-
-export interface ControlPanelActions {
     showMainReaderSettings: (enable: boolean) => void;
-    setIpAddress: (address: string) => void;
-    setIpAuto: (enable: boolean) => void;
-    setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
 }
 
-export type ControlPanelPropsAndActions = ControlPanelProps & ControlPanelActions;
-
-const ControlPanel: React.FC<ControlPanelPropsAndActions> = (props) => {
+const ControlPanel: React.FC<ControlPanelProps> = (props) => {
     const { mainReaderSettings } = props;
     const triggerMainReader = React.useCallback(
         () => {
@@ -92,7 +78,6 @@ const ControlPanel: React.FC<ControlPanelPropsAndActions> = (props) => {
                     icon={IconNames.SETTINGS}
                     iconSize={Icon.SIZE_LARGE}
                 />
-                <Settings {...props}/>
             </div>
         </Block>
     );

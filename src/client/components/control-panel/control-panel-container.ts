@@ -1,14 +1,15 @@
 import { Dispatch } from 'redux';
 import { getIpcRenderer } from '../../../common/ipc';
-import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../../server/ipc/ipc-events';
+import {
+    IPC_MAIN_READER,
+    IPC_PORTABLE_READER,
+} from '../../../server/ipc/ipc-events';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
-    MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
 import Notification from '../../lib/notification';
 import ControlPanel, {
-    ControlPanelActions,
     ControlPanelProps,
 } from './control-panel';
 import { connect } from 'react-redux';
@@ -16,19 +17,20 @@ import {
     showMainReaderSettings,
     setMainReaderStatus,
     setPortableReaderStatus,
-    setIpAdress,
-    setIpAuto,
-    setMainReaderParams,
-    setDefaultMainReaderParams,
 } from '../../store/control-panel-store';
 import store, { RootState } from '../../store';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): ControlPanelProps => ({
+const mapStateToProps = (state: RootState): Pick<ControlPanelProps,
+        'mainStatus' |
+        'portableStatus'|
+        'mainReaderSettings' |
+        'triggerMainReader' |
+        'triggerPortableReader'
+    > => ({
     mainStatus: state.readersControl.main.status,
     portableStatus: state.readersControl.portable.status,
     mainReaderSettings: state.readersControl.mainReaderSettings,
-    shouldShowPopup: state.readersControl.shouldShowPopup,
     triggerMainReader: (settings: MainReaderSettings) => {
         ipc.send(IPC_MAIN_READER.TRIGGER_CLICK, settings);
     },
@@ -37,17 +39,10 @@ const mapStateToProps = (state: RootState): ControlPanelProps => ({
     },
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
+const mapDispatchToProps = (dispatch: Dispatch): Pick<ControlPanelProps,
+        'showMainReaderSettings'
+    > => ({
     showMainReaderSettings: (enable: boolean) => dispatch(showMainReaderSettings(enable)),
-    setIpAddress: (address: string) => dispatch(setIpAdress(address)),
-    setIpAuto: (enable: boolean) => {
-        dispatch(setIpAuto(enable));
-        if (enable) {
-            dispatch(setIpAdress('0.0.0.0'));
-        }
-    },
-    setMainReaderParams: (params: MainReaderParams) => dispatch(setMainReaderParams(params)),
-    setDefaultMainReaderParams: () => dispatch(setDefaultMainReaderParams()),
 });
 
 const { dispatch } = store;

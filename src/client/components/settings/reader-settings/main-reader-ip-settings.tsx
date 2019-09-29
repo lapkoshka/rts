@@ -8,21 +8,25 @@ import {
     Switch,
 } from '@blueprintjs/core';
 import React, { FormEvent } from 'react';
-import { MainReaderParams } from '../../../../../server/lib/readers/main-reader';
-import { ControlPanelPropsAndActions } from '../../control-panel';
-import ReaderParams from './reader-params';
+import { MainReaderSettings } from '../../../../server/lib/readers/main-reader';
 
-const ReaderSettings: React.FC<ControlPanelPropsAndActions> = (props) => {
+export interface ReaderSettingsProps {
+    setIpAuto: (enable: boolean) => void;
+    setIpAddress: (address: string) => void;
+    mainReaderSettings: MainReaderSettings;
+}
+
+const MainReaderIpSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
     const onSwitchChange = React.useCallback(
-        (evt: FormEvent) => {
-            props.setIpAuto((evt.target as HTMLInputElement).checked);
+        (evt: FormEvent<HTMLInputElement>) => {
+            props.setIpAuto(evt.currentTarget.checked);
         },
         [props],
     );
 
     const onIpAddressInputChange = React.useCallback(
-        (evt: FormEvent) => {
-            props.setIpAddress((evt.target as HTMLInputElement).value);
+        (evt: FormEvent<HTMLInputElement>) => {
+            props.setIpAddress(evt.currentTarget.value);
         },
         [props],
     );
@@ -34,17 +38,9 @@ const ReaderSettings: React.FC<ControlPanelPropsAndActions> = (props) => {
         [props],
     );
 
-    const onReaderParamsChange = React.useCallback(
-        (params: MainReaderParams) => {
-            props.setMainReaderParams(params);
-        },
-        [props],
-    );
-
     const { auto, address} = props.mainReaderSettings.ip;
     return (
         <>
-            <h6 className='bp3-heading'>Настройки главного приёмника</h6>
             <Switch
                 checked={auto}
                 label='Определять автоматически'
@@ -77,14 +73,8 @@ const ReaderSettings: React.FC<ControlPanelPropsAndActions> = (props) => {
                     </Popover>
                 )}
             />
-
-            <ReaderParams
-                params={props.mainReaderSettings.params}
-                onChange={onReaderParamsChange}
-                onSetDefault={props.setDefaultMainReaderParams}
-            />
         </>
     );
-};
+});
 
-export default ReaderSettings;
+export default MainReaderIpSettings;

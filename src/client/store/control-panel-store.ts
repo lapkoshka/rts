@@ -1,6 +1,7 @@
 import { READER_STATUS } from '../../server/lib/readers/base-reader';
 import {
-    defaultMainReaderSettings, MainReaderParams,
+    defaultMainReaderSettings,
+    MainReaderParams,
     MainReaderSettings,
 } from '../../server/lib/readers/main-reader';
 import { Action } from './index';
@@ -33,7 +34,7 @@ export const showMainReaderSettings = (payload: boolean) => ({
    payload,
 });
 
-export const setIpAdress = (payload: string) => ({
+export const setIpAddress = (payload: string) => ({
     type: 'SET_IP_ADDRESS',
     payload,
 });

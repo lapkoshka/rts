@@ -12,12 +12,14 @@ class RSSITrace extends EventEmitter {
     public completed: boolean;
     private tag: RFIDTag;
     private points: RSSITracePoint[];
+    private traceFillingTimeout: number;
 
-    constructor(tag: RFIDTag) {
+    constructor(tag: RFIDTag, timeout: number) {
         super();
         this.tag = tag;
         this.points = [];
         this.completed = false;
+        this.traceFillingTimeout = timeout;
     }
 
     public appendPoint(tag: RFIDTag): void {
@@ -57,7 +59,7 @@ class RSSITrace extends EventEmitter {
             setTimeout(() => {
                 this.completed = true;
                 this.emit(RSSITraceEvent.ON_COMPLETE, this.getHighestPoint());
-            }, TRACE_FILLING_TIMEOUT);
+            }, this.traceFillingTimeout);
         }
     }
 }

@@ -1,24 +1,24 @@
 import { MenuItem, Button, NumericInput } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
 import React from 'react';
-import { makeArr } from '../../../../../common/helpers';
+import { makeArr } from '../../../../common/helpers';
 import {
     MainReaderParams,
-} from '../../../../../server/lib/readers/main-reader';
+} from '../../../../server/lib/readers/main-reader';
 
 interface ReaderParamsProps {
     params: MainReaderParams;
-    onChange: (params: MainReaderParams) => void;
-    onSetDefault: () => void;
+    setMainReaderParams: (params: MainReaderParams) => void;
+    setDefaultMainReaderParams: () => void;
 }
 
 const SESSION_DEFAULT_VALUES = ['0', '1', '2', '3', '255'];
 
-const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
+const MainReaderParameters: React.FC<ReaderParamsProps> = React.memo((props) => {
     const params: MainReaderParams = props.params;
     const onQvalueChange = React.useCallback(
         (value) => {
-            props.onChange({
+            props.setMainReaderParams({
                 ...params,
                 qvalue: value.toString(),
             });
@@ -28,7 +28,7 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
 
     const onScantimeChange = React.useCallback(
         (value) => {
-            props.onChange({
+            props.setMainReaderParams({
                 ...params,
                 scantime: value.toString(),
             });
@@ -38,7 +38,7 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
 
     const onSessionChange = React.useCallback(
         (value) => {
-            props.onChange({
+            props.setMainReaderParams({
                 ...params,
                 session: value.toString(),
             });
@@ -100,11 +100,11 @@ const ReaderParams: React.FC<ReaderParamsProps> = React.memo((props) => {
                 </Select>
             </div>
             <div className='reader-params-input-group'>
-                <Button onClick={props.onSetDefault}>По-умолчанию</Button>
+                <Button onClick={props.setDefaultMainReaderParams}>По-умолчанию</Button>
             </div>
         </>
     );
 });
 
-export default ReaderParams;
+export default MainReaderParameters;
 
