@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
-import Registration, { RegistrationActions, RegistrationProps } from './registration';
+import Registration, {  RegistrationProps } from './registration';
 import { connect } from 'react-redux';
 import {
     closeRegistrationPopup,
@@ -13,12 +13,18 @@ import { getIpcRenderer } from '../../../common/ipc';
 
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): RegistrationProps => ({
+const mapStateToProps = (state: RootState): Pick<RegistrationProps,
+        'shouldShowPopup' |
+        'user'
+    > => ({
     shouldShowPopup: state.registration.shouldShowPopup,
     user: state.registration.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
+const mapDispatchToProps = (dispatch: Dispatch): Pick<RegistrationProps,
+        'onCancelRegistration' |
+        'submitUser'
+    > => ({
     onCancelRegistration: () => {
         ipc.send(IPC_REGISTRATION.CANCEL);
         dispatch(closeRegistrationPopup());

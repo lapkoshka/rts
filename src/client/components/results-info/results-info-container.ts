@@ -13,7 +13,13 @@ import { Users } from '../../../server/controllers/results/users';
 import { TotalInfo } from '../../../server/controllers/results/total';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): ResultsInfoProps => ({
+const mapStateToProps = (state: RootState): Pick<ResultsInfoProps,
+        'history' |
+        'users' |
+        'total' |
+        'deleteRace' |
+        'deleteUser'
+    > => ({
     history: state.resultsInfo.history,
     users: state.resultsInfo.users,
     total: state.resultsInfo.total,

@@ -1,22 +1,30 @@
 import { Intent, Toaster } from '@blueprintjs/core';
 
 interface Notification {
-    error: (msg: string) => void;
-    warn: (msg: string, timeout: number) => void;
+    [key: string]: (msg: string, timeout: number) => void;
 }
 
 const Notification: Notification = {
-    error: (msg: string) => {
+    error: (msg: string, timeout = 2000) => {
         Toaster.create().show({
             icon: 'warning-sign',
             intent: Intent.DANGER,
             message: msg,
+            timeout,
         });
     },
     warn: (msg: string, timeout: number) => {
         Toaster.create().show({
             icon: 'warning-sign',
             intent: Intent.WARNING,
+            message: msg,
+            timeout,
+        });
+    },
+    success: (msg: string, timeout: number) => {
+        Toaster.create().show({
+            icon: 'warning-sign',
+            intent: Intent.SUCCESS,
             message: msg,
             timeout,
         });

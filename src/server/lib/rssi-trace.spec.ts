@@ -1,13 +1,15 @@
 import { sleep } from './functions';
 import { createFakeTag } from './readers/main-reader.spec';
-import RSSITrace, { RSSITraceEvent, TRACE_FILLING_TIMEOUT } from './rssi-trace';
+import RSSITrace, { RSSITraceEvent } from './rssi-trace';
 import RSSITracePoint from './rssi-trace-point';
+
+const TRACE_FILLING_TIMEOUT = 1000;
 
 describe('rssi-trace methods', () => {
     describe('should be fired onComplete', () => {
         it('with single point', (done) => {
             const tag = createFakeTag('123', 123);
-            const trace = new RSSITrace(tag);
+            const trace = new RSSITrace(tag, TRACE_FILLING_TIMEOUT);
             trace.on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
                 expect(tracePoint.tag).toEqual({
                     uid: '123',
@@ -20,7 +22,7 @@ describe('rssi-trace methods', () => {
 
         it('should be highest rssi value', (done) => {
             const tag = createFakeTag('123', 123);
-            const trace = new RSSITrace(tag);
+            const trace = new RSSITrace(tag, TRACE_FILLING_TIMEOUT);
             trace.on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
                 expect(tracePoint.tag).toEqual({
                     uid: '123',
@@ -36,7 +38,7 @@ describe('rssi-trace methods', () => {
 
         it('should be earlier timestamp if rssi values are equals', async (done) => {
             const tag = createFakeTag('123', 1);
-            const trace = new RSSITrace(tag);
+            const trace = new RSSITrace(tag, TRACE_FILLING_TIMEOUT);
             trace.on(RSSITraceEvent.ON_COMPLETE, (tracePoint: RSSITracePoint) => {
                 const points = trace.getSortedPoints();
                 expect(tracePoint).toBe(points[0]);
@@ -59,7 +61,7 @@ describe('rssi-trace methods', () => {
     describe('should raise an exception', () => {
         it('race is completed', async (done) => {
             const tag = createFakeTag('123', 123);
-            const trace = new RSSITrace(tag);
+            const trace = new RSSITrace(tag, TRACE_FILLING_TIMEOUT);
             trace.appendPoint(tag);
             await sleep(TRACE_FILLING_TIMEOUT + 100);
             try {
@@ -72,7 +74,7 @@ describe('rssi-trace methods', () => {
 
         it('UIDs should be equals', (done) => {
             const tag = createFakeTag('123', 123);
-            const trace = new RSSITrace(tag);
+            const trace = new RSSITrace(tag, TRACE_FILLING_TIMEOUT);
             trace.appendPoint(tag);
             try {
                 trace.appendPoint(createFakeTag('123456', 321));

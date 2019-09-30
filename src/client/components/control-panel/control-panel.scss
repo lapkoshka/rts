@@ -1,25 +1,3 @@
-.control-reader-buttons {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.control-reader-button {
-    opacity: .5;
-    display: flex;
-    cursor: pointer;
-    margin-bottom: 16px;
-    margin-right: 8px;
-
-    &:hover {
-        opacity: 1;
-    }
-
-    &:nth-last-child(1) {
-        margin-bottom: 0;
-    }
-}
-
 @mixin button-status($color) {
     outline: none !important;
     background: $color !important;
@@ -44,6 +22,12 @@
     }
 }
 
+.control-reader-buttons {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
 .readers-main-settings {
     cursor: pointer;
     opacity: .5;
@@ -55,7 +39,3 @@
         opacity: 1;
     }
 }
-
-
-
-

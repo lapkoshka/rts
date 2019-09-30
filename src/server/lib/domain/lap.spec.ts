@@ -1,8 +1,7 @@
 import { UserData } from '../../modules/database/users';
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
-import { TRACE_FILLING_TIMEOUT } from '../rssi-trace';
-import Lap, { LAP_EVENT } from './lap';
+import Lap, { defaultRaceParams, LAP_EVENT } from './lap';
 
 jest.setTimeout(10000);
 
@@ -15,34 +14,51 @@ describe('lap', () => {
     };
 
     it('should be called onStart', (done) => {
-        const lap = new Lap(fakeUser);
+        const lap = new Lap(fakeUser, defaultRaceParams);
         lap.on(LAP_EVENT.ON_START, (lap: Lap) => {
             expect(lap.startTrace.getHighestPoint().tag).toEqual({
                 uid: '123',
-                rssi: 999,
+                rssi: 80,
             });
             done();
         });
-        lap.appendTag(createFakeTag('123', 666));
-        lap.appendTag(createFakeTag('123', 999));
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
     });
 
     it('should be called onFinish', async (done) => {
-        const lap = new Lap(fakeUser);
+        const lap = new Lap(fakeUser, defaultRaceParams);
         lap.on(LAP_EVENT.ON_FINISH, (lap: Lap) => {
             expect(lap.user).toBe(fakeUser);
             done();
         });
 
-        lap.appendTag(createFakeTag('123', 666));
-        lap.appendTag(createFakeTag('123', 999));
-        await sleep(TRACE_FILLING_TIMEOUT + 100);
-        lap.appendTag(createFakeTag('123', 123));
-        lap.appendTag(createFakeTag('123', 321));
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
+        await sleep(1100);
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
+    });
+
+    it('should be called onFinish with non-default rssi-trace timeout', async (done) => {
+        const lap = new Lap(fakeUser, {
+            ...defaultRaceParams,
+            rssiTraceTimeout: 3000,
+        });
+        lap.on(LAP_EVENT.ON_FINISH, (lap: Lap) => {
+            expect(lap.user).toBe(fakeUser);
+            done();
+        });
+
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
+        await sleep(3100);
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
     });
 
     it('should be approx 5s between both timestamps', async (done) => {
-        const lap = new Lap(fakeUser);
+        const lap = new Lap(fakeUser, defaultRaceParams);
         lap.on(LAP_EVENT.ON_FINISH, (lap: Lap) => {
             expect(lap.user).toBe(fakeUser);
             expect(lap.getTotalTime()).toBeGreaterThanOrEqual(4999);
@@ -50,8 +66,27 @@ describe('lap', () => {
             done();
         });
 
-        lap.appendTag(createFakeTag('123', 666));
+        lap.appendTag(createFakeTag('123', 70));
         await sleep(5000);
-        lap.appendTag(createFakeTag('123', 123));
+        lap.appendTag(createFakeTag('123', 70));
+    });
+
+    it('tag should be correctly filtered', async (done) => {
+        const lap = new Lap(fakeUser, {
+            ...defaultRaceParams,
+            rssiFilter: [20, 60],
+        });
+
+        lap.on(LAP_EVENT.ON_START, (lap: Lap) => {
+            const { startTrace } = lap;
+            expect(startTrace.getHighestPoint().tag).toEqual({
+                uid: '123',
+                rssi: 50,
+            });
+
+            done();
+        });
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 50));
     });
 });

@@ -7,7 +7,9 @@ import { setCurrentRaces } from '../../store/race-info-store';
 import { CurrentRaces } from '../../../server/controllers/race/race-info-view';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): RaceInfoProps => ({
+const mapStateToProps = (state: RootState): Pick<RaceInfoProps,
+        'currentRaces'
+    > => ({
     currentRaces: state.raceInfo.currentRaces,
 });
 

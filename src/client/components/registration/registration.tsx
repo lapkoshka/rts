@@ -7,14 +7,12 @@ const ENTER_KEY_CODE = 13;
 export interface RegistrationProps {
     shouldShowPopup: boolean;
     user: any;
-}
 
-export interface RegistrationActions {
     onCancelRegistration: () => void;
     submitUser: (user: UserData) => void;
 }
 
-const Registration: React.FC<RegistrationProps & RegistrationActions> = React.memo((props) => {
+const Registration: React.FC<RegistrationProps> = React.memo((props) => {
     const userForm = {...props.user};
 
     const keyUpHandler = React.useCallback((evt: KeyboardEvent) => {

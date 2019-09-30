@@ -25,6 +25,7 @@ export enum IPC_PORTABLE_READER {
 
 export enum IPC_RACE {
     CURRENT_RACES_CHANGED = 'ipcRaceCurrentRacesChanged',
+    UPDATE_RACE_PARAMS = 'ipcRaceUpdateRaceParams',
 }
 
 export enum IPC_REGISTRATION {
