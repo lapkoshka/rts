@@ -3,6 +3,7 @@ import { RaceParams } from '../../controllers/race/controller';
 import { UserData } from '../../modules/database/users';
 import { RFIDTag } from '../readers/base-reader';
 import RSSITrace, { RSSITraceEvent } from '../rssi-trace';
+import { shouldAppendTag } from './lib';
 
 export enum LAP_EVENT {
     ON_START = 'onStart',
@@ -29,7 +30,7 @@ class Lap extends EventEmitter {
     }
 
     public appendTag(tag: RFIDTag): void {
-        if (!this.shouldAppendTag(tag)) {
+        if (!shouldAppendTag(tag, this.params.rssiFilter)) {
             return;
         }
 
@@ -65,12 +66,6 @@ class Lap extends EventEmitter {
         const highestStart = this.startTrace.getHighestPoint();
         const highestFinish = this.finishTrace.getHighestPoint();
         return highestFinish.timestamp - highestStart.timestamp;
-    }
-
-    private shouldAppendTag(tag: RFIDTag): boolean {
-        const { rssi } = tag;
-        const [min, max] = this.params.rssiFilter;
-        return rssi >= min && rssi <= max;
     }
 }
 

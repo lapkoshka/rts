@@ -20,12 +20,12 @@ describe('lap', () => {
         lap.on(LAP_EVENT.ON_START, (lap: Lap) => {
             expect(lap.startTrace.getHighestPoint().tag).toEqual({
                 uid: '123',
-                rssi: 999,
+                rssi: 80,
             });
             done();
         });
-        lap.appendTag(createFakeTag('123', 666));
-        lap.appendTag(createFakeTag('123', 999));
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
     });
 
     it('should be called onFinish', async (done) => {
@@ -35,11 +35,11 @@ describe('lap', () => {
             done();
         });
 
-        lap.appendTag(createFakeTag('123', 666));
-        lap.appendTag(createFakeTag('123', 999));
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
         await sleep(TRACE_FILLING_TIMEOUT + 100);
-        lap.appendTag(createFakeTag('123', 123));
-        lap.appendTag(createFakeTag('123', 321));
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
     });
 
     it('should be approx 5s between both timestamps', async (done) => {
@@ -51,8 +51,27 @@ describe('lap', () => {
             done();
         });
 
-        lap.appendTag(createFakeTag('123', 666));
+        lap.appendTag(createFakeTag('123', 70));
         await sleep(5000);
-        lap.appendTag(createFakeTag('123', 123));
+        lap.appendTag(createFakeTag('123', 70));
+    });
+
+    it('tag should be correctly filtered', async (done) => {
+        const lap = new Lap(fakeUser, {
+            ...defaultRaceParams,
+            rssiFilter: [20, 60],
+        });
+
+        lap.on(LAP_EVENT.ON_START, (lap: Lap) => {
+            const { startTrace } = lap;
+            expect(startTrace.getHighestPoint().tag).toEqual({
+                uid: '123',
+                rssi: 50,
+            });
+
+            done();
+        });
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 50));
     });
 });
