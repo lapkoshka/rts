@@ -51,7 +51,7 @@ ipc.on(IPC_MAIN_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
 });
 
 ipc.on(IPC_MAIN_READER.ERROR, (_: Event, msg: string) => {
-    Notification.error(msg);
+    Notification.error(msg, 5000);
 });
 
 ipc.on(IPC_MAIN_READER.DISCONNECT, (_: Event, msg: string) => {
@@ -67,7 +67,7 @@ ipc.on(IPC_PORTABLE_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
 });
 
 ipc.on(IPC_PORTABLE_READER.ERROR, (_: Event, msg: string) => {
-    Notification.error(msg);
+    Notification.error(msg, 5000);
 });
 
 ipc.on(IPC_PORTABLE_READER.DISCONNECT, (_: Event, msg: string) => {

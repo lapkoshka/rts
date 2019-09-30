@@ -3,8 +3,6 @@ import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
 import Lap, { defaultRaceParams, LAP_EVENT } from './lap';
 
-const TRACE_FILLING_TIMEOUT = 1000;
-
 jest.setTimeout(10000);
 
 describe('lap', () => {
@@ -37,7 +35,24 @@ describe('lap', () => {
 
         lap.appendTag(createFakeTag('123', 70));
         lap.appendTag(createFakeTag('123', 80));
-        await sleep(TRACE_FILLING_TIMEOUT + 100);
+        await sleep(1100);
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
+    });
+
+    it('should be called onFinish with non-default rssi-trace timeout', async (done) => {
+        const lap = new Lap(fakeUser, {
+            ...defaultRaceParams,
+            rssiTraceTimeout: 3000,
+        });
+        lap.on(LAP_EVENT.ON_FINISH, (lap: Lap) => {
+            expect(lap.user).toBe(fakeUser);
+            done();
+        });
+
+        lap.appendTag(createFakeTag('123', 70));
+        lap.appendTag(createFakeTag('123', 80));
+        await sleep(3100);
         lap.appendTag(createFakeTag('123', 70));
         lap.appendTag(createFakeTag('123', 80));
     });

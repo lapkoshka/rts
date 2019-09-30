@@ -4,6 +4,7 @@ import { RaceParams } from '../../../server/controllers/race/controller';
 import { IPC_RACE } from '../../../server/ipc/ipc-events';
 import { MainReaderParams } from '../../../server/lib/readers/main-reader';
 import { connect } from 'react-redux';
+import Notification from '../../lib/notification';
 import {
     showMainReaderSettings,
     setIpAddress,
@@ -28,6 +29,7 @@ const mapStateToProps = (state: RootState): Pick<SettingsProps,
     raceParams: state.raceInfo.raceParams,
     applyRaceParams: (params: RaceParams) => {
         ipc.send(IPC_RACE.UPDATE_RACE_PARAMS, params);
+        Notification.success('Настройки гонки применены', 3000);
     },
 });
 
