@@ -19,13 +19,19 @@ export interface ResultsInfoProps {
 
 const ResultsInfo: React.FC<ResultsInfoProps> = (props) => {
     const [tabId, setTabId] = React.useState('0');
+    const onChangeHandler = React.useCallback(
+        (tabId: string) => {
+            setTabId(tabId);
+        },
+        [],
+    );
 
     return (
         <Block>
             <Tabs
                 id='Results Info'
                 selectedTabId={tabId}
-                onChange={(a: string) => setTabId(a)}
+                onChange={onChangeHandler}
             >
                 <Tab
                     id='0'
