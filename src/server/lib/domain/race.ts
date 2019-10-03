@@ -71,7 +71,7 @@ class Race extends EventEmitter {
     }
 
     private isLastLap(lap?: Lap): boolean {
-        return this.laps.indexOf(lap) === this.laps.length - 1;
+        return this.laps.indexOf(lap) + 1 === this.params.maxLaps;
     }
 
     private createNewLap(): Lap {
