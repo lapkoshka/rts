@@ -1,6 +1,6 @@
 import { Button, NumberRange, NumericInput, RangeSlider } from '@blueprintjs/core';
 import React from 'react';
-import { RaceParams } from '../../../../server/controllers/race/controller';
+import { RaceParams } from '../../../../server/lib/domain/race';
 
 export interface RaceSettingsProps {
     setRaceParams: (params: RaceParams) => void;
@@ -8,6 +8,7 @@ export interface RaceSettingsProps {
     applyRaceParams: (params: RaceParams) => void;
 }
 
+// TODO: add max laps count on view settings
 const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
     const handleSliderValueChange = React.useCallback(
         (value: NumberRange) => {

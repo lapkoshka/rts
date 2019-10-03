@@ -1,15 +1,10 @@
 import { IPC_RACE } from '../../ipc/ipc-events';
-import { defaultRaceParams } from '../../lib/domain/lap';
+import { defaultRaceParams, RaceParams } from '../../lib/domain/race';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { getUserByTag } from '../../modules/users';
 import { getLap } from './lap-scenario';
-
-export interface RaceParams {
-    rssiFilter: [number, number];
-    rssiTraceTimeout: number;
-}
 
 let raceParams = defaultRaceParams;
 
@@ -24,7 +19,11 @@ export default (): void => {
             return;
         }
 
-        const lap = await getLap(tag, user, raceParams);
+        // TODO: replace lap logic to race logic here
+        const lap = getLap(tag, user, raceParams);
         lap.appendTag(tag);
+
+        // const race = getRace();
+        // race.appendTag();
     });
 };

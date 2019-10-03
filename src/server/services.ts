@@ -31,7 +31,7 @@ const updateView = (): void => {
     // closeRaces();
 };
 
-const start = async (): Promise<void> => {
+const start = (): void => {
     rootDispatcher.addPageListener(IPC_APP.START, async () => {
         await waitView();
         updateView();

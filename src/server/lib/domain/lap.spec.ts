@@ -1,7 +1,8 @@
 import { UserData } from '../../modules/database/users';
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
-import Lap, { defaultRaceParams, LAP_EVENT } from './lap';
+import Lap, { LAP_EVENT } from './lap';
+import { defaultRaceParams } from './race';
 
 jest.setTimeout(10000);
 
@@ -13,6 +14,7 @@ describe('lap', () => {
         alreadyRegistred: true,
     };
 
+    // TODO: update lap tests here
     it('should be called onStart', (done) => {
         const lap = new Lap(fakeUser, defaultRaceParams);
         lap.on(LAP_EVENT.ON_START, (lap: Lap) => {

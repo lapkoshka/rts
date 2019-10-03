@@ -1,6 +1,5 @@
-import { RaceParams } from '../../server/controllers/race/controller';
 import { CurrentRaces } from '../../server/controllers/race/race-info-view';
-import { defaultRaceParams } from '../../server/lib/domain/lap';
+import { defaultRaceParams, RaceParams } from '../../server/lib/domain/race';
 import { Action } from './index';
 
 type RaceInfoAction = Action<CurrentRaces | RaceParams>;

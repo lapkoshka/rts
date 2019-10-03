@@ -1,10 +1,10 @@
 import Lap, { LAP_EVENT } from '../../lib/domain/lap';
+import { RaceParams } from '../../lib/domain/race';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import { insertRace } from '../../modules/database/race';
 import { UserData } from '../../modules/database/users';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
-import { RaceParams } from './controller';
 import { updateRaceInfoView } from './race-info-view';
 
 export interface Laps {
@@ -13,7 +13,7 @@ export interface Laps {
 
 const currentLaps: Laps = {};
 
-export const getLap = async (tag: RFIDTag, user: UserData, params: RaceParams): Promise<Lap> => {
+export const getLap = (tag: RFIDTag, user: UserData, params: RaceParams): Lap => {
     const lap = currentLaps[tag.uid];
     if (lap) {
         return lap;
@@ -25,15 +25,16 @@ export const getLap = async (tag: RFIDTag, user: UserData, params: RaceParams): 
 const lapEventHandler = (lap: Lap) => {
     const {startTrace, finishTrace } = lap;
 
+    // TODO: replace lap-scenario to race-scenario here
     if (finishTrace && finishTrace.completed) {
         insertRace(lap.user.uid, lap.getTotalTime());
+        delete currentLaps[lap.user.uid];
+
+        // TODO: update raceInfoView with currentRaces
         updateRaceInfoView(currentLaps);
-        setTimeout(async () => {
-            delete currentLaps[lap.user.uid];
-            updateRaceInfoView(currentLaps);
-            updateTotalInfo();
-            updateRaceHistory();
-        }, 2000);
+        updateTotalInfo();
+        updateRaceHistory();
+
         return;
     }
 
