@@ -11,9 +11,9 @@ export interface RaceParams {
 }
 
 export enum RACE_EVENT {
-    ON_START = 'onRaceStart',
-    ON_LAP_FINISH = 'onRaceLapFinish',
-    ON_FINISH = 'onRaceFinish',
+    START = 'onRaceStart',
+    LAP_FINISH = 'onRaceLapFinish',
+    FINISH = 'onRaceFinish',
 }
 
 export const defaultRaceParams: RaceParams = {
@@ -62,7 +62,7 @@ class Race extends EventEmitter {
     }
 
     private getPreviousLap(): Lap {
-        const current = this.getCurrentLap();
+        const current = this.laps[this.laps.length - 1];
         return this.laps[this.laps.indexOf(current) - 1];
     }
 
@@ -76,22 +76,26 @@ class Race extends EventEmitter {
 
     private createNewLap(): Lap {
         const lap = new Lap(this.params.rssiTraceTimeout);
+        this.laps.push(lap);
+
         if (this.isFirstLap(lap)) {
-            lap.on(LAP_EVENT.ON_START, () => {
-                this.emit(RACE_EVENT.ON_START);
+            lap.on(LAP_EVENT.START, () => {
+                this.emit(RACE_EVENT.START);
             });
         }
 
-        const { finishTrace } = this.getPreviousLap();
-        lap.startTrace = finishTrace;
-        lap.on(LAP_EVENT.ON_FINISH, () => {
-            this.emit(RACE_EVENT.ON_LAP_FINISH);
+        const previousLap = this.getPreviousLap();
+        if (previousLap) {
+            lap.startTrace = previousLap.finishTrace;
+        }
+
+        lap.on(LAP_EVENT.FINISH, () => {
+            this.emit(RACE_EVENT.LAP_FINISH);
             if (this.isLastLap(lap)) {
-                this.emit(RACE_EVENT.ON_FINISH);
+                this.emit(RACE_EVENT.FINISH);
             }
         });
 
-        this.laps.push(lap);
         return lap;
     }
 }

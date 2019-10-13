@@ -45,8 +45,8 @@ const lapEventHandler = (lap: Lap) => {
 
 const createLap = (tag: RFIDTag, user: UserData, params: RaceParams): Lap => {
     const lap = new Lap(user, params);
-    lap.on(LAP_EVENT.ON_START, lapEventHandler);
-    lap.on(LAP_EVENT.ON_FINISH, lapEventHandler);
+    lap.on(LAP_EVENT.START, lapEventHandler);
+    lap.on(LAP_EVENT.FINISH, lapEventHandler);
     currentLaps[tag.uid] = lap;
 
     return lap;

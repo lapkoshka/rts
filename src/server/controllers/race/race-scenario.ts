@@ -23,9 +23,9 @@ export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race 
     }
 
     race = new Race(user, params);
-    race.on(RACE_EVENT.ON_START, raceEventHandler);
+    race.on(RACE_EVENT.START, raceEventHandler);
     race.on(RACE_EVENT.ON_LAP_FINISH, raceEventHandler);
-    race.on(RACE_EVENT.ON_FINISH, raceEventHandler);
+    race.on(RACE_EVENT.FINISH, raceEventHandler);
     currentRaces[tag.uid] = race;
 
     return race;

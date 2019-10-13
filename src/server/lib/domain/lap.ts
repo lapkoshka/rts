@@ -3,8 +3,8 @@ import { RFIDTag } from '../readers/base-reader';
 import RSSITrace, { RSSITraceEvent } from '../rssi-trace';
 
 export enum LAP_EVENT {
-    ON_START = 'onLapStart',
-    ON_FINISH = 'onLapFinish',
+    START = 'onLapStart',
+    FINISH = 'onLapFinish',
 }
 
 class Lap extends EventEmitter {
@@ -24,7 +24,7 @@ class Lap extends EventEmitter {
             this.startTrace = new RSSITrace(tag, this.traceTimeout);
             this.startTrace
                 .on(RSSITraceEvent.ON_COMPLETE, () => {
-                    this.emit(LAP_EVENT.ON_START, this);
+                    this.emit(LAP_EVENT.START, this);
                 });
         }
 
@@ -37,7 +37,7 @@ class Lap extends EventEmitter {
             this.finishTrace = new RSSITrace(tag, this.traceTimeout);
             this.finishTrace
                 .on(RSSITraceEvent.ON_COMPLETE, () => {
-                    this.emit(LAP_EVENT.ON_FINISH, this);
+                    this.emit(LAP_EVENT.FINISH, this);
                 });
         }
 
