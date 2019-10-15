@@ -23,8 +23,8 @@ const mapStateToProps = (state: RootState): Pick<ResultsInfoProps,
     history: state.resultsInfo.history,
     users: state.resultsInfo.users,
     total: state.resultsInfo.total,
-    deleteRace: (id: number) => ipc.send('onRaceDelete', id),
-    deleteUser: (uid: string) => ipc.send('onUserDelete', uid),
+    deleteRace: (id: number) => ipc.send(IPC_RESULTS.ON_RACE_DELETE, id),
+    deleteUser: (uid: string) => ipc.send(IPC_RESULTS.ON_RACE_DELETE, uid),
 });
 
 const { dispatch } = store;

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { getIpcRenderer } from '../../../common/ipc';
-import { RaceParams } from '../../../server/controllers/race/controller';
 import { IPC_RACE } from '../../../server/ipc/ipc-events';
+import { RaceParams } from '../../../server/lib/domain/race';
 import { MainReaderParams } from '../../../server/lib/readers/main-reader';
 import { connect } from 'react-redux';
 import Notification from '../../lib/notification';

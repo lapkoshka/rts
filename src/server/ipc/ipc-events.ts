@@ -26,6 +26,7 @@ export enum IPC_PORTABLE_READER {
 export enum IPC_RACE {
     CURRENT_RACES_CHANGED = 'ipcRaceCurrentRacesChanged',
     UPDATE_RACE_PARAMS = 'ipcRaceUpdateRaceParams',
+    ON_CLOSE_RACE = 'ipcRaceOnCloseRace',
 }
 
 export enum IPC_REGISTRATION {
@@ -37,4 +38,6 @@ export enum IPC_RESULTS {
     USERS_DATA_UPDATE = 'ipcResultsUserDataUpdate',
     TOTAL_INFO_UPDATE = 'ipcResultsTotalInfoUpdate',
     RACE_HISTORY_UPDATE = 'ipcResultsRaceHistoryUpdate',
+    ON_RACE_DELETE = 'ipcResultsOnRaceDelete',
+    ON_USER_DELETE = 'ipcResultsOnUserDelete',
 }

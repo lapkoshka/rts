@@ -1,6 +1,6 @@
 import { Divider, Drawer, Position } from '@blueprintjs/core';
 import React from 'react';
-import { RaceParams } from '../../../server/controllers/race/controller';
+import { RaceParams } from '../../../server/lib/domain/race';
 import {
     MainReaderParams,
     MainReaderSettings,

@@ -7,10 +7,9 @@ import { setCurrentRaces } from '../../store/race-info-store';
 import { CurrentRaces } from '../../../server/controllers/race/race-info-view';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): Pick<RaceInfoProps,
-        'currentRaces'
-    > => ({
+const mapStateToProps = (state: RootState): RaceInfoProps => ({
     currentRaces: state.raceInfo.currentRaces,
+    closeRace: (uid: string) => ipc.send(IPC_RACE.ON_CLOSE_RACE, uid),
 });
 
 const { dispatch } = store;

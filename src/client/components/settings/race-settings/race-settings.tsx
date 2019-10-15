@@ -1,6 +1,6 @@
 import { Button, NumberRange, NumericInput, RangeSlider } from '@blueprintjs/core';
 import React from 'react';
-import { RaceParams } from '../../../../server/controllers/race/controller';
+import { RaceParams } from '../../../../server/lib/domain/race';
 
 export interface RaceSettingsProps {
     setRaceParams: (params: RaceParams) => void;
@@ -29,6 +29,16 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
         [props],
     );
 
+    const handleMaxLapsChange = React.useCallback(
+        (value: number) => {
+            props.setRaceParams({
+                ...props.raceParams,
+                maxLaps: value,
+            });
+        },
+        [props],
+    );
+
     const onApplyClick = React.useCallback(
         () => {
             props.applyRaceParams(props.raceParams);
@@ -37,6 +47,13 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
     );
     return (
       <>
+          <span>Количество кругов</span>
+          <NumericInput
+              value={props.raceParams.maxLaps}
+              placeholder='2'
+              onValueChange={handleMaxLapsChange}
+              style={{width: '64px'}}
+          ></NumericInput>
           <span>Захват меток по уровню сигнала</span>
           <RangeSlider
               min={0}
