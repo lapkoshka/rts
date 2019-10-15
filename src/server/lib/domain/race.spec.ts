@@ -18,10 +18,7 @@ describe('race', () => {
         race.on(RACE_EVENT.START, () => {
             done();
         });
-        race.appendTag({
-            uid: '123',
-            rssi: 80,
-        });
+        race.appendTag(createFakeTag('123', 80));
     });
 
     it ('should dispatch FINISH', async (done) => {

@@ -27,6 +27,5 @@ export const updateRaceInfoView = (races: Races) => {
             return currentRaces;
         }, []);
 
-    // handle new data on view =)
     rootDispatcher.sendEvent(IPC_RACE.CURRENT_RACES_CHANGED, currentRaces);
 };
