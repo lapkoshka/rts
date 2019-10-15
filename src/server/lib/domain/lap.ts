@@ -48,8 +48,13 @@ class Lap extends EventEmitter {
     }
 
     public getTotalTime(): number {
-        const highestStart = this.startTrace.getHighestPoint();
-        const highestFinish = this.finishTrace.getHighestPoint();
+        const { startTrace, finishTrace } = this;
+        if (!startTrace || !finishTrace) {
+            return null;
+        }
+
+        const highestStart = startTrace.getHighestPoint();
+        const highestFinish = finishTrace.getHighestPoint();
         return highestFinish.timestamp - highestStart.timestamp;
     }
 

@@ -1,3 +1,4 @@
+import { IPC_RESULTS } from '../../ipc/ipc-events';
 import { deleteRace } from '../../modules/database/race';
 import { deleteUser } from '../../modules/database/users';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
@@ -6,7 +7,7 @@ import { updateTotalInfo } from './total';
 import { updateUsers } from './users';
 
 export default () => {
-    rootDispatcher.addPageListener('onRaceDelete', (_: any, id: number) => {
+    rootDispatcher.addPageListener(IPC_RESULTS.ON_RACE_DELETE, (_: any, id: number) => {
         deleteRace(id).then(() => {
            updateRaceHistory();
            updateTotalInfo();
@@ -15,7 +16,7 @@ export default () => {
         });
     });
 
-    rootDispatcher.addPageListener('onUserDelete', (_: any, uid: string) => {
+    rootDispatcher.addPageListener(IPC_RESULTS.ON_USER_DELETE, (_: any, uid: string) => {
         deleteUser(uid).then(() => {
             updateRaceHistory();
             updateUsers();

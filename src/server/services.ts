@@ -1,3 +1,4 @@
+import { closeRaces, updateRaces } from './controllers/race/race-scenario';
 import { updateUsers } from './controllers/results/users';
 import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from './ipc/ipc-events';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
@@ -28,7 +29,7 @@ const updateView = (): void => {
     updateUsers();
     rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
-    // closeRaces();
+    updateRaces();
 };
 
 const start = (): void => {

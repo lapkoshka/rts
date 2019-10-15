@@ -8,7 +8,6 @@ export interface RaceSettingsProps {
     applyRaceParams: (params: RaceParams) => void;
 }
 
-// TODO: add max laps count on view settings
 const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
     const handleSliderValueChange = React.useCallback(
         (value: NumberRange) => {
@@ -30,6 +29,16 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
         [props],
     );
 
+    const handleMaxLapsChange = React.useCallback(
+        (value: number) => {
+            props.setRaceParams({
+                ...props.raceParams,
+                maxLaps: value,
+            });
+        },
+        [props],
+    );
+
     const onApplyClick = React.useCallback(
         () => {
             props.applyRaceParams(props.raceParams);
@@ -38,6 +47,13 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
     );
     return (
       <>
+          <span>Количество кругов</span>
+          <NumericInput
+              value={props.raceParams.maxLaps}
+              placeholder='2'
+              onValueChange={handleMaxLapsChange}
+              style={{width: '64px'}}
+          ></NumericInput>
           <span>Захват меток по уровню сигнала</span>
           <RangeSlider
               min={0}

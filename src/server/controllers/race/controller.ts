@@ -4,7 +4,7 @@ import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { getUserByTag } from '../../modules/users';
-import { getLap } from './lap-scenario';
+import { closeRace, getRace } from './race-scenario';
 
 let raceParams = defaultRaceParams;
 
@@ -13,17 +13,17 @@ export default (): void => {
         raceParams = params;
     });
 
+    rootDispatcher.addPageListener(IPC_RACE.ON_CLOSE_RACE, (_, uid: string) => {
+       closeRace(uid);
+    });
+
     mainReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
         const user = await getUserByTag(tag);
         if (!user) {
             return;
         }
 
-        // TODO: replace lap logic to race logic here
-        const lap = getLap(tag, user, raceParams);
-        lap.appendTag(tag);
-
-        // const race = getRace();
-        // race.appendTag();
+        const race = getRace(tag, user, raceParams);
+        race.appendTag(tag);
     });
 };

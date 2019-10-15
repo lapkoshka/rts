@@ -14,7 +14,6 @@ export const initialState: RaceInfoState = {
     raceParams: defaultRaceParams,
 };
 
-
 export const setCurrentRaces = (payload: CurrentRaces) => ({
     type: 'SET_CURRENT_RACES',
     payload,

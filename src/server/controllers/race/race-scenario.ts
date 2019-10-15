@@ -1,11 +1,12 @@
-// import Lap, { LAP_EVENT } from '../../lib/domain/lap';
-// import { RFIDTag } from '../../lib/readers/base-reader';
-// import { insertRace } from '../../modules/database/race';
-// import { UserData } from '../../modules/database/users';
-// import { updateRaceHistory } from '../results/history';
-// import { updateTotalInfo } from '../results/total';
-// import { RaceParams } from './controller';
-// import { updateRaceInfoView } from './race-info-view';
+import Lap from '../../lib/domain/lap';
+import { RFIDTag } from '../../lib/readers/base-reader';
+import { insertRace } from '../../modules/database/race';
+import { UserData } from '../../modules/database/users';
+
+import Race, { RACE_EVENT, RaceParams } from '../../lib/domain/race';
+import { updateRaceHistory } from '../results/history';
+import { updateTotalInfo } from '../results/total';
+import { updateRaceInfoView } from './race-info-view';
 
 export interface Races {
     [key: string]: Race;
@@ -13,27 +14,54 @@ export interface Races {
 
 const currentRaces: Races = {};
 
-// TODO: work in progress...
-
-
 export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race => {
-    let race = currentRaces[tag.uid];
+    const race = currentRaces[tag.uid];
     if (race) {
         return race;
     }
 
-    race = new Race(user, params);
-    race.on(RACE_EVENT.START, raceEventHandler);
-    race.on(RACE_EVENT.ON_LAP_FINISH, raceEventHandler);
-    race.on(RACE_EVENT.FINISH, raceEventHandler);
-    currentRaces[tag.uid] = race;
+    currentRaces[tag.uid] = createRace(user, params, tag.uid);
+    return currentRaces[tag.uid];
+};
+
+export const closeRace = (uid: string): void => {
+   delete currentRaces[uid];
+   updateRaceInfoView(currentRaces);
+};
+
+export const updateRaces = (): void => {
+    updateRaceInfoView(currentRaces);
+};
+
+const createRace = (user: UserData, params: RaceParams, uid: string): Race => {
+    const race = new Race(user, params);
+    race.on(RACE_EVENT.START, raceStartHandler);
+    race.on(RACE_EVENT.LAP_FINISH, (lap: Lap) => {
+        raceLapFinishHandler(user, lap);
+    });
+    race.on(RACE_EVENT.FINISH, () => {
+        raceFinishHandler(uid);
+    });
 
     return race;
 };
 
-const raceEventHandler = () => {
-        // insertRace(lap.user.uid, lap.getTotalTime());
-        // updateRaceInfoView(currentLaps);
-        // updateTotalInfo();
-        // updateRaceHistory();
+const raceStartHandler = (): void => {
+    updateRaceInfoView(currentRaces);
+};
+
+const raceLapFinishHandler = (user: UserData, lap: Lap): void => {
+    insertRace(user.uid, lap.getTotalTime());
+
+    updateRaceInfoView(currentRaces);
+    updateTotalInfo();
+    updateRaceHistory();
+};
+
+const raceFinishHandler = (uid: string): void => {
+    delete currentRaces[uid];
+
+    updateRaceInfoView(currentRaces);
+    updateTotalInfo();
+    updateRaceHistory();
 };

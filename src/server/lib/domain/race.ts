@@ -26,12 +26,30 @@ class Race extends EventEmitter {
     public user: UserData;
     private laps: Lap[];
     private params: RaceParams;
+    private lapsFinished: number;
 
     constructor(user: UserData, params: RaceParams) {
         super();
         this.laps = [];
         this.user = user;
         this.params = params;
+        this.lapsFinished = 0;
+    }
+
+    public getLapsCounter(): string {
+        return `${this.lapsFinished + 1}/${this.params.maxLaps}`;
+    }
+
+    public getBestTime(): number {
+        const bestLap = this.laps
+            .map((lap: Lap) => lap)
+            .sort((a: Lap, b: Lap) =>
+                 a.getTotalTime() - b.getTotalTime())[0];
+        if (!bestLap) {
+            return null;
+        }
+
+        return bestLap.getTotalTime();
     }
 
     public appendTag(tag: RFIDTag): void {
@@ -43,12 +61,12 @@ class Race extends EventEmitter {
             throw Error('Can\'t append tag to completed race');
         }
 
-        let lap = this.getCurrentLap();
-        if (lap.isCompleted()) {
-            lap = this.createNewLap();
-        }
-
+        const lap = this.getCurrentLap() || this.createNewLap();
         lap.appendTag(tag);
+    }
+
+    private getCurrentLap(): Lap {
+        return this.laps[this.laps.length - 1];
     }
 
     private isCompleted(): boolean {
@@ -56,18 +74,9 @@ class Race extends EventEmitter {
         return this.isLastLap(lap) && lap.isCompleted();
     }
 
-    private getCurrentLap(): Lap {
-        const lap = this.laps[this.laps.length - 1];
-        return lap || this.createNewLap();
-    }
-
     private getPreviousLap(): Lap {
-        const current = this.laps[this.laps.length - 1];
+        const current = this.getCurrentLap();
         return this.laps[this.laps.indexOf(current) - 1];
-    }
-
-    private isFirstLap(lap?: Lap): boolean {
-        return this.laps.indexOf(lap) === 0;
     }
 
     private isLastLap(lap?: Lap): boolean {
@@ -75,10 +84,15 @@ class Race extends EventEmitter {
     }
 
     private createNewLap(): Lap {
+        if (this.laps.length === this.params.maxLaps) {
+            throw Error('Laps count cannot be more than maxLaps param');
+        }
+
         const lap = new Lap(this.params.rssiTraceTimeout);
         this.laps.push(lap);
 
-        if (this.isFirstLap(lap)) {
+        const isFirstLap = this.laps.indexOf(lap) === 0;
+        if (isFirstLap) {
             lap.on(LAP_EVENT.START, () => {
                 this.emit(RACE_EVENT.START);
             });
@@ -90,10 +104,13 @@ class Race extends EventEmitter {
         }
 
         lap.on(LAP_EVENT.FINISH, () => {
-            this.emit(RACE_EVENT.LAP_FINISH);
+            this.lapsFinished++;
+            this.emit(RACE_EVENT.LAP_FINISH, lap);
             if (this.isLastLap(lap)) {
                 this.emit(RACE_EVENT.FINISH);
+                return;
             }
+            this.createNewLap();
         });
 
         return lap;
