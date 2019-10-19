@@ -19,7 +19,7 @@ const ReaderButton: React.FC<ReaderButtonProps> = (props) => {
     return (
         <Switch
             disabled={status === READER_STATUS.WAIT}
-            className={`control-reader-button-status-${status}`}
+            className={`control-reader-button control-reader-button-status-${status}`}
             checked={status === READER_STATUS.OK || status === READER_STATUS.WAIT}
             label={name}
             onChange={onClick}

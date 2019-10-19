@@ -9,6 +9,7 @@ import RaceSettings from './race-settings/race-settings';
 import MainReaderIpSettings from './reader-settings/main-reader-ip-settings';
 import './settings.scss';
 import MainReaderParameters from './reader-settings/main-reader-params';
+import RSSIChartSettings from './rssi-chart-settings/rssi-chart-settings';
 
 export interface SettingsProps {
     showMainReaderSettings: (enable: boolean) => void;
@@ -61,6 +62,9 @@ const Settings: React.FC<SettingsProps> = React.memo((props) => {
                     raceParams={props.raceParams}
                     applyRaceParams={props.applyRaceParams}
                 />
+                <Divider/>
+                <h6 className='bp3-heading'>График</h6>
+                <RSSIChartSettings a={1}/>
             </div>
         </Drawer>
     );
