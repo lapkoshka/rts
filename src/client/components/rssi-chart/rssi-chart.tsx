@@ -1,37 +1,45 @@
 import React from 'react';
-import Block from '../ui/block/block';
 import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-} from 'recharts';
+    ChartEnableInfo,
+    RSSIChartTrace,
+} from '../../../server/controllers/rssi-chart/controller';
+import Block from '../ui/block/block';
+import chartXkcd from 'chart.xkcd';
+import { XY } from 'chart.xkcd-react';
+import './rssi-chart.scss';
 
 export interface RSSIChartProps {
-    data: any;
-    setData: (data: any) => void;
+    trace: RSSIChartTrace;
+    chartEnableInfo: ChartEnableInfo;
 }
 
-const RSSIChart: React.FC<RSSIChartProps> = React.memo((props) => {
-    setInterval(() => {
-        const newData = [...props.data];
-        newData.push({
-            a: Math.random() * (80 - 1) + 1,
-        });
-        props.setData(newData);
-    }, 1000);
-
+const RSSIChart: React.FC<RSSIChartProps> = (props) => {
+    const point = props.trace[props.trace.length - 1];
+    const lastRSSIValue = point ? point.y : 0;
     return (
-        <Block>
-            <LineChart width={500} height={300} data={props.data}>
-                <XAxis dataKey='name'/>
-                <YAxis/>
-                <CartesianGrid stroke='#eee' strokeDasharray='5 5'/>
-                <Line type='monotone' dataKey='a' stroke='#82ca9d' />
-            </LineChart>
+        <Block visible={props.chartEnableInfo.enable}>
+            <div className='rssi-chart-current-value'>{lastRSSIValue}</div>
+            <XY
+                config={{
+                    xLabel: 'time',
+                    yLabel: 'rssi',
+                    data: {
+                        datasets: [{
+                            label: props.chartEnableInfo.uid,
+                            data: props.trace,
+                        }],
+                    },
+                    options: {
+                        legendPosition: chartXkcd.config.positionType.upRight,
+                        showLine: true,
+                        timeFormat: undefined,
+                        dotSize: .2,
+                        unxkcdify: true,
+                    },
+                }}
+            />
         </Block>
     );
-});
+}
 
 export default RSSIChart;

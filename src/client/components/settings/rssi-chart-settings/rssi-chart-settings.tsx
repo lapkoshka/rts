@@ -1,26 +1,50 @@
 import { Switch } from '@blueprintjs/core';
-import React from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
+import { UserRow, Users } from '../../../../server/controllers/results/users';
+import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart/controller';
 
 interface RSSIChartSettingsProps {
-    a: number;
+    users: Users;
+    chartEnableInfo: ChartEnableInfo;
+    setChartEnableInfo: (info: ChartEnableInfo) => void;
 }
 
-const RSSIChartSettings: React.FC<RSSIChartSettingsProps> = React.memo(() => {
+const RSSIChartSettings: React.FC<RSSIChartSettingsProps> = React.memo((props) => {
+    const onSwitchChange = React.useCallback(
+        (evt: FormEvent<HTMLInputElement>) => {
+            props.setChartEnableInfo({
+                ...props.chartEnableInfo,
+                enable: evt.currentTarget.checked,
+            });
+        },
+        [props],
+    );
+
+    const onSelectChange = React.useCallback(
+        (evt: ChangeEvent<HTMLSelectElement>) => {
+            props.setChartEnableInfo({
+                ...props.chartEnableInfo,
+                uid: evt.currentTarget.selectedOptions[0].value,
+            });
+        },
+        [props],
+    );
+
     return (
         <>
             <Switch
-                checked={true}
+                checked={props.chartEnableInfo.enable}
                 label='Показать'
-                onChange={() => 0}
+                onChange={onSwitchChange}
             />
 
             <div className='bp3-select .fill'>
-                <select>
-                    <option selected>Выберите участника</option>
-                    <option value='1'>One</option>
-                    <option value='2'>Two</option>
-                    <option value='3'>Three</option>
-                    <option value='4'>Four</option>
+                <select onChange={onSelectChange}>
+                    {
+                        props.users.map((user: UserRow) => (
+                            <option key={user.uid} value={user.uid}>{user.username}</option>
+                        ))
+                    }
                 </select>
             </div>
         </>

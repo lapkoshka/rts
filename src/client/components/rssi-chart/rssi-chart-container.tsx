@@ -1,27 +1,20 @@
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { RootState } from '../../store';
+import { getIpcRenderer } from '../../../common/ipc';
+import { RSSIChartTrace } from '../../../server/controllers/rssi-chart/controller';
+import { IPC_RSSI_CHART } from '../../../server/ipc/ipc-events';
 import { setChartData } from '../../store/rssi-chart-store';
-// import { getIpcRenderer } from '../../../common/ipc';
-// import store, { RootState } from '../../store';
+import store, { RootState } from '../../store';
 
 import RSSIChart, { RSSIChartProps } from './rssi-chart';
-// const ipc = getIpcRenderer();
+const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): Pick<RSSIChartProps,
-    'data'
-> => ({
-    data: state.rssiChart.data,
+const mapStateToProps = (state: RootState): RSSIChartProps => ({
+    trace: state.rssiChart.trace,
+    chartEnableInfo: state.rssiChart.chartEnableInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): Pick<RSSIChartProps,
-    'setData'
-> => ({
-    setData: (data) => dispatch(setChartData(data)),
-});
+const { dispatch } = store;
+ipc.on(IPC_RSSI_CHART.DATA, (_: Event, trace: RSSIChartTrace) =>
+    dispatch(setChartData(trace)));
 
-// const { dispatch } = store;
-// ipc.on(IPC_RESULTS.RACE_HISTORY_UPDATE, (_: Event, history: RaceHistory) =>
-//     dispatch(setRaceHistory(history)));
-
-export default connect(mapStateToProps, mapDispatchToProps)(RSSIChart);
+export default connect(mapStateToProps)(RSSIChart);

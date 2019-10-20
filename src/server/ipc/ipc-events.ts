@@ -41,3 +41,8 @@ export enum IPC_RESULTS {
     ON_RACE_DELETE = 'ipcResultsOnRaceDelete',
     ON_USER_DELETE = 'ipcResultsOnUserDelete',
 }
+
+export enum IPC_RSSI_CHART {
+    DATA = 'ipcRssiChartData',
+    ENABLE = 'ipcRssiEnable',
+}
