@@ -5,6 +5,7 @@ import ControlPanelContainer from '../control-panel/control-panel-container';
 import RaceInfoContainer from '../race-info/race-info-container';
 import ResultsInfoContainer from '../results-info/results-info-container';
 import RegistrationContainer from '../registration/registration-container';
+import RSSIChartContainer from '../rssi-chart/rssi-chart-container';
 import { connect } from 'react-redux';
 import './app.scss';
 import SettingsContainer from '../settings/settings-container';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
                 <RaceInfoContainer />
             </div>
             <div className='app-layout-right'>
+                <RSSIChartContainer />
                 <ResultsInfoContainer />
             </div>
             <RegistrationContainer />

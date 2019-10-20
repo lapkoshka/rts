@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIpcRenderer} from '../../../common/ipc';
+import { getIpcRenderer } from '../../../common/ipc';
 import { IPC_RESULTS } from '../../../server/ipc/ipc-events';
 import ResultsInfo, { ResultsInfoProps } from './results-info';
 import store, { RootState } from '../../store';

@@ -1,4 +1,4 @@
-import { closeRaces, updateRaces } from './controllers/race/race-scenario';
+import { updateRaces } from './controllers/race/race-scenario';
 import { updateUsers } from './controllers/results/users';
 import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from './ipc/ipc-events';
 import rootDispatcher from './modules/dispatcher/root-dispatcher';
@@ -11,7 +11,7 @@ import { closeDatabase } from './modules/database/database';
 import initPortableReaderController from './controllers/portable-reader/controller';
 import initMainReaderController from './controllers/main-reader/controller';
 import initRaceController from './controllers/race/controller';
-import initRSSIController from './controllers/rssi/controller';
+import initRSSIController from './controllers/rssi-chart/controller';
 import initFakeTagController from './controllers/fake-tag/controller';
 import initRegistrationController from './controllers/registration/controller';
 import initSmartbannerController from './controllers/control-panel/controller';

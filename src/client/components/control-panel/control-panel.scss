@@ -22,6 +22,12 @@
     }
 }
 
+.control-reader-button {
+    &:nth-child(2) {
+        margin-bottom: 0;
+    }
+}
+
 .control-reader-buttons {
     display: flex;
     flex-direction: column;
