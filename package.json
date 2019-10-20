@@ -1,20 +1,33 @@
 {
   "name": "rts",
   "version": "3.0.0",
+  "homepage": "./",
   "description": "race tracking system",
-  "main": "src/electron-start.js",
   "scripts": {
     "ub": "node scripts/updatebin.js",
     "test": "jest",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "electron": "electron .",
-    "server": "tsc -p tsconfig.server.json",
+    "electron": "electron public/electron.js",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build:client": "react-scripts build",
+    "build:dist": "node scripts/copy-electron-entrypoint.js && electron-builder",
     "server-watch": "tsc -p tsconfig.server.json -w",
+    "dev": "nf start -p 3000",
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "dev": "nf start -p 3000"
+    "postinstall": "install-app-deps"
   },
-  "author": "",
+  "author": "lapkoshka",
+  "build": {
+      "appId": "rts.id",
+      "files": [
+          "build/**/*",
+          "node_modules/**/*"
+      ],
+      "win": {
+          "target": "NSIS",
+          "icon": "build/icon.ico"
+      }
+  },
   "license": "ISC",
   "dependencies": {
     "@blueprintjs/core": "3.18.1",
@@ -22,7 +35,6 @@
     "@blueprintjs/select": "^3.10.0",
     "antd": "3.23.2",
     "chart.xkcd-react": "0.0.6",
-    "electron": "2.0.7",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-redux": "7.1.1",
@@ -38,6 +50,7 @@
     "@types/react-dom": "16.9.0",
     "@types/react-redux": "7.1.2",
     "@types/sqlite3": "3.1.5",
+    "electron": "2.0.7",
     "electron-builder": "21.1.5",
     "foreman": "3.0.1",
     "node-sass": "4.12.0",

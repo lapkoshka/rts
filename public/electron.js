@@ -1,7 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
-const { services } = require('../dist/services');
+const { services } = require('../build/server/services');
 
 const { app, BrowserWindow } = electron;
 

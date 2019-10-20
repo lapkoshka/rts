@@ -4,6 +4,7 @@
 /bin
 /app/storage/*
 dist/
+build/
 /database/
 core/*/*/bin
 core/*/*/obj

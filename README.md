@@ -9,13 +9,18 @@
 расположенный на гоночной трассе присылает в приложение метки (если он активирован),
 по которым и считаются результаты гонки для каждого зарегистрированного участника.
 
-## Install
+## Разработка
 
-### Dependencies
+Установи зависимости, собери серверную и клиенсткую часть, запусти electron выполнив в терминале:
+```
+npm install
+npm run server-watch
+npm run dev
+```
 
-Run `npm install` for install dependencies
+### Приёмники (Windows)
 
-### Receivers (Windows)
+Если ты на Linux или Mac то этот шаг можно пропустить.
 
 - Скачай готовые бинари https://github.com/lapkoshka/rts/releases -> bin.zip -> разархивируй 
 в корень проекта в папку bin
@@ -24,29 +29,12 @@ Run `npm install` for install dependencies
 и библиотеки в папку bin командой  `npm run ub` скопирует скомпилированные бинари приложений ядра в папку bin
 (выполнять после перекомпиляции .NET приложений)
 
-## Development
-
-For development first run backend services by command
-
-`npm run server-watch`
-
-Then run client and electron
-
-`npm run dev`
-
-Enjoy developing ;)
-
 ## Troubleshooting
-- In case of sqlite3 crash with exception: \node_modules\sqlite3\lib\binding\electron-v2.0-win32-x64\node_sqlite3.node' run 
+- В случае с ошибкой sqlite3: \node_modules\sqlite3\lib\binding\electron-v2.0-win32-x64\node_sqlite3.node' выполни 
 
 `install-app-deps`
 
 https://stackoverflow.com/questions/32504307/how-to-use-sqlite3-module-with-electron
-
-
-### NOTE about development
-
-Backend services restarts automatically by tsc watcher, but `electron` imports older version and needs restart completely :(
 
 #### Симуляция приёмников
 Если у тебя нет двух китайских Chafon CF-RU6403 R2000 и UHF Reader 09 то в консоли приложения
