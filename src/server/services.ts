@@ -33,8 +33,9 @@ const updateView = (): void => {
 };
 
 const start = (): void => {
+    const pageReady = waitView();
     rootDispatcher.addPageListener(IPC_APP.START, async () => {
-        await waitView();
+        await pageReady;
         updateView();
     });
 
