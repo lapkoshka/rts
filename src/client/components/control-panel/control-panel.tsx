@@ -58,6 +58,13 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
         },
         [props]);
 
+    const onResultsClickHandler = React.useCallback(
+        () => {
+            window.open('/results');
+        },
+        [],
+    );
+
     return (
         <Block>
             <div className='control-reader-buttons'>
@@ -76,6 +83,13 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
                     onClick={onSettingsClickHandler}
                     className='readers-main-settings'
                     icon={IconNames.SETTINGS}
+                    iconSize={Icon.SIZE_LARGE}
+                />
+
+                <Icon
+                    onClick={onResultsClickHandler}
+                    className='readers-show-results'
+                    icon={IconNames.CONTROL}
                     iconSize={Icon.SIZE_LARGE}
                 />
             </div>
