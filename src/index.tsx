@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './client/components/app/app';
+import { AppContainer } from './client/components/app/app';
 import { Provider } from 'react-redux';
-import store from './client/store';
+import { store } from './client/store';
 import 'antd/dist/antd.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -25,9 +25,10 @@ ipc.send(IPC_APP.START);
 // TODO: грохнуть кнопку удаления в "текущей гонке" на втором экране
 // TODO: не показывать лучший круг если максимальное количество кругов 1
 // TODO: столбец "отставание" на табло
+// TODO: Имя участника можно сокращать до И. Иванов
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <AppContainer/>
   </Provider>,
   document.getElementById('root'),
 );

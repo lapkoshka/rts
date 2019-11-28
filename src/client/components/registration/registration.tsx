@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, memo, useCallback, useEffect } from 'react';
 import { Modal, Input, Form } from 'antd';
 import { UserData } from '../../../server/modules/database/users';
 
@@ -7,15 +7,17 @@ const ENTER_KEY_CODE = 13;
 export interface RegistrationProps {
     shouldShowPopup: boolean;
     user: any;
+}
 
+export interface RegistrationActions {
     onCancelRegistration: () => void;
     submitUser: (user: UserData) => void;
 }
 
-const Registration: React.FC<RegistrationProps> = React.memo((props) => {
+export const Registration: FC<RegistrationProps & RegistrationActions> = memo((props) => {
     const userForm = {...props.user};
 
-    const keyUpHandler = React.useCallback((evt: KeyboardEvent) => {
+    const keyUpHandler = useCallback((evt: KeyboardEvent) => {
             const isPressEnterWhenPopupOpened =
                 evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
             if (isPressEnterWhenPopupOpened) {
@@ -64,5 +66,3 @@ const Registration: React.FC<RegistrationProps> = React.memo((props) => {
         </Modal>
     );
 });
-
-export default Registration;

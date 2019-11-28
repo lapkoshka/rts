@@ -1,6 +1,6 @@
 import { Icon } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import React from 'react';
+import React, { FC } from 'react';
 import {
   CurrentRaceRow,
   CurrentRaces,
@@ -12,7 +12,7 @@ export interface RaceInfoProps {
   closeRace: (uid: string) => void;
 }
 
-const RaceInfo: React.FC<RaceInfoProps> = (props: RaceInfoProps) => (
+export const RaceInfo: FC<RaceInfoProps> = (props: RaceInfoProps) => (
     <table className='bp3-html-table bp3-html-table-striped'>
         <thead>
         <tr>
@@ -41,5 +41,3 @@ const RaceInfo: React.FC<RaceInfoProps> = (props: RaceInfoProps) => (
         </tbody>
     </table>
 );
-
-export default RaceInfo;

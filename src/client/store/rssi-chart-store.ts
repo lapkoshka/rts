@@ -29,7 +29,7 @@ const initialState = {
     },
 };
 
-export default (state = initialState, action: RSSIChartStore) => {
+export const rssiChartReducer = (state = initialState, action: RSSIChartStore) => {
     switch (action.type) {
         case 'SET_CHART_DATA':
             return {

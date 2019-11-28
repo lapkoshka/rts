@@ -5,7 +5,7 @@ export interface RootDispatcher {
     addPageListener: (type: string, listener: (evt: any, data: any) => void) => void;
 }
 
-const rootDispatcher: RootDispatcher = {
+export const rootDispatcher: RootDispatcher = {
     sendEvent(type: string, data?: any): void {
         BrowserWindow.getAllWindows().forEach((win: BrowserWindow) => {
            win.webContents.send(type, data);
@@ -15,5 +15,3 @@ const rootDispatcher: RootDispatcher = {
         ipcMain.on(type, listener);
     },
 };
-
-export default rootDispatcher;

@@ -1,9 +1,9 @@
 import { combineReducers, createStore, Store } from 'redux';
-import readersControl, { ReaderControlState } from './control-panel-store';
-import raceInfo, { RaceInfoState } from './race-info-store';
-import resultsInfo, { ResultsInfoState } from './results-info-store';
-import registration, { RegistrationState } from './registration-store';
-import rssiChart, { RSSIChartState } from './rssi-chart-store';
+import { readersControlReducer as readersControl, ReaderControlState } from './control-panel-store';
+import { raceInfoReducer as raceInfo, RaceInfoState } from './race-info-store';
+import { resultsInfoReducer as resultsInfo, ResultsInfoState } from './results-info-store';
+import { registrationReducer as registration, RegistrationState } from './registration-store';
+import { rssiChartReducer as rssiChart, RSSIChartState } from './rssi-chart-store';
 
 export interface Action<T> {
     type: string;
@@ -18,7 +18,7 @@ export interface RootState {
     rssiChart: RSSIChartState;
 }
 
-const store: Store<RootState> = createStore(combineReducers({
+export const store: Store<RootState> = createStore(combineReducers({
     readersControl,
     raceInfo,
     resultsInfo,
@@ -26,4 +26,3 @@ const store: Store<RootState> = createStore(combineReducers({
     rssiChart,
 }));
 
-export default store;

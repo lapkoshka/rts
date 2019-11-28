@@ -32,7 +32,7 @@ export enum READER_STATUS {
     DISABLED = 'disabled',
 }
 
-abstract class BaseReader extends EventEmitter {
+export abstract class BaseReader extends EventEmitter {
     public type: READER_TYPE;
     public PROTOCOL: ProtocolMessages;
     public isConnected: boolean;
@@ -90,4 +90,3 @@ abstract class BaseReader extends EventEmitter {
         });
     }
 }
-export default BaseReader;

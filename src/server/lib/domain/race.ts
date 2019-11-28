@@ -1,7 +1,7 @@
 import * as EventEmitter from 'events';
 import { UserData } from '../../modules/database/users';
 import { RFIDTag } from '../readers/base-reader';
-import Lap, { LAP_EVENT } from './lap';
+import { Lap, LAP_EVENT } from './lap';
 import { shouldAppendTag } from './lib';
 
 export interface RaceParams {
@@ -22,7 +22,7 @@ export const defaultRaceParams: RaceParams = {
     maxLaps: 1,
 };
 
-class Race extends EventEmitter {
+export class Race extends EventEmitter {
     public user: UserData;
     private laps: Lap[];
     private params: RaceParams;
@@ -116,5 +116,3 @@ class Race extends EventEmitter {
         return lap;
     }
 }
-
-export default Race;

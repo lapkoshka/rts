@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     ChartEnableInfo,
     RSSIChartTrace,
 } from '../../../server/controllers/rssi-chart/controller';
-import Block from '../ui/block/block';
+import { Block } from '../ui/block/block';
 import chartXkcd from 'chart.xkcd';
 import { XY } from 'chart.xkcd-react';
 import './rssi-chart.scss';
@@ -13,7 +13,7 @@ export interface RSSIChartProps {
     chartEnableInfo: ChartEnableInfo;
 }
 
-const RSSIChart: React.FC<RSSIChartProps> = (props) => {
+export const RSSIChart: FC<RSSIChartProps> = (props) => {
     const point = props.trace[props.trace.length - 1];
     const lastRSSIValue = point ? point.y : 0;
     return (
@@ -40,6 +40,4 @@ const RSSIChart: React.FC<RSSIChartProps> = (props) => {
             />
         </Block>
     );
-}
-
-export default RSSIChart;
+};

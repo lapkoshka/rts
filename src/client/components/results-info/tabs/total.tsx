@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React from 'react';
 import { TotalInfo, TotalInfoRow } from '../../../../server/controllers/results/total';
 
-const renderTotalInfo = (info: TotalInfo) => {
+export const renderTotalInfo = (info: TotalInfo) => {
     const infoWithKeys = info.map((item: TotalInfoRow, index: number) => ({
         ...item,
         key: index,
@@ -16,5 +16,3 @@ const renderTotalInfo = (info: TotalInfo) => {
         </Table>
     );
 };
-
-export default renderTotalInfo;

@@ -1,9 +1,9 @@
 import { Table } from 'antd';
 import React from 'react';
 import { UserRow, Users } from '../../../../server/controllers/results/users';
-import renderDeleteButton from '../../ui/delete/delete';
+import { renderDeleteButton } from '../../ui/delete/delete';
 
-const renderUsers = (users: Users, deleteUser: (uid: string) => void) => {
+export const renderUsers = (users: Users, deleteUser: (uid: string) => void) => {
     const usersWithKeys = users.map((item: UserRow) => ({
         ...item,
         key: item.uid,
@@ -25,5 +25,3 @@ const renderUsers = (users: Users, deleteUser: (uid: string) => void) => {
         </Table>
     );
 };
-
-export default renderUsers;

@@ -1,13 +1,13 @@
 import * as EventEmitter from 'events';
 import { RFIDTag } from '../readers/base-reader';
-import RSSITrace, { RSSITraceEvent } from '../rssi-trace';
+import { RSSITrace, RSSITraceEvent } from '../rssi-trace';
 
 export enum LAP_EVENT {
     START = 'onLapStart',
     FINISH = 'onLapFinish',
 }
 
-class Lap extends EventEmitter {
+export class Lap extends EventEmitter {
     public startTrace: RSSITrace;
     public finishTrace: RSSITrace;
     private traceTimeout: number;
@@ -62,5 +62,3 @@ class Lap extends EventEmitter {
         return this.finishTrace && this.finishTrace.completed;
     }
 }
-
-export default Lap;

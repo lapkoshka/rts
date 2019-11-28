@@ -1,14 +1,14 @@
 import { IPC_RACE } from '../../ipc/ipc-events';
 import { defaultRaceParams, RaceParams } from '../../lib/domain/race';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { getUserByTag } from '../../modules/users';
 import { closeRace, getRace } from './race-scenario';
 
 let raceParams = defaultRaceParams;
 
-export default (): void => {
+export const initRaceController = (): void => {
     rootDispatcher.addPageListener(IPC_RACE.UPDATE_RACE_PARAMS, (_, params: RaceParams) => {
         raceParams = params;
     });

@@ -4,9 +4,9 @@ import {
     RaceHistory,
     RaceHistoryRow,
 } from '../../../../server/controllers/results/history';
-import renderDeleteButton from '../../ui/delete/delete';
+import { renderDeleteButton } from '../../ui/delete/delete';
 
-const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {
+export const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {
     const historyWithKeys = history.map((item: RaceHistoryRow) => ({
         ...item,
         key: item.id,
@@ -33,5 +33,3 @@ const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => vo
         </Table>
     );
 };
-
-export default renderRaceHistory;

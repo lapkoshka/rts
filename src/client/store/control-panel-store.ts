@@ -64,7 +64,10 @@ export const initialState = {
     shouldShowPopup: false,
 };
 
-export default (state = initialState, action: ReaderControlAction): ReaderControlState => {
+export const readersControlReducer = (
+    state = initialState,
+    action: ReaderControlAction,
+): ReaderControlState => {
   switch (action.type) {
     case 'RECEIVE_MAIN_READER_STATUS':
        return {

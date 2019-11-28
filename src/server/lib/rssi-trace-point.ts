@@ -1,6 +1,6 @@
 import { RFIDTag } from './readers/base-reader';
 
-class RSSITracePoint {
+export class RSSITracePoint {
     public tag: RFIDTag;
     public timestamp: number;
 
@@ -9,5 +9,3 @@ class RSSITracePoint {
         this.timestamp = new Date().valueOf();
     }
 }
-
-export default RSSITracePoint;

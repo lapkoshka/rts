@@ -32,7 +32,7 @@ export const initialState: ResultsInfoState = {
     total: [],
 };
 
-export default (state = initialState, action: ResultsInfoStore) => {
+export const resultsInfoReducer = (state = initialState, action: ResultsInfoStore) => {
     switch (action.type) {
         case 'SET_RACE_HISTORY':
             return {

@@ -1,6 +1,6 @@
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
-import Lap, { LAP_EVENT } from './lap';
+import { Lap, LAP_EVENT } from './lap';
 
 jest.setTimeout(10000);
 

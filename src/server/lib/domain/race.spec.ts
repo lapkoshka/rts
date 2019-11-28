@@ -1,7 +1,7 @@
 import { UserData } from '../../modules/database/users';
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
-import Race, { defaultRaceParams, RACE_EVENT } from './race';
+import { Race, defaultRaceParams, RACE_EVENT } from './race';
 
 jest.setTimeout(20000);
 
