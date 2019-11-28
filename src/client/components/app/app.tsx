@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { getIpcRenderer } from '../../../common/ipc';
 import { IPC_APP } from '../../../server/ipc/ipc-events';
-import ControlPanelContainer from '../control-panel/control-panel-container';
-import RaceInfoContainer from '../race-info/race-info-container';
-import ResultsInfoContainer from '../results-info/results-info-container';
-import RegistrationContainer from '../registration/registration-container';
-import RSSIChartContainer from '../rssi-chart/rssi-chart-container';
+import MainView from '../../views/main/main';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './app.scss';
-import SettingsContainer from '../settings/settings-container';
+import { ResultsViewContainer } from '../../views/results/results-view-container';
 
 const ipc = getIpcRenderer();
 
@@ -16,18 +12,16 @@ const App: React.FC = () => {
     useEffect(() => ipc.send(IPC_APP.VIEW_DID_MOUNT));
 
     return (
-        <div className='app-layout'>
-            <div className='app-layout-left'>
-                <ControlPanelContainer/>
-                <RaceInfoContainer />
-            </div>
-            <div className='app-layout-right'>
-                <RSSIChartContainer />
-                <ResultsInfoContainer />
-            </div>
-            <RegistrationContainer />
-            <SettingsContainer />
-        </div>
+        <Router his>
+            <Switch>
+                <Route path='/results'>
+                    <ResultsViewContainer />
+                </Route>
+                <Route path='/'>
+                    <MainView />
+                </Route>
+            </Switch>
+        </Router>
     );
 };
 

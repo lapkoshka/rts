@@ -1,13 +1,13 @@
-.app-layout {
+.main-layout {
     display: flex;
 }
 
-.app-layout-left {
+.main-layout-left {
     width: 390px;
     margin-right: 16px;
 }
 
-.app-layout-right {
+.main-layout-right {
     width: 300px;
     flex-grow: 1;
 

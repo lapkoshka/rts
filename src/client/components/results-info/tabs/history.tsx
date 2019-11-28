@@ -6,7 +6,7 @@ import {
 } from '../../../../server/controllers/results/history';
 import renderDeleteButton from '../../ui/delete/delete';
 
-const renderRaceHistory = (history: RaceHistory, deleteRace: (id: number) => void) => {
+const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {
     const historyWithKeys = history.map((item: RaceHistoryRow) => ({
         ...item,
         key: item.id,
@@ -19,13 +19,17 @@ const renderRaceHistory = (history: RaceHistory, deleteRace: (id: number) => voi
             <Table.Column key='username' title='Имя' dataIndex='username'/>
             <Table.Column key='time' title='Время' dataIndex='formattedTIme'/>
             <Table.Column key='date' title='Дата' dataIndex='timestamp'/>
-            <Table.Column
-                key='delete'
-                title='Удаление'
-                render={(text) => renderDeleteButton(deleteTitle,
-                    () => deleteRace(text.id))
-                }
-            />
+            {
+                deleteRace ? (
+                    <Table.Column
+                        key='delete'
+                        title='Удаление'
+                        render={(text) => renderDeleteButton(deleteTitle,
+                            () => deleteRace(text.id))
+                        }
+                    />
+                ) : null
+            }
         </Table>
     );
 };
