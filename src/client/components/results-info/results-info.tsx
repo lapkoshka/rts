@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { TotalInfo } from '../../../server/controllers/results/total';
 import { Users } from '../../../server/controllers/results/users';
-import Block from '../ui/block/block';
-import renderRaceHistory from './tabs/history';
-import renderUsers from './tabs/users';
-import renderTotalInfo from './tabs/total';
+import { Block } from '../ui/block/block';
+import { renderRaceHistory } from './tabs/history';
+import { renderUsers } from './tabs/users';
+import { renderTotalInfo } from './tabs/total';
 import { Tabs, Tab } from '@blueprintjs/core';
 import './results-info.scss';
 
@@ -17,9 +17,9 @@ export interface ResultsInfoProps {
     deleteUser: (uid: string) => void;
 }
 
-const ResultsInfo: React.FC<ResultsInfoProps> = (props) => {
-    const [tabId, setTabId] = React.useState('0');
-    const onChangeHandler = React.useCallback(
+export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
+    const [tabId, setTabId] = useState('0');
+    const onChangeHandler = useCallback(
         (tabId: string) => {
             setTabId(tabId);
         },
@@ -55,5 +55,3 @@ const ResultsInfo: React.FC<ResultsInfoProps> = (props) => {
         </Block>
     );
 };
-
-export default ResultsInfo;

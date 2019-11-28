@@ -1,5 +1,5 @@
 import { Divider, Drawer, Position } from '@blueprintjs/core';
-import React from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { Users } from '../../../server/controllers/results/users';
 import { ChartEnableInfo } from '../../../server/controllers/rssi-chart/controller';
 import { RaceParams } from '../../../server/lib/domain/race';
@@ -7,34 +7,33 @@ import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
-import RaceSettings from './race-settings/race-settings';
-import MainReaderIpSettings from './reader-settings/main-reader-ip-settings';
+import { RaceSettings } from './race-settings/race-settings';
+import { MainReaderIpSettings } from './reader-settings/main-reader-ip-settings';
 import './settings.scss';
-import MainReaderParameters from './reader-settings/main-reader-params';
-import RSSIChartSettings from './rssi-chart-settings/rssi-chart-settings';
+import { MainReaderParameters } from './reader-settings/main-reader-params';
+import { RSSIChartSettings } from './rssi-chart-settings/rssi-chart-settings';
 
 export interface SettingsProps {
-    showMainReaderSettings: (enable: boolean) => void;
     shouldShowPopup: boolean;
-
-    setIpAuto: (enable: boolean) => void;
-    setIpAddress: (address: string) => void;
     mainReaderSettings: MainReaderSettings;
-
-    setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
-
-    setRaceParams: (params: RaceParams) => void;
     raceParams: RaceParams;
-    applyRaceParams: (params: RaceParams) => void;
-
     users: Users;
     chartEnableInfo: ChartEnableInfo;
-    setChartEnableInfo: (info: ChartEnableInfo) => void;
+    applyRaceParams: (params: RaceParams) => void;
 }
 
-const Settings: React.FC<SettingsProps> = React.memo((props) => {
-    const onCloseHandler = React.useCallback(
+export interface SettingsActions {
+    showMainReaderSettings: (enable: boolean) => void;
+    setIpAuto: (enable: boolean) => void;
+    setIpAddress: (address: string) => void;
+    setMainReaderParams: (params: MainReaderParams) => void;
+    setDefaultMainReaderParams: () => void;
+    setChartEnableInfo: (info: ChartEnableInfo) => void;
+    setRaceParams: (params: RaceParams) => void;
+}
+
+export const Settings: FC<SettingsProps & SettingsActions> = memo((props) => {
+    const onCloseHandler = useCallback(
         () => {
             props.showMainReaderSettings(false);
         },
@@ -79,5 +78,3 @@ const Settings: React.FC<SettingsProps> = React.memo((props) => {
         </Drawer>
     );
 });
-
-export default Settings;

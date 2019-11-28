@@ -1,7 +1,7 @@
 
 import { IPC_REGISTRATION } from '../../ipc/ipc-events';
 import { insertUser, updateUser, UserData } from '../../modules/database/users';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
@@ -10,7 +10,7 @@ import { updateUsers } from '../results/users';
 const submitNewUser = (user: UserData): Promise<string> =>
     (user.alreadyRegistred ? updateUser : insertUser)(user);
 
-export default () => {
+export const initRegistrationController = () => {
     rootDispatcher.addPageListener(IPC_REGISTRATION.CANCEL, () => {
         portableReader.continue();
     });

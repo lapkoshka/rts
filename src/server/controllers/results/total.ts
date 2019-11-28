@@ -1,7 +1,7 @@
 import { IPC_RESULTS } from '../../ipc/ipc-events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { getTotalUserRaces, UserRacesData } from '../../modules/database/race';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 
 export interface TotalInfoRow extends UserRacesData {
   username: string;

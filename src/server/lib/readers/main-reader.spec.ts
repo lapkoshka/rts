@@ -1,5 +1,5 @@
 import { READER_EVENT, RFIDTag } from './base-reader';
-import MainReader from './main-reader';
+import { MainReader } from './main-reader';
 
 export const createFakeTag = (uid: string, rssi: number): RFIDTag => ({ uid, rssi });
 

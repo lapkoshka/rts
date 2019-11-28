@@ -1,7 +1,7 @@
 import { Icon, Popconfirm } from 'antd';
 import React from 'react';
 
-const renderDeleteButton = (title: string, callback: () => void) => (
+export const renderDeleteButton = (title: string, callback: () => void) => (
     <Popconfirm
         title={title}
         onConfirm={callback}
@@ -11,5 +11,3 @@ const renderDeleteButton = (title: string, callback: () => void) => (
         <Icon type='delete'/>
     </Popconfirm>
 );
-
-export default renderDeleteButton;

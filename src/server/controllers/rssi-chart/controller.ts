@@ -1,6 +1,6 @@
 import { IPC_RSSI_CHART } from '../../ipc/ipc-events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { performance } from 'perf_hooks';
 
@@ -32,7 +32,7 @@ const enableInfo: ChartEnableInfo = {
     uid: '-',
 };
 
-export default () => {
+export const initRSSIController = () => {
     rootDispatcher.addPageListener(IPC_RSSI_CHART.ENABLE, (_, info: ChartEnableInfo) => {
         enableInfo.enable = info.enable;
         enableInfo.uid = info.uid;

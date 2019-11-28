@@ -1,5 +1,5 @@
 import { Button, NumberRange, NumericInput, RangeSlider } from '@blueprintjs/core';
-import React from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { RaceParams } from '../../../../server/lib/domain/race';
 
 export interface RaceSettingsProps {
@@ -8,8 +8,8 @@ export interface RaceSettingsProps {
     applyRaceParams: (params: RaceParams) => void;
 }
 
-const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
-    const handleSliderValueChange = React.useCallback(
+export const RaceSettings: FC<RaceSettingsProps> = memo((props) => {
+    const handleSliderValueChange = useCallback(
         (value: NumberRange) => {
             props.setRaceParams({
                 ...props.raceParams,
@@ -19,7 +19,7 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
     [props],
     );
 
-    const handleRSSITimeoutChange = React.useCallback(
+    const handleRSSITimeoutChange = useCallback(
         (value: number) => {
             props.setRaceParams({
                 ...props.raceParams,
@@ -29,7 +29,7 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
         [props],
     );
 
-    const handleMaxLapsChange = React.useCallback(
+    const handleMaxLapsChange = useCallback(
         (value: number) => {
             props.setRaceParams({
                 ...props.raceParams,
@@ -39,7 +39,7 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
         [props],
     );
 
-    const onApplyClick = React.useCallback(
+    const onApplyClick = useCallback(
         () => {
             props.applyRaceParams(props.raceParams);
         },
@@ -77,5 +77,3 @@ const RaceSettings: React.FC<RaceSettingsProps> = React.memo((props) => {
       </>
     );
 });
-
-export default RaceSettings;

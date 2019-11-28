@@ -1,6 +1,6 @@
 import { MenuItem, Button, NumericInput } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
-import React from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { makeArr } from '../../../../common/helpers';
 import {
     MainReaderParams,
@@ -14,9 +14,9 @@ interface ReaderParamsProps {
 
 const SESSION_DEFAULT_VALUES = ['0', '1', '2', '3', '255'];
 
-const MainReaderParameters: React.FC<ReaderParamsProps> = React.memo((props) => {
+export const MainReaderParameters: FC<ReaderParamsProps> = memo((props) => {
     const params: MainReaderParams = props.params;
-    const onQvalueChange = React.useCallback(
+    const onQvalueChange = useCallback(
         (value) => {
             props.setMainReaderParams({
                 ...params,
@@ -26,7 +26,7 @@ const MainReaderParameters: React.FC<ReaderParamsProps> = React.memo((props) => 
         [props, params],
     );
 
-    const onScantimeChange = React.useCallback(
+    const onScantimeChange = useCallback(
         (value) => {
             props.setMainReaderParams({
                 ...params,
@@ -36,7 +36,7 @@ const MainReaderParameters: React.FC<ReaderParamsProps> = React.memo((props) => 
         [props, params],
     );
 
-    const onSessionChange = React.useCallback(
+    const onSessionChange = useCallback(
         (value) => {
             props.setMainReaderParams({
                 ...params,
@@ -105,6 +105,4 @@ const MainReaderParameters: React.FC<ReaderParamsProps> = React.memo((props) => 
         </>
     );
 });
-
-export default MainReaderParameters;
 

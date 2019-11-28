@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import * as fs from 'fs';
-import BaseReader, {
+import {
+    BaseReader,
     ProtocolMessages,
     READER_EVENT,
     READER_STATUS,
@@ -12,7 +13,7 @@ const P_READER_MSG: ProtocolMessages = {
     CONTINUE_LISTEN: 'continue_listen\r\n',
 };
 
-class PortableReader extends BaseReader {
+export class PortableReader extends BaseReader {
     constructor(path: string) {
         super(path);
         this.type = READER_TYPE.PORTABLE;
@@ -67,4 +68,3 @@ class PortableReader extends BaseReader {
     }
 }
 
-export default PortableReader;

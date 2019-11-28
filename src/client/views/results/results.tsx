@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { TotalInfo } from '../../../server/controllers/results/total';
-import RaceInfoContainer from '../../components/race-info/race-info-container';
-import renderRaceHistory from '../../components/results-info/tabs/history';
+import { RaceInfoContainer } from '../../components/race-info/race-info-container';
+import { renderRaceHistory } from '../../components/results-info/tabs/history';
 import './results.scss';
-import renderTotalInfo from '../../components/results-info/tabs/total';
-import Block from '../../components/ui/block/block';
+import { renderTotalInfo } from '../../components/results-info/tabs/total';
+import { Block } from '../../components/ui/block/block';
 
 export interface ResultsViewProps {
     history: RaceHistory;

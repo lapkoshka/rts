@@ -4,7 +4,7 @@ interface Notification {
     [key: string]: (msg: string, timeout: number) => void;
 }
 
-const Notification: Notification = {
+export const Notification: Notification = {
     error: (msg: string, timeout = 2000) => {
         Toaster.create().show({
             icon: 'warning-sign',
@@ -30,5 +30,3 @@ const Notification: Notification = {
         });
     },
 };
-
-export default Notification;

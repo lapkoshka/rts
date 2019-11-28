@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import * as fs from 'fs';
-import BaseReader, {
+import {
+    BaseReader,
     ProtocolMessages,
     READER_EVENT,
     READER_STATUS,
@@ -64,7 +65,7 @@ export const defaultMainReaderSettings: MainReaderSettings = {
     },
 };
 
-class MainReader extends BaseReader {
+export class MainReader extends BaseReader {
     public settings: MainReaderSettings;
 
     constructor(path: string) {
@@ -139,4 +140,3 @@ class MainReader extends BaseReader {
     }
 }
 
-export default MainReader;

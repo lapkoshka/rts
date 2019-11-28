@@ -1,9 +1,9 @@
 import { IPC_MAIN_READER } from '../../ipc/ipc-events';
 import { READER_EVENT } from '../../lib/readers/base-reader';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 
-export default () => {
+export const initMainReaderController = (): void => {
     mainReader.on(READER_EVENT.CONNECTING_START, () => {
         rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     });

@@ -1,6 +1,6 @@
 import { IPC_RACE } from '../../ipc/ipc-events';
 import { toHumanReadableTime } from '../../lib/functions';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { Races } from './race-scenario';
 
 export interface CurrentRaceRow {

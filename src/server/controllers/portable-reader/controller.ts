@@ -1,10 +1,10 @@
 import { IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import { getUser, UserData } from '../../modules/database/users';
-import rootDispatcher from '../../modules/dispatcher/root-dispatcher';
+import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 
-export default () => {
+export const initPortableReaderController = () => {
     portableReader.on(READER_EVENT.CONNECTING_START, () => {
         rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
     });

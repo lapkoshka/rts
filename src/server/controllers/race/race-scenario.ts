@@ -1,9 +1,9 @@
-import Lap from '../../lib/domain/lap';
+import { Lap } from '../../lib/domain/lap';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import { insertRace } from '../../modules/database/race';
 import { UserData } from '../../modules/database/users';
 
-import Race, { RACE_EVENT, RaceParams } from '../../lib/domain/race';
+import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
 import { updateRaceInfoView } from './race-info-view';

@@ -1,10 +1,10 @@
-import { Switch, Icon } from '@blueprintjs/core';
+import { Switch, Icon, Tooltip, Position } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 
-import React from 'react';
+import React, { FC, useCallback } from 'react';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import { MainReaderSettings } from '../../../server/lib/readers/main-reader';
-import Block from '../ui/block/block';
+import { Block } from '../ui/block/block';
 import './control-panel.scss';
 
 interface ReaderButtonProps {
@@ -13,7 +13,7 @@ interface ReaderButtonProps {
     onClick: () => void;
 }
 
-const ReaderButton: React.FC<ReaderButtonProps> = (props) => {
+const ReaderButton: FC<ReaderButtonProps> = (props) => {
     const { name, status, onClick } = props;
 
     return (
@@ -33,32 +33,35 @@ export interface ControlPanelProps {
     mainReaderSettings: MainReaderSettings;
     triggerMainReader: (settings: MainReaderSettings) => void;
     triggerPortableReader: () => void;
+}
+
+export interface ControlPanelActions {
     showMainReaderSettings: (enable: boolean) => void;
 }
 
-const ControlPanel: React.FC<ControlPanelProps> = (props) => {
+export const ControlPanel: FC<ControlPanelProps & ControlPanelActions> = (props) => {
     const { mainReaderSettings } = props;
-    const triggerMainReader = React.useCallback(
+    const triggerMainReader = useCallback(
         () => {
                 props.triggerMainReader(mainReaderSettings);
         },
     [props, mainReaderSettings],
     );
 
-    const triggerPortableReader = React.useCallback(
+    const triggerPortableReader = useCallback(
         () => {
             props.triggerPortableReader();
         },
         [props],
     );
 
-    const onSettingsClickHandler = React.useCallback(
+    const onSettingsClickHandler = useCallback(
         () => {
             props.showMainReaderSettings(true);
         },
         [props]);
 
-    const onResultsClickHandler = React.useCallback(
+    const onResultsClickHandler = useCallback(
         () => {
             window.open('/results');
         },
@@ -79,22 +82,30 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
                     onClick={triggerPortableReader}
                 />
 
-                <Icon
-                    onClick={onSettingsClickHandler}
+                <Tooltip
                     className='readers-main-settings'
-                    icon={IconNames.SETTINGS}
-                    iconSize={Icon.SIZE_LARGE}
-                />
+                    content='Настройки'
+                    position={Position.RIGHT}
+                >
+                    <Icon
+                        onClick={onSettingsClickHandler}
+                        icon={IconNames.SETTINGS}
+                        iconSize={Icon.SIZE_LARGE}
+                    />
+                </Tooltip>
 
-                <Icon
-                    onClick={onResultsClickHandler}
+                <Tooltip
                     className='readers-show-results'
-                    icon={IconNames.CONTROL}
-                    iconSize={Icon.SIZE_LARGE}
-                />
+                    content='Табло'
+                    position={Position.RIGHT}
+                >
+                    <Icon
+                        onClick={onResultsClickHandler}
+                        icon={IconNames.CONTROL}
+                        iconSize={Icon.SIZE_LARGE}
+                    />
+                </Tooltip>
             </div>
         </Block>
     );
 };
-
-export default ControlPanel;

@@ -1,7 +1,7 @@
 import { sleep } from './functions';
 import { createFakeTag } from './readers/main-reader.spec';
-import RSSITrace, { RSSITraceEvent } from './rssi-trace';
-import RSSITracePoint from './rssi-trace-point';
+import { RSSITrace, RSSITraceEvent } from './rssi-trace';
+import { RSSITracePoint } from './rssi-trace-point';
 
 const TRACE_FILLING_TIMEOUT = 1000;
 

@@ -7,7 +7,7 @@ import {
     Position,
     Switch,
 } from '@blueprintjs/core';
-import React, { FormEvent } from 'react';
+import React, { FC, FormEvent, memo, useCallback } from 'react';
 import { MainReaderSettings } from '../../../../server/lib/readers/main-reader';
 
 export interface ReaderSettingsProps {
@@ -16,22 +16,22 @@ export interface ReaderSettingsProps {
     mainReaderSettings: MainReaderSettings;
 }
 
-const MainReaderIpSettings: React.FC<ReaderSettingsProps> = React.memo((props) => {
-    const onSwitchChange = React.useCallback(
+export const MainReaderIpSettings: FC<ReaderSettingsProps> = memo((props) => {
+    const onSwitchChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {
             props.setIpAuto(evt.currentTarget.checked);
         },
         [props],
     );
 
-    const onIpAddressInputChange = React.useCallback(
+    const onIpAddressInputChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {
             props.setIpAddress(evt.currentTarget.value);
         },
         [props],
     );
 
-    const onMenuItemClickHandler = React.useCallback(
+    const onMenuItemClickHandler = useCallback(
         (event) => {
             props.setIpAddress(event.target.innerText);
         },
@@ -76,5 +76,3 @@ const MainReaderIpSettings: React.FC<ReaderSettingsProps> = React.memo((props) =
         </>
     );
 });
-
-export default MainReaderIpSettings;

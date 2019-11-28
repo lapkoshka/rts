@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { getIpcRenderer } from '../../../common/ipc';
 import { IPC_RESULTS } from '../../../server/ipc/ipc-events';
-import ResultsInfo, { ResultsInfoProps } from './results-info';
-import store, { RootState } from '../../store';
+import { ResultsInfo, ResultsInfoProps } from './results-info';
+import { store, RootState } from '../../store';
 import {
     setRaceHistory,
     setUsers,
@@ -13,13 +13,7 @@ import { Users } from '../../../server/controllers/results/users';
 import { TotalInfo } from '../../../server/controllers/results/total';
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): Pick<ResultsInfoProps,
-        'history' |
-        'users' |
-        'total' |
-        'deleteRace' |
-        'deleteUser'
-    > => ({
+const mapStateToProps = (state: RootState): ResultsInfoProps => ({
     history: state.resultsInfo.history,
     users: state.resultsInfo.users,
     total: state.resultsInfo.total,
@@ -37,4 +31,4 @@ ipc.on(IPC_RESULTS.USERS_DATA_UPDATE, (_: Event, users: Users) =>
 ipc.on(IPC_RESULTS.TOTAL_INFO_UPDATE, (_: Event, info: TotalInfo) =>
     dispatch(setTotalInfo(info)));
 
-export default connect(mapStateToProps)(ResultsInfo);
+export const ResultsInfoContainer = connect(mapStateToProps)(ResultsInfo);

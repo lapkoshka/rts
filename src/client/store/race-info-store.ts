@@ -24,7 +24,7 @@ export const setRaceParams = (payload: RaceParams) => ({
     payload,
 });
 
-export default (state = initialState, action: RaceInfoAction) => {
+export const raceInfoReducer = (state = initialState, action: RaceInfoAction) => {
     switch (action.type) {
         case 'SET_CURRENT_RACES':
             return {

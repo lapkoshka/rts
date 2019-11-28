@@ -5,7 +5,7 @@ import { IPC_RACE, IPC_RSSI_CHART } from '../../../server/ipc/ipc-events';
 import { RaceParams } from '../../../server/lib/domain/race';
 import { MainReaderParams } from '../../../server/lib/readers/main-reader';
 import { connect } from 'react-redux';
-import Notification from '../../lib/notification';
+import { Notification } from '../../lib/notification';
 import {
     showMainReaderSettings,
     setIpAddress,
@@ -16,18 +16,11 @@ import {
 import { RootState } from '../../store';
 import { setRaceParams } from '../../store/race-info-store';
 import { setChartEnableInfo } from '../../store/rssi-chart-store';
-import Settings, { SettingsProps } from './settings';
+import { Settings, SettingsActions, SettingsProps } from './settings';
 
 const ipc = getIpcRenderer();
 
-const mapStateToProps = (state: RootState): Pick<SettingsProps,
-        'mainReaderSettings' |
-        'shouldShowPopup' |
-        'applyRaceParams' |
-        'raceParams' |
-        'users' |
-        'chartEnableInfo'
-    > => ({
+const mapStateToProps = (state: RootState): SettingsProps => ({
     mainReaderSettings: state.readersControl.mainReaderSettings,
     shouldShowPopup: state.readersControl.shouldShowPopup,
     raceParams: state.raceInfo.raceParams,
@@ -39,15 +32,7 @@ const mapStateToProps = (state: RootState): Pick<SettingsProps,
     chartEnableInfo: state.rssiChart.chartEnableInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): Pick<SettingsProps,
-        'showMainReaderSettings' |
-        'setIpAddress' |
-        'setIpAuto' |
-        'setMainReaderParams' |
-        'setDefaultMainReaderParams' |
-        'setRaceParams' |
-        'setChartEnableInfo'
-    > => ({
+const mapDispatchToProps = (dispatch: Dispatch): SettingsActions => ({
     showMainReaderSettings: (enable: boolean) => dispatch(showMainReaderSettings(enable)),
     setIpAddress: (address: string) => dispatch(setIpAddress(address)),
     setIpAuto: (enable: boolean) => {
@@ -65,4 +50,4 @@ const mapDispatchToProps = (dispatch: Dispatch): Pick<SettingsProps,
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export const SettingsContainer = connect(mapStateToProps, mapDispatchToProps)(Settings);

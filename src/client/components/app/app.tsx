@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { getIpcRenderer } from '../../../common/ipc';
 import { IPC_APP } from '../../../server/ipc/ipc-events';
-import MainView from '../../views/main/main';
+import { MainView } from '../../views/main/main';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ResultsViewContainer } from '../../views/results/results-view-container';
 
 const ipc = getIpcRenderer();
 
-const App: React.FC = () => {
+const App: FC = () => {
     useEffect(() => ipc.send(IPC_APP.VIEW_DID_MOUNT));
 
     return (
-        <Router his>
+        <Router>
             <Switch>
                 <Route path='/results'>
                     <ResultsViewContainer />
@@ -25,4 +25,4 @@ const App: React.FC = () => {
     );
 };
 
-export default connect((state) => state)(App);
+export const AppContainer = connect((state) => state)(App);

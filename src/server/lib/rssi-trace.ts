@@ -1,5 +1,5 @@
 import { RFIDTag } from './readers/base-reader';
-import RSSITracePoint from './rssi-trace-point';
+import { RSSITracePoint } from './rssi-trace-point';
 import * as EventEmitter from 'events';
 
 export const TRACE_FILLING_TIMEOUT = 1000;
@@ -8,7 +8,7 @@ export enum RSSITraceEvent {
     ON_COMPLETE = 'onComplete',
 }
 
-class RSSITrace extends EventEmitter {
+export class RSSITrace extends EventEmitter {
     public completed: boolean;
     private tag: RFIDTag;
     private points: RSSITracePoint[];
@@ -63,5 +63,3 @@ class RSSITrace extends EventEmitter {
         }
     }
 }
-
-export default RSSITrace;

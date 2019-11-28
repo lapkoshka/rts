@@ -1,5 +1,5 @@
 import { Switch } from '@blueprintjs/core';
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { ChangeEvent, FC, FormEvent, memo, useCallback } from 'react';
 import { UserRow, Users } from '../../../../server/controllers/results/users';
 import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart/controller';
 
@@ -9,8 +9,8 @@ interface RSSIChartSettingsProps {
     setChartEnableInfo: (info: ChartEnableInfo) => void;
 }
 
-const RSSIChartSettings: React.FC<RSSIChartSettingsProps> = React.memo((props) => {
-    const onSwitchChange = React.useCallback(
+export const RSSIChartSettings: FC<RSSIChartSettingsProps> = memo((props) => {
+    const onSwitchChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {
             props.setChartEnableInfo({
                 ...props.chartEnableInfo,
@@ -20,7 +20,7 @@ const RSSIChartSettings: React.FC<RSSIChartSettingsProps> = React.memo((props) =
         [props],
     );
 
-    const onSelectChange = React.useCallback(
+    const onSelectChange = useCallback(
         (evt: ChangeEvent<HTMLSelectElement>) => {
             props.setChartEnableInfo({
                 ...props.chartEnableInfo,
@@ -50,5 +50,3 @@ const RSSIChartSettings: React.FC<RSSIChartSettingsProps> = React.memo((props) =
         </>
     );
 });
-
-export default RSSIChartSettings;
