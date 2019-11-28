@@ -1,4 +1,4 @@
-import { Switch, Icon } from '@blueprintjs/core';
+import { Switch, Icon, Tooltip, Position } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 
 import React from 'react';
@@ -79,19 +79,30 @@ const ControlPanel: React.FC<ControlPanelProps> = (props) => {
                     onClick={triggerPortableReader}
                 />
 
-                <Icon
-                    onClick={onSettingsClickHandler}
+                <Tooltip
                     className='readers-main-settings'
-                    icon={IconNames.SETTINGS}
-                    iconSize={Icon.SIZE_LARGE}
-                />
+                    content='Настройки'
+                    position={Position.RIGHT}
+                >
+                    <Icon
+                        onClick={onSettingsClickHandler}
+                        icon={IconNames.SETTINGS}
+                        iconSize={Icon.SIZE_LARGE}
+                    />
+                </Tooltip>
 
-                <Icon
-                    onClick={onResultsClickHandler}
+                <Tooltip
                     className='readers-show-results'
-                    icon={IconNames.CONTROL}
-                    iconSize={Icon.SIZE_LARGE}
-                />
+                    content='Табло'
+                    position={Position.RIGHT}
+                >
+                    <Icon
+                        onClick={onResultsClickHandler}
+
+                        icon={IconNames.CONTROL}
+                        iconSize={Icon.SIZE_LARGE}
+                    />
+                </Tooltip>
             </div>
         </Block>
     );

@@ -20,6 +20,11 @@ window.fakeMainTag = (uid, rssi) =>
     ipc.send(IPC_APP.FAKE_MAIN_TAG, { uid, rssi});
 
 ipc.send(IPC_APP.START);
+
+// TODO: привести таблицу "текущая гонка" к общему виду
+// TODO: грохнуть кнопку удаления в "текущей гонке" на втором экране
+// TODO: не показывать лучший круг если максимальное количество кругов 1
+// TODO: столбец "отставание" на табло
 ReactDOM.render(
   <Provider store={store}>
     <App/>

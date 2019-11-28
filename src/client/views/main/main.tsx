@@ -13,6 +13,9 @@ const MainView: FC = () => (
         <div className='main-layout-left'>
             <ControlPanelContainer/>
             <Block>
+                <div>Выбор мероприятия</div>
+            </Block>
+            <Block>
                 <RaceInfoContainer />
             </Block>
         </div>

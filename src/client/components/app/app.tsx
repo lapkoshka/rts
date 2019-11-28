@@ -12,7 +12,7 @@ const App: React.FC = () => {
     useEffect(() => ipc.send(IPC_APP.VIEW_DID_MOUNT));
 
     return (
-        <Router his>
+        <Router>
             <Switch>
                 <Route path='/results'>
                     <ResultsViewContainer />
