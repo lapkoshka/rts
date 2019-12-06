@@ -31,8 +31,8 @@
   "license": "ISC",
   "dependencies": {
     "@blueprintjs/core": "3.18.1",
-    "@blueprintjs/icons": "^3.10.0",
-    "@blueprintjs/select": "^3.10.0",
+    "@blueprintjs/icons": "3.10.0",
+    "@blueprintjs/select": "3.11.2",
     "antd": "3.23.2",
     "chart.xkcd-react": "0.0.6",
     "react": "16.9.0",

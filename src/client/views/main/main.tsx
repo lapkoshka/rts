@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ControlPanelContainer } from '../../components/control-panel/control-panel-container';
+import { EventsContainer } from '../../components/events/events-container';
 import { RaceInfoContainer } from '../../components/race-info/race-info-container';
 import { RegistrationContainer } from '../../components/registration/registration-container';
 import { ResultsInfoContainer } from '../../components/results-info/results-info-container';
@@ -11,9 +12,11 @@ import { Block } from '../../components/ui/block/block';
 export const MainView: FC = () => (
     <div className='main-layout'>
         <div className='main-layout-left'>
-            <ControlPanelContainer/>
             <Block>
-                <div>Выбор мероприятия</div>
+                <ControlPanelContainer/>
+            </Block>
+            <Block>
+                <EventsContainer />
             </Block>
             <Block>
                 <RaceInfoContainer />
