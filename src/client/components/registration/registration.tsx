@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect } from 'react';
 import { Modal, Input, Form } from 'antd';
-import { UserData } from '../../../server/modules/database/users';
+import { UserData } from '../../../server/modules/database/tables/users';
 
 const ENTER_KEY_CODE = 13;
 

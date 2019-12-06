@@ -1,6 +1,6 @@
 import { IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { getUser, UserData } from '../../modules/database/users';
+import { getUser, UserData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 

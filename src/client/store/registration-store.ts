@@ -1,5 +1,5 @@
 import { Action } from './index';
-import { UserData } from '../../server/modules/database/users';
+import { UserData } from '../../server/modules/database/tables/users';
 
 type RegistrationStore = Action<UserData>;
 

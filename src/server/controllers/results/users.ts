@@ -1,5 +1,5 @@
 import { IPC_RESULTS } from '../../ipc/ipc-events';
-import { getUsers, UserData } from '../../modules/database/users';
+import { getUsers, UserData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 
 // TODO: rewrite ant tables, remove export from (.*)Row interfaces

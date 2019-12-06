@@ -1,5 +1,5 @@
-import { databaseCache } from './cache';
-import { database } from './database';
+import { databaseCache } from '../cache';
+import { database } from '../database';
 
 export interface UserData {
     uid: string;

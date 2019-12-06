@@ -20,28 +20,62 @@ const connectDatabase = (): Database => {
 };
 
 const prepareDatabase = (db: Database): void => {
-  db.run(`create table if not exists users(
-      uid not null unique,
-      firstname text,
-      lastname text,
-      thirdname text,
-      email text,
-      phone text,
-      about text,
-      number integer,
-      dob integer,
-      city text,
-      bike text
-  );`);
+    const createTablesIfNotExists = `
+        create table if not exists events(
+            id integer primary key autoincrement,
+            name text,
+            description text,
+            laps integer,
+            started integer,
+            finished integer,
+            start_time integer,
+            finish_time integer);
 
-  db.run(`create table if not exists race(
-    id integer primary key autoincrement,
-    timestamp datetime default current_timestamp,
-    uid not null,
-    time integer,
-    date integer,
-    event text
-  );`);
+        create table if not exists users(
+            id integer primary key autoincrement,
+            firstname text,
+            lastname text,
+            thirdname text,
+            email text,
+            phone text,
+            about text,
+            number integer,
+            city text,
+            bike text);
+
+        create table if not exists races(
+            id integer primary key autoincrement,
+            user_id integer,
+            event_id integer,
+            timestamp datetime default current_timestamp,
+            time integer,
+
+            constraint fk_user_id
+                foreign key (user_id)
+                references users(id),
+            constraint fk_event_id
+                foreign key (event_id)
+                references events(id));
+
+        create table if not exists laps(
+            id integer primary key autoincrement,
+            number integer,
+            race_id integer,
+            time integer,
+            timestamp datetime default current_timestamp,
+            constraint fk_race_id
+                foreign key (race_id)
+                references races(id));
+
+        create table if not exists tags(
+            uid text not null,
+            user_id integer,
+            constraint fk_user_id
+                foreign key (user_id)
+                references users(id));
+    `;
+
+    db.run(createTablesIfNotExists);
 };
 
 export const database = connectDatabase();

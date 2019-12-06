@@ -1,6 +1,6 @@
 
 import { IPC_REGISTRATION } from '../../ipc/ipc-events';
-import { insertUser, updateUser, UserData } from '../../modules/database/users';
+import { insertUser, updateUser, UserData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { updateRaceHistory } from '../results/history';

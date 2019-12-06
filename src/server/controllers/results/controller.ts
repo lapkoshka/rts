@@ -1,6 +1,6 @@
 import { IPC_RESULTS } from '../../ipc/ipc-events';
-import { deleteRace } from '../../modules/database/race';
-import { deleteUser } from '../../modules/database/users';
+import { deleteRace } from '../../modules/database/tables/races';
+import { deleteUser } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { updateRaceHistory } from './history';
 import { updateTotalInfo } from './total';

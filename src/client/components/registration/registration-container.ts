@@ -8,7 +8,7 @@ import {
     setRegistrationUser,
 } from '../../store/registration-store';
 import { store, RootState } from '../../store';
-import { UserData } from '../../../server/modules/database/users';
+import { UserData } from '../../../server/modules/database/tables/users';
 import { getIpcRenderer } from '../../../common/ipc';
 
 const ipc = getIpcRenderer();
