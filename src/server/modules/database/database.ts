@@ -25,11 +25,11 @@ const prepareDatabase = (db: Database): void => {
             id integer primary key autoincrement,
             name text,
             description text,
-            laps integer,
-            started integer,
-            finished integer,
-            start_time integer,
-            finish_time integer);
+            laps unsigned integer,
+            started_flag unsigned integer,
+            finished_flag unsigned integer,
+            start_time unsigned integer,
+            finish_time unsigned integer);
 
         create table if not exists users(
             id integer primary key autoincrement,
@@ -45,10 +45,10 @@ const prepareDatabase = (db: Database): void => {
 
         create table if not exists races(
             id integer primary key autoincrement,
-            user_id integer,
-            event_id integer,
+            user_id unsigned integer,
+            event_id unsigned integer,
             timestamp datetime default current_timestamp,
-            time integer,
+            time unsigned integer,
 
             constraint fk_user_id
                 foreign key (user_id)
@@ -59,17 +59,17 @@ const prepareDatabase = (db: Database): void => {
 
         create table if not exists laps(
             id integer primary key autoincrement,
-            number integer,
-            race_id integer,
-            time integer,
-            timestamp datetime default current_timestamp,
+            number unsigned integer,
+            race_id unsigned integer,
+            time unsigned integer,
+            created_at datetime default current_timestamp,
             constraint fk_race_id
                 foreign key (race_id)
                 references races(id));
 
         create table if not exists tags(
             uid text not null,
-            user_id integer,
+            user_id unsigned integer,
             constraint fk_user_id
                 foreign key (user_id)
                 references users(id));
