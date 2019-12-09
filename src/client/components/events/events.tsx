@@ -5,16 +5,15 @@ import { Select } from '@blueprintjs/select';
 import React, { FC, useCallback, useState } from 'react';
 import './events.scss';
 
-// export interface EventsProps {
-//
-// }
-//
-// export interface EventsActions {
-//
-// }
+export interface EventsProps {
+    kek: number;
+}
 
-// export const Events: FC<EventsProps & EventsActions> = () => (
-export const Events: FC = () => {
+export interface EventsActions {
+    onEventCreate: () => void;
+}
+
+export const Events: FC<EventsProps & EventsActions> = (props) => {
     const eventList = [
         'Гонка в залупогорске',
         'Pizda-zalupa Racing Club',
@@ -36,6 +35,7 @@ export const Events: FC = () => {
             <div className='events-selector'>
                 <Button
                     className='events-selector-insert'
+                    onClick={props.onEventCreate}
                     icon={IconNames.INSERT} />
                 <Select
                     className='events-selector-select'

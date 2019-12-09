@@ -6,7 +6,7 @@
   "scripts": {
     "ub": "node scripts/updatebin.js",
     "test": "jest",
-    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "lint": "eslint --cache --fix --ext .d.ts,.ts,.tsx src",
     "electron": "electron public/electron.js",
     "build:server": "tsc -p tsconfig.server.json",
     "build:client": "react-scripts build",
@@ -42,7 +42,6 @@
     "react-scripts": "3.1.1",
     "redux": "4.0.4",
     "sqlite3": "4.0.9",
-    "tslint": "5.18.0",
     "typescript": "3.5.3"
   },
   "devDependencies": {
@@ -53,9 +52,11 @@
     "@types/sqlite3": "3.1.5",
     "electron": "2.0.7",
     "electron-builder": "21.1.5",
+    "eslint-plugin-jest": "23.1.1",
     "foreman": "3.0.1",
     "node-sass": "4.12.0",
-    "ts-jest": "24.0.2"
+    "ts-jest": "24.0.2",
+    "typescript-eslint": "0.0.1-alpha.0"
   },
   "jest": {
     "collectCoverageFrom": [

@@ -14,7 +14,7 @@ export const initRaceController = (): void => {
     });
 
     rootDispatcher.addPageListener(IPC_RACE.ON_CLOSE_RACE, (_, uid: string) => {
-       closeRace(uid);
+        closeRace(uid);
     });
 
     mainReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {

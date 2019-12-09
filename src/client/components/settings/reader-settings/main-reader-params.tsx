@@ -22,7 +22,7 @@ export const MainReaderParameters: FC<ReaderParamsProps> = memo((props) => {
                 ...params,
                 qvalue: value.toString(),
             });
-    },
+        },
         [props, params],
     );
 
@@ -32,7 +32,7 @@ export const MainReaderParameters: FC<ReaderParamsProps> = memo((props) => {
                 ...params,
                 scantime: value.toString(),
             });
-    },
+        },
         [props, params],
     );
 
@@ -42,7 +42,7 @@ export const MainReaderParameters: FC<ReaderParamsProps> = memo((props) => {
                 ...params,
                 session: value.toString(),
             });
-    },
+        },
         [props, params],
     );
 

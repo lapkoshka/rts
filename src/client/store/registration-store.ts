@@ -5,12 +5,7 @@ type RegistrationStore = Action<UserData>;
 
 export interface RegistrationState {
     shouldShowPopup: boolean;
-    user: {
-        uid: string;
-        firstname: string;
-        lastname: string;
-        alreadyRegistred: boolean;
-    };
+    user: UserData;
 }
 
 export const closeRegistrationPopup = () => ({

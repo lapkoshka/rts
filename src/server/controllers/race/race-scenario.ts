@@ -14,38 +14,6 @@ export interface Races {
 
 const currentRaces: Races = {};
 
-export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race => {
-    const race = currentRaces[tag.uid];
-    if (race) {
-        return race;
-    }
-
-    currentRaces[tag.uid] = createRace(user, params, tag.uid);
-    return currentRaces[tag.uid];
-};
-
-export const closeRace = (uid: string): void => {
-   delete currentRaces[uid];
-   updateRaceInfoView(currentRaces);
-};
-
-export const updateRaces = (): void => {
-    updateRaceInfoView(currentRaces);
-};
-
-const createRace = (user: UserData, params: RaceParams, uid: string): Race => {
-    const race = new Race(user, params);
-    race.on(RACE_EVENT.START, raceStartHandler);
-    race.on(RACE_EVENT.LAP_FINISH, (lap: Lap) => {
-        raceLapFinishHandler(user, lap);
-    });
-    race.on(RACE_EVENT.FINISH, () => {
-        raceFinishHandler(uid);
-    });
-
-    return race;
-};
-
 const raceStartHandler = (): void => {
     updateRaceInfoView(currentRaces);
 };
@@ -64,4 +32,36 @@ const raceFinishHandler = (uid: string): void => {
     updateRaceInfoView(currentRaces);
     updateTotalInfo();
     updateRaceHistory();
+};
+
+const createRace = (user: UserData, params: RaceParams, uid: string): Race => {
+    const race = new Race(user, params);
+    race.on(RACE_EVENT.START, raceStartHandler);
+    race.on(RACE_EVENT.LAP_FINISH, (lap: Lap) => {
+        raceLapFinishHandler(user, lap);
+    });
+    race.on(RACE_EVENT.FINISH, () => {
+        raceFinishHandler(uid);
+    });
+
+    return race;
+};
+
+export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race => {
+    const race = currentRaces[tag.uid];
+    if (race) {
+        return race;
+    }
+
+    currentRaces[tag.uid] = createRace(user, params, tag.uid);
+    return currentRaces[tag.uid];
+};
+
+export const closeRace = (uid: string): void => {
+    delete currentRaces[uid];
+    updateRaceInfoView(currentRaces);
+};
+
+export const updateRaces = (): void => {
+    updateRaceInfoView(currentRaces);
 };

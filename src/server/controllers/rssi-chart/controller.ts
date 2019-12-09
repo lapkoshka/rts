@@ -16,9 +16,9 @@ interface RSSIChartPoint {
 export type RSSIChartTrace = RSSIChartPoint[];
 
 const cutTrace = (trace: RSSIChartTrace): void => {
-  if (trace.length > 50) {
-      trace.shift();
-  }
+    if (trace.length > 50) {
+        trace.shift();
+    }
 };
 
 const getPoint = (tag: RFIDTag): RSSIChartPoint => ({

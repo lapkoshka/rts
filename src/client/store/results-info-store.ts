@@ -22,8 +22,8 @@ export const setUsers = (payload: Users) => ({
 });
 
 export const setTotalInfo = (payload: TotalInfo) => ({
-   type: 'SET_TOTAL_INFO',
-   payload,
+    type: 'SET_TOTAL_INFO',
+    payload,
 });
 
 export const initialState: ResultsInfoState = {

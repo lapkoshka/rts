@@ -14,6 +14,6 @@ const mapStateToProps = (state: RootState): RaceInfoProps => ({
 
 const { dispatch } = store;
 ipc.on(IPC_RACE.CURRENT_RACES_CHANGED, (_: Event, currentRaces: CurrentRaces) =>
-  dispatch(setCurrentRaces(currentRaces)));
+    dispatch(setCurrentRaces(currentRaces)));
 
 export const RaceInfoContainer = connect(mapStateToProps)(RaceInfo);

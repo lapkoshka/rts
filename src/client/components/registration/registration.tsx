@@ -6,7 +6,7 @@ const ENTER_KEY_CODE = 13;
 
 export interface RegistrationProps {
     shouldShowPopup: boolean;
-    user: any;
+    user: UserData;
 }
 
 export interface RegistrationActions {
@@ -18,13 +18,13 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = memo((p
     const userForm = {...props.user};
 
     const keyUpHandler = useCallback((evt: KeyboardEvent) => {
-            const isPressEnterWhenPopupOpened =
+        const isPressEnterWhenPopupOpened =
                 evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
-            if (isPressEnterWhenPopupOpened) {
-                props.submitUser(userForm);
-            }
-        },
-        [props, userForm],
+        if (isPressEnterWhenPopupOpened) {
+            props.submitUser(userForm);
+        }
+    },
+    [props, userForm],
     );
 
     useEffect(() => {

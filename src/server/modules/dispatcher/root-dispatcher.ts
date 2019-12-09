@@ -8,10 +8,12 @@ export interface RootDispatcher {
 export const rootDispatcher: RootDispatcher = {
     sendEvent(type: string, data?: any): void {
         BrowserWindow.getAllWindows().forEach((win: BrowserWindow) => {
-           win.webContents.send(type, data);
+            win.webContents.send(type, data);
         });
     },
     addPageListener(type: string, listener: Function): void {
+        // Ловим багу с утечкой прослушивателей
+        console.log(type);
         ipcMain.on(type, listener);
     },
 };

@@ -7,12 +7,12 @@ const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
 const connectDatabase = (): Database => {
     if (!fs.existsSync(DATABASE_CATALOG)) {
-      fs.mkdirSync(DATABASE_CATALOG);
+        fs.mkdirSync(DATABASE_CATALOG);
     }
 
     return new sqlite3.Database(DATABASE_PATH, (err: Error) => {
         if (err) {
-          throw Error(err.message);
+            throw Error(err.message);
         }
 
         console.log(`Connected to the ${DATABASE_PATH} SQlite database.`);
@@ -83,12 +83,12 @@ export const database = connectDatabase();
 prepareDatabase(database);
 
 export const closeDatabase = (): void => {
-  if (database) {
-      database.close((err: Error) => {
-          if (err) {
-              throw err;
-          }
-      });
-  }
+    if (database) {
+        database.close((err: Error) => {
+            if (err) {
+                throw err;
+            }
+        });
+    }
 };
 

@@ -7,16 +7,16 @@ import { updateTotalInfo } from './total';
 import { updateUsers } from './users';
 
 export const initResultsController = () => {
-    rootDispatcher.addPageListener(IPC_RESULTS.ON_RACE_DELETE, (_: any, id: number) => {
+    rootDispatcher.addPageListener(IPC_RESULTS.ON_RACE_DELETE, (_, id: number) => {
         deleteRace(id).then(() => {
-           updateRaceHistory();
-           updateTotalInfo();
+            updateRaceHistory();
+            updateTotalInfo();
         }).catch((err: Error) => {
             throw err;
         });
     });
 
-    rootDispatcher.addPageListener(IPC_RESULTS.ON_USER_DELETE, (_: any, uid: string) => {
+    rootDispatcher.addPageListener(IPC_RESULTS.ON_USER_DELETE, (_, uid: string) => {
         deleteUser(uid).then(() => {
             updateRaceHistory();
             updateUsers();

@@ -44,7 +44,7 @@ export class Race extends EventEmitter {
         const bestLap = this.laps
             .map((lap: Lap) => lap)
             .sort((a: Lap, b: Lap) =>
-                 a.getTotalTime() - b.getTotalTime())[0];
+                a.getTotalTime() - b.getTotalTime())[0];
         if (!bestLap) {
             return null;
         }

@@ -15,15 +15,15 @@ export const initRegistrationController = () => {
         portableReader.continue();
     });
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_: any, user: UserData) => {
+    rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, user: UserData) => {
         submitNewUser(user).then(() => {
             updateRaceHistory();
             updateTotalInfo();
             updateUsers();
         })
-        .catch((err: string) => {
-            throw Error(err);
-        });
+            .catch((err: string) => {
+                throw Error(err);
+            });
 
         portableReader.continue();
     });

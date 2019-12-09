@@ -20,18 +20,18 @@ export interface ReaderControlState {
 }
 
 export const setMainReaderStatus = (payload: READER_STATUS) => ({
-  type: 'RECEIVE_MAIN_READER_STATUS',
-  payload,
+    type: 'RECEIVE_MAIN_READER_STATUS',
+    payload,
 });
 
 export const setPortableReaderStatus = (payload: READER_STATUS) => ({
-  type: 'RECEIVE_PORTABLE_READER_STATUS',
-  payload,
+    type: 'RECEIVE_PORTABLE_READER_STATUS',
+    payload,
 });
 
 export const showMainReaderSettings = (payload: boolean) => ({
-   type: 'SHOW_MAIN_READER_SETTINGS',
-   payload,
+    type: 'SHOW_MAIN_READER_SETTINGS',
+    payload,
 });
 
 export const setIpAddress = (payload: string) => ({
@@ -68,62 +68,62 @@ export const readersControlReducer = (
     state = initialState,
     action: ReaderControlAction,
 ): ReaderControlState => {
-  switch (action.type) {
-    case 'RECEIVE_MAIN_READER_STATUS':
-       return {
-         ...state,
-         main: {
-           status: action.payload as READER_STATUS,
-         },
-       };
-    case 'RECEIVE_PORTABLE_READER_STATUS':
-       return {
-         ...state,
-         portable: {
-           status: action.payload as READER_STATUS,
-         },
-       };
-      case 'SHOW_MAIN_READER_SETTINGS':
-        return {
-            ...state,
-            shouldShowPopup: action.payload as boolean,
-        };
-      case 'SET_IP_ADDRESS':
-          return {
-              ...state,
-              mainReaderSettings: {
-                  ...state.mainReaderSettings,
-                  ip: {
-                      ...state.mainReaderSettings.ip,
-                      address: action.payload as string,
-                  },
-              },
-          };
-      case 'SET_IP_AUTO':
-          return {
-              ...state,
-              mainReaderSettings: {
-                  ...state.mainReaderSettings,
-                  ip: {
-                      ...state.mainReaderSettings.ip,
-                      auto: action.payload as boolean,
-                  },
-              },
-          };
-      case 'SET_MAIN_READER_PARAMS':
-          return {
-              ...state,
-              mainReaderSettings: {
-                  ...state.mainReaderSettings,
-                  params: action.payload as MainReaderParams,
-              },
-          };
-      case 'SET_DEFAULT_MAIN_READER_PARAMS':
-          return {
-              ...state,
-              mainReaderSettings: defaultMainReaderSettings,
-          };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case 'RECEIVE_MAIN_READER_STATUS':
+            return {
+                ...state,
+                main: {
+                    status: action.payload as READER_STATUS,
+                },
+            };
+        case 'RECEIVE_PORTABLE_READER_STATUS':
+            return {
+                ...state,
+                portable: {
+                    status: action.payload as READER_STATUS,
+                },
+            };
+        case 'SHOW_MAIN_READER_SETTINGS':
+            return {
+                ...state,
+                shouldShowPopup: action.payload as boolean,
+            };
+        case 'SET_IP_ADDRESS':
+            return {
+                ...state,
+                mainReaderSettings: {
+                    ...state.mainReaderSettings,
+                    ip: {
+                        ...state.mainReaderSettings.ip,
+                        address: action.payload as string,
+                    },
+                },
+            };
+        case 'SET_IP_AUTO':
+            return {
+                ...state,
+                mainReaderSettings: {
+                    ...state.mainReaderSettings,
+                    ip: {
+                        ...state.mainReaderSettings.ip,
+                        auto: action.payload as boolean,
+                    },
+                },
+            };
+        case 'SET_MAIN_READER_PARAMS':
+            return {
+                ...state,
+                mainReaderSettings: {
+                    ...state.mainReaderSettings,
+                    params: action.payload as MainReaderParams,
+                },
+            };
+        case 'SET_DEFAULT_MAIN_READER_PARAMS':
+            return {
+                ...state,
+                mainReaderSettings: defaultMainReaderSettings,
+            };
+        default:
+            return state;
+    }
 };

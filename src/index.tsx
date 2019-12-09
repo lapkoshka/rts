@@ -27,8 +27,8 @@ ipc.send(IPC_APP.START);
 // TODO: столбец "отставание" на табло
 // TODO: Имя участника можно сокращать до И. Иванов
 ReactDOM.render(
-  <Provider store={store}>
-    <AppContainer/>
-  </Provider>,
-  document.getElementById('root'),
+    <Provider store={store}>
+        <AppContainer/>
+    </Provider>,
+    document.getElementById('root'),
 );

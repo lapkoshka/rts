@@ -1,13 +1,13 @@
 export const sleep = (timeout: number) => new Promise((resolve) =>
     setTimeout(() => resolve(), timeout));
 
-export const toHumanReadableTime = (t: any): string => {
+export const toHumanReadableTime = (t: null | number | Date): string => {
     if (t === null) {
         return '-';
     }
 
-    if (Number.isInteger(t)) {
-        return toHumanReadableTime(new Date(t));
+    if (Number.isInteger(t as number)) {
+        return toHumanReadableTime(new Date(t as Date));
     }
 
     if (!(t instanceof Date)) {

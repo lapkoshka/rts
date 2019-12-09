@@ -22,20 +22,20 @@ describe('race', () => {
     });
 
     it ('should dispatch FINISH', async (done) => {
-       const race = new Race(fakeUser, {
-           ...defaultRaceParams,
-           maxLaps: 2,
-       });
+        const race = new Race(fakeUser, {
+            ...defaultRaceParams,
+            maxLaps: 2,
+        });
 
-       race.on(RACE_EVENT.FINISH, () => {
-          done();
-       });
+        race.on(RACE_EVENT.FINISH, () => {
+            done();
+        });
 
-       race.appendTag(createFakeTag('123', 80));
-       await sleep(1000);
-       race.appendTag(createFakeTag('123', 80));
-       await sleep(1000);
-       race.appendTag(createFakeTag('123', 80));
+        race.appendTag(createFakeTag('123', 80));
+        await sleep(1000);
+        race.appendTag(createFakeTag('123', 80));
+        await sleep(1000);
+        race.appendTag(createFakeTag('123', 80));
     });
 
     it ('should raise exception', async (done) => {

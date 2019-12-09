@@ -42,9 +42,9 @@ export const ControlPanel: FC<ControlPanelProps & ControlPanelActions> = (props)
     const { mainReaderSettings } = props;
     const triggerMainReader = useCallback(
         () => {
-                props.triggerMainReader(mainReaderSettings);
+            props.triggerMainReader(mainReaderSettings);
         },
-    [props, mainReaderSettings],
+        [props, mainReaderSettings],
     );
 
     const triggerPortableReader = useCallback(

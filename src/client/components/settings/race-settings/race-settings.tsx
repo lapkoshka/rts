@@ -16,7 +16,7 @@ export const RaceSettings: FC<RaceSettingsProps> = memo((props) => {
                 rssiFilter: value,
             });
         },
-    [props],
+        [props],
     );
 
     const handleRSSITimeoutChange = useCallback(

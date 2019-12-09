@@ -18,7 +18,7 @@ export const renderUsers = (users: Users, deleteUser: (uid: string) => void) => 
                 key='delete'
                 title='Удаление'
                 render={(text) => renderDeleteButton(deleteTitle,
-            () => deleteUser(text.uid))
+                    () => deleteUser(text.uid))
                 }
             />
             <Table.Column />
