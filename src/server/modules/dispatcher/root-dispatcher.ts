@@ -12,8 +12,6 @@ export const rootDispatcher: RootDispatcher = {
         });
     },
     addPageListener(type: string, listener: Function): void {
-        // Ловим багу с утечкой прослушивателей
-        console.log(type);
         ipcMain.on(type, listener);
     },
 };

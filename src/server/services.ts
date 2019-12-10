@@ -1,3 +1,4 @@
+import { initEventsController } from './controllers/events/controller';
 import { updateRaces } from './controllers/race/race-scenario';
 import { updateUsers } from './controllers/results/users';
 import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from './ipc/ipc-events';
@@ -6,7 +7,7 @@ import { updateRaceHistory } from './controllers/results/history';
 import { updateTotalInfo } from './controllers/results/total';
 import { mainReader } from './modules/readers/main-reader';
 import { portableReader } from './modules/readers/portable-reader';
-import { closeDatabase } from './modules/database/database';
+import { dbMorda } from './modules/database/database';
 
 import { initPortableReaderController } from './controllers/portable-reader/controller';
 import { initMainReaderController } from './controllers/main-reader/controller';
@@ -47,12 +48,13 @@ const start = (): void => {
     initRegistrationController();
     initSmartbannerController();
     initResultsController();
+    initEventsController();
 };
 
 const shutdown = () => {
     mainReader.kill();
     portableReader.kill();
-    closeDatabase();
+    dbMorda.closeDatabase();
 };
 
 export const services = {

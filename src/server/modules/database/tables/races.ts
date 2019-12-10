@@ -1,4 +1,5 @@
-import { database } from '../database';
+import { dbMorda } from '../database';
+const database = dbMorda.database;
 
 export interface RaceData {
     id: number;

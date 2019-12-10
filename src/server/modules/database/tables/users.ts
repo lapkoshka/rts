@@ -1,5 +1,8 @@
+// import { Database } from 'sqlite3';
 import { databaseCache } from '../cache';
-import { database } from '../database';
+import { dbMorda } from '../database';
+
+const database = dbMorda.database;
 
 export interface UserData {
     uid: string;
@@ -7,6 +10,53 @@ export interface UserData {
     lastname: string;
     alreadyRegistred: boolean;
 }
+
+// export interface UserMethods {
+//     get: (uid: string) => void;
+// }
+
+// export const getUserMethods = (database: Database): UserMethods => {
+//     return {
+//         // getUser
+//
+//             // select u.uid as "uid",
+//             // u.firstname as "firstname",
+//             // u.lastname as "lastname",
+//             // count(r.uid) as "count",
+//             // min(r.time) as "besttime"
+//             // from race r
+//             // join users u
+//             // on r.uid = u.uid
+//             // group by r.uid
+//             // order by besttime asc
+//
+//         get(uid: string) {
+//         //     const query = `select user_id from tags where uid = (?)`;
+//         //     const user: UserData = {
+//         //         firstname: '',
+//         //         lastname: '',
+//         //         uid,
+//         //         alreadyRegistred: false,
+//         //     };
+//         //
+//         //     return new Promise((resolve, reject) => {
+//         //         database.get(query, [uid], (err, row) => {
+//         //             if (err) {
+//         //                 reject(err);
+//         //             }
+//         //
+//         //             if (!row) {
+//         //                 resolve(user);
+//         //                 return;
+//         //             }
+//         //
+//         //             user.alreadyRegistred = true;
+//         //             resolve(Object.assign(user, row));
+//         //         });
+//         //     });
+//         // }
+//     }
+// }
 
 export const getUser = async (uid: string): Promise<UserData> => {
     const query = `select * from users where uid = (?)`;
