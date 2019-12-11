@@ -19,38 +19,46 @@ export interface ReaderControlState {
     shouldShowPopup: boolean;
 }
 
+const RECEIVE_MAIN_READER_STATUS = 'RECEIVE_MAIN_READER_STATUS';
+const RECEIVE_PORTABLE_READER_STATUS = 'RECEIVE_PORTABLE_READER_STATUS';
+const SHOW_MAIN_READER_SETTINGS = 'SHOW_MAIN_READER_SETTINGS';
+const SET_IP_ADDRESS = 'SET_IP_ADDRESS';
+const SET_IP_AUTO = 'SET_IP_AUTO';
+const SET_MAIN_READER_PARAMS = 'SET_MAIN_READER_PARAMS';
+const SET_DEFAULT_MAIN_READER_PARAMS = 'SET_DEFAULT_MAIN_READER_PARAMS';
+
 export const setMainReaderStatus = (payload: READER_STATUS) => ({
-    type: 'RECEIVE_MAIN_READER_STATUS',
+    type: RECEIVE_MAIN_READER_STATUS,
     payload,
 });
 
 export const setPortableReaderStatus = (payload: READER_STATUS) => ({
-    type: 'RECEIVE_PORTABLE_READER_STATUS',
+    type: RECEIVE_PORTABLE_READER_STATUS,
     payload,
 });
 
 export const showMainReaderSettings = (payload: boolean) => ({
-    type: 'SHOW_MAIN_READER_SETTINGS',
+    type: SHOW_MAIN_READER_SETTINGS,
     payload,
 });
 
 export const setIpAddress = (payload: string) => ({
-    type: 'SET_IP_ADDRESS',
+    type: SET_IP_ADDRESS,
     payload,
 });
 
 export const setIpAuto = (payload: boolean) => ({
-    type: 'SET_IP_AUTO',
+    type: SET_IP_AUTO,
     payload,
 });
 
 export const setMainReaderParams = (payload: MainReaderParams) => ({
-    type: 'SET_MAIN_READER_PARAMS',
+    type: SET_MAIN_READER_PARAMS,
     payload,
 });
 
 export const setDefaultMainReaderParams = () => ({
-    type: 'SET_DEFAULT_MAIN_READER_PARAMS',
+    type: SET_DEFAULT_MAIN_READER_PARAMS,
 });
 
 export const initialState = {
@@ -69,26 +77,26 @@ export const readersControlReducer = (
     action: ReaderControlAction,
 ): ReaderControlState => {
     switch (action.type) {
-        case 'RECEIVE_MAIN_READER_STATUS':
+        case RECEIVE_MAIN_READER_STATUS:
             return {
                 ...state,
                 main: {
                     status: action.payload as READER_STATUS,
                 },
             };
-        case 'RECEIVE_PORTABLE_READER_STATUS':
+        case RECEIVE_PORTABLE_READER_STATUS:
             return {
                 ...state,
                 portable: {
                     status: action.payload as READER_STATUS,
                 },
             };
-        case 'SHOW_MAIN_READER_SETTINGS':
+        case SHOW_MAIN_READER_SETTINGS:
             return {
                 ...state,
                 shouldShowPopup: action.payload as boolean,
             };
-        case 'SET_IP_ADDRESS':
+        case SET_IP_ADDRESS:
             return {
                 ...state,
                 mainReaderSettings: {
@@ -99,7 +107,7 @@ export const readersControlReducer = (
                     },
                 },
             };
-        case 'SET_IP_AUTO':
+        case SET_IP_AUTO:
             return {
                 ...state,
                 mainReaderSettings: {
@@ -110,7 +118,7 @@ export const readersControlReducer = (
                     },
                 },
             };
-        case 'SET_MAIN_READER_PARAMS':
+        case SET_MAIN_READER_PARAMS:
             return {
                 ...state,
                 mainReaderSettings: {
@@ -118,7 +126,7 @@ export const readersControlReducer = (
                     params: action.payload as MainReaderParams,
                 },
             };
-        case 'SET_DEFAULT_MAIN_READER_PARAMS':
+        case SET_DEFAULT_MAIN_READER_PARAMS:
             return {
                 ...state,
                 mainReaderSettings: defaultMainReaderSettings,

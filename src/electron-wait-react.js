@@ -13,7 +13,6 @@ const tryConnection = () => client.connect({port: port}, () => {
         startedElectron = true;
         const exec = require('child_process').exec;
         const electron = exec('npm run electron');
-        console.log('Ловим утечку MaxListenersExceededWarning2');
         electron.stdout.on('data', function(data) {
             console.log('stdout: ' + data.toString());
         });
@@ -22,11 +21,9 @@ const tryConnection = () => client.connect({port: port}, () => {
 
 tryConnection();
 
-console.log('Ловим утечку MaxListenersExceededWarning1');
-// todo sass modules
-// todo store event types from string to consts
-// todo общий интерфейс для обновления view, типа viewUpdater.events...
+let timer = -Infinity;
 client.on('error', (error) => {
-    console.log('electron-wait-react error:', error);
-    setTimeout(tryConnection, 1000);
+    console.log('client error event from electeron wait react');
+    clearInterval(timer);
+    timer = setTimeout(tryConnection, 1000);
 });
