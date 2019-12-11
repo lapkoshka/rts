@@ -23,6 +23,9 @@ const tryConnection = () => client.connect({port: port}, () => {
 tryConnection();
 
 console.log('Ловим утечку MaxListenersExceededWarning1');
+// todo sass modules
+// todo store event types from string to consts
+// todo общий интерфейс для обновления view, типа viewUpdater.events...
 client.on('error', (error) => {
     console.log('electron-wait-react error:', error);
     setTimeout(tryConnection, 1000);

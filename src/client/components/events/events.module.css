@@ -1,0 +1,28 @@
+.title {
+    margin-bottom: 8px;
+}
+
+.selector {
+    margin-bottom: 8px;
+}
+
+.controls {
+    margin-bottom: 8px;
+}
+
+.insert {
+    margin-right: 8px;
+}
+
+.select {
+    margin-right: 8px;
+    width: 100%;
+}
+
+.start {
+    margin-right: 8px;
+}
+
+.dropdown {
+    width: 282px;
+}

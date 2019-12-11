@@ -1,12 +1,12 @@
-// import { Select } from '@blueprintjs/select';
 import { Button, MenuItem } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Select } from '@blueprintjs/select';
 import React, { FC, useCallback, useState } from 'react';
-import './events.scss';
+import styles from './events.module.css';
+import { EventData } from '../../../server/view-data/events/events';
 
 export interface EventsProps {
-    kek: number;
+    list: EventData[];
 }
 
 export interface EventsActions {
@@ -14,54 +14,55 @@ export interface EventsActions {
 }
 
 export const Events: FC<EventsProps & EventsActions> = (props) => {
-    const eventList = [
-        'Гонка в залупогорске',
-        'Pizda-zalupa Racing Club',
-        'Памп-хуямп 2022',
-    ];
-
-    const [currentEvent, setCurrentEvent] = useState(eventList[0]);
+    const list = props.list.reverse();
+    const [currentEvent, setCurrentEvent] = useState({
+        id: 0,
+        name: 'Событий нет'
+    });
     const onItemSelect = useCallback(
-        (value) => {
-            console.log(value);
-            setCurrentEvent(value);
+        (selectedEvent) => {
+            setCurrentEvent(selectedEvent);
         },
         [],
     );
 
+    if (list.length > 0 && !currentEvent.id) {
+        setCurrentEvent(list[0]);
+    }
+
     return (
         <>
-            <div className='events-title'>События</div>
-            <div className='events-selector'>
+            <div className={styles.title}>События</div>
+            <div className={styles.selector}>
                 <Button
-                    className='events-selector-insert'
+                    className={styles.insert}
                     onClick={props.onEventCreate}
                     icon={IconNames.INSERT} />
                 <Select
-                    className='events-selector-select'
+                    className={styles.select}
                     filterable={true}
-                    items={eventList}
+                    items={list}
                     itemRenderer={(item, { handleClick }) => (
                         <MenuItem
-                            key={item}
-                            text={item}
+                            key={item.id}
+                            text={item.name}
                             onClick={handleClick}
                         />
                     )}
 
                     onItemSelect={onItemSelect}>
                     <Button
-                        text={currentEvent}
+                        className={styles.dropdown}
+                        text={currentEvent.name}
                         rightIcon='caret-down'
                     />
                 </Select>
                 <Button
-                    className='events-selector-settings'
                     icon={IconNames.SETTINGS} />
             </div>
-            <div className='events-controls'>
-                <Button className='events-controls-start'>Начать</Button>
-                <Button className='events-controls-stop'>Завершить</Button>
+            <div className={styles.controls}>
+                <Button className={styles.start}>Начать</Button>
+                <Button>Завершить</Button>
             </div>
         </>
     );

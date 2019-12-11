@@ -49,4 +49,5 @@ export enum IPC_RSSI_CHART {
 
 export enum IPC_EVENTS {
     CREATE = 'ipcEventsCreate',
+    LIST = 'ipcEventsList',
 }

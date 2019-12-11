@@ -1,7 +1,9 @@
 import { Database } from 'sqlite3';
+import { EventData } from '../../../view-data/events/events';
 
 export interface EventMethods {
-    create: () => void;
+    create: () => Promise<void>;
+    get: () => Promise<EventData[]>;
 }
 
 export const getEventMethods = (database: Database): EventMethods => {
@@ -17,8 +19,24 @@ export const getEventMethods = (database: Database): EventMethods => {
                 finish_time
             ) values (?, ?, ?, ?, ?, ?, ?)`;
 
-            database.run(sql, ['', '', 1, 0, 0, 0, 0], (err: Error) => {
-                if (err) throw Error(err.message);
+            return new Promise((resolve, reject) => {
+                database.run(sql, ['Новое событие', '', 1, 0, 0, 0, 0], (err: Error) => {
+                    if (err) {
+                        throw Error(err.message);
+                        reject();
+                    }
+
+                    resolve();
+                });
+            });
+        },
+        get() {
+            const sql = `select * from events`;
+            return new Promise((resolve, reject) => {
+                database.all(sql, [], (err, rows) => {
+                    if (err) reject(err);
+                    resolve(rows);
+                });
             });
         }
     }
