@@ -10,7 +10,16 @@ export interface EventsInfoState {
 }
 
 export const initialState: EventsInfoState = {
-    eventList: [],
+    eventList: [{
+        id: 0,
+        name: 'defaultStateStub',
+        description: 'defaultStateStub',
+        laps: 0,
+        started_flag: 1,
+        finished_flag: 1,
+        start_time: 1,
+        finish_time: 1,
+    }],
 };
 
 export const setEventList = (payload: EventData[]) => ({
