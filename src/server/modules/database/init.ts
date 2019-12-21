@@ -43,7 +43,7 @@ date integer,
 event text
 );`);
 
-    await db.run(`create table if not exists events(
+    await db.run(`create table if not exists contests(
             id integer primary key autoincrement,
             name text,
             description text,
@@ -68,16 +68,16 @@ event text
     await db.run(`create table if not exists races(
         id integer primary key autoincrement,
         user_id unsigned integer,
-        event_id unsigned integer,
+        contest_id unsigned integer,
         timestamp datetime default current_timestamp,
         time unsigned integer,
 
         constraint fk_user_id
             foreign key (user_id)
             references users(id),
-        constraint fk_event_id
-            foreign key (event_id)
-            references events(id))`);
+        constraint fk_contest_id
+            foreign key (contest_id)
+            references contest(id))`);
 
     await db.run(`create table if not exists laps(
         id integer primary key autoincrement,

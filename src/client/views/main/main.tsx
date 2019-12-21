@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ControlPanelContainer } from '../../components/control-panel/control-panel-container';
-import { EventsContainer } from '../../components/events/events-container';
+import { ContestContainer } from '../../components/contest/contest-container';
 import { RaceInfoContainer } from '../../components/race-info/race-info-container';
 import { RegistrationContainer } from '../../components/registration/registration-container';
 import { ResultsInfoContainer } from '../../components/results-info/results-info-container';
@@ -16,7 +16,7 @@ export const MainView: FC = () => (
                 <ControlPanelContainer/>
             </Block>
             <Block>
-                <EventsContainer />
+                <ContestContainer />
             </Block>
             <Block>
                 <RaceInfoContainer />

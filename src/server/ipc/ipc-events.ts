@@ -47,7 +47,7 @@ export enum IPC_RSSI_CHART {
     ENABLE = 'ipcRssiEnable',
 }
 
-export enum IPC_EVENTS {
+export enum IPC_CONTESTS {
     CREATE = 'ipcEventsCreate',
     LIST = 'ipcEventsList',
 }

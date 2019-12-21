@@ -1,15 +1,15 @@
 import { Database } from 'sqlite3';
-import { EventData } from '../../../view-data/events/events';
+import { ContestData } from '../../../view-data/contests/contests';
 
-export interface EventMethods {
+export interface ContestMethods {
     create: () => Promise<void>;
-    get: () => Promise<EventData[]>;
+    get: () => Promise<ContestData[]>;
 }
 
-export const getEventMethods = (database: Database): EventMethods => {
+export const getContestMethods = (database: Database): ContestMethods => {
     return {
         create() {
-            const sql = `insert into events (
+            const sql = `insert into contests(
                 name,
                 description,
                 laps,
@@ -20,7 +20,7 @@ export const getEventMethods = (database: Database): EventMethods => {
             ) values (?, ?, ?, ?, ?, ?, ?)`;
 
             return new Promise((resolve, reject) => {
-                database.run(sql, ['Новое событие', '', 1, 0, 0, 0, 0], (err: Error) => {
+                database.run(sql, ['Новое мероприятие', '', 1, 0, 0, 0, 0], (err: Error) => {
                     if (err) {
                         throw Error(err.message);
                         reject();
@@ -31,7 +31,7 @@ export const getEventMethods = (database: Database): EventMethods => {
             });
         },
         get() {
-            const sql = `select * from events`;
+            const sql = `select * from contests`;
             return new Promise((resolve, reject) => {
                 database.all(sql, [], (err, rows) => {
                     if (err) reject(err);

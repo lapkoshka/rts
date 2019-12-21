@@ -11,8 +11,8 @@ export interface RSSIChartState {
     chartEnableInfo: ChartEnableInfo;
 }
 
-const SET_CHART_DATA = 'SET_CHART_DATA';
-const SET_CHART_ENABLE_INFO = 'SET_CHART_ENABLE_INFO';
+const SET_CHART_DATA = 'rssi/SET_CHART_DATA';
+const SET_CHART_ENABLE_INFO = 'rssi/SET_CHART_ENABLE_INFO';
 
 export const setChartData = (payload: RSSIChartTrace) => ({
     type: SET_CHART_DATA,

@@ -1,19 +1,19 @@
 import { Overlay } from '@blueprintjs/core';
 import React, { FC } from 'react';
-import { EventData } from '../../../../server/view-data/events/events';
-import styles from './event-settings.module.css';
+import { ContestData } from '../../../../server/view-data/contests/contests';
+import styles from './contest-settings.module.css';
 
-export interface EventSettingsProps {
+interface ContestSettingsProps {
     isOpen: boolean;
-    currentEvent: EventData;
+    currentContest: ContestData;
 }
 
-export interface EventSettingsActions {
+interface ContestSettingsActions {
     onClose: () => void;
 }
 
-export const EventSettings: FC<EventSettingsProps & EventSettingsActions> = (props) => {
-    const { isOpen, onClose, currentEvent } = props;
+export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> = (props) => {
+    const { isOpen, onClose } = props;
 
     return (
         <Overlay

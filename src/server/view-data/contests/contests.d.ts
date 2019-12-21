@@ -1,6 +1,6 @@
 import { bool } from '../../../common/types';
 
-export interface EventData {
+export interface ContestData {
     id: number;
     name: string;
     description: string;

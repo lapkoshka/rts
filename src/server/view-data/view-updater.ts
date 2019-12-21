@@ -1,7 +1,7 @@
-import { updateEventsData } from './events/updater';
+import { updateContestsData } from './contests/updater';
 
 export const viewUpdater = {
-    events: {
-        updateEventsData,
+    contests: {
+        updateContestsData,
     }
 }

@@ -2,21 +2,21 @@ import { Button, MenuItem } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Select } from '@blueprintjs/select';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import styles from './events.module.css';
-import { EventData } from '../../../server/view-data/events/events';
-import { EventSettings } from './settings/event-settings';
+import styles from './contest.module.css';
+import { ContestData } from '../../../server/view-data/contests/contests';
+import { ContestSettings } from './settings/contest-settings';
 
-export interface EventsProps {
-    list: EventData[];
+export interface ContestProps {
+    list: ContestData[];
 }
 
-export interface EventsActions {
-    onEventCreate: () => void;
+export interface ContestActions {
+    onContestCreate: () => void;
 }
 
-export const Events: FC<EventsProps & EventsActions> = (props) => {
+export const Contest: FC<ContestProps & ContestActions> = (props) => {
     const { list } = props;
-    const [currentEvent, setCurrentEvent] = useState(list[0]);
+    const [currentContest, setCurrentContest] = useState(list[0]);
 
     /**
      * Меня не радует эта часть, сначала массив мероприятий пустой, надо делать заглушку
@@ -26,16 +26,16 @@ export const Events: FC<EventsProps & EventsActions> = (props) => {
      * Чтобы это переделать, надо вероятно делать еще один вышестовящий компонент.
      */
     useEffect(() => {
-        if (currentEvent.id === 0) {
-            setCurrentEvent(list[0]);
+        if (currentContest.id === 0 && list.length) {
+            setCurrentContest(list[0]);
         }
     });
 
     const [shouldShowSettings, setShowSettings] = useState(false);
 
     const onItemSelect = useCallback(
-        (selectedEvent) => {
-            setCurrentEvent(selectedEvent);
+        (selectedContest) => {
+            setCurrentContest(selectedContest);
         },
         [],
     );
@@ -60,7 +60,7 @@ export const Events: FC<EventsProps & EventsActions> = (props) => {
             <div className={styles.selector}>
                 <Button
                     className={styles.insert}
-                    onClick={props.onEventCreate}
+                    onClick={props.onContestCreate}
                     icon={IconNames.INSERT} />
                 <Select
                     className={styles.select}
@@ -76,7 +76,7 @@ export const Events: FC<EventsProps & EventsActions> = (props) => {
                     onItemSelect={onItemSelect}>
                     <Button
                         className={styles.dropdown}
-                        text={currentEvent.name}
+                        text={currentContest.name}
                         rightIcon='caret-down'
                     />
                 </Select>
@@ -89,9 +89,9 @@ export const Events: FC<EventsProps & EventsActions> = (props) => {
                 <Button className={styles.start}>Начать</Button>
                 <Button>Завершить</Button>
             </div>
-            <EventSettings
+            <ContestSettings
                 isOpen={shouldShowSettings}
-                currentEvent={currentEvent as EventData}
+                currentContest={currentContest as ContestData}
                 onClose={onCloseSettings}
             />
         </>
