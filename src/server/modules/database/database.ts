@@ -1,6 +1,6 @@
 import { Database } from 'sqlite3';
 import { createAndPrepareDatabase } from './init';
-import { ContestMethods, getContestMethods } from './tables/events';
+import { ContestMethods, getContestMethods } from './tables/contests';
 
 class DbMorda {
     public database: Database;

@@ -2,7 +2,7 @@ import { mainReader } from './modules/readers/main-reader';
 import { portableReader } from './modules/readers/portable-reader';
 import { dbMorda } from './modules/database/database';
 
-import { initEventsController } from './controllers/events/controller';
+import { initContestController } from './controllers/contests/controller';
 import { initViewUpdaterController } from './controllers/view-updater/controller';
 import { initPortableReaderController } from './controllers/portable-reader/controller';
 import { initMainReaderController } from './controllers/main-reader/controller';
@@ -12,8 +12,6 @@ import { initFakeTagController } from './controllers/fake-tag/controller';
 import { initRegistrationController } from './controllers/registration/controller';
 import { initSmartbannerController } from './controllers/control-panel/controller';
 import { initResultsController } from './controllers/results/controller';
-
-
 
 const start = (): void => {
     initViewUpdaterController();
@@ -25,7 +23,7 @@ const start = (): void => {
     initRegistrationController();
     initSmartbannerController();
     initResultsController();
-    initEventsController();
+    initContestController();
 };
 
 const shutdown = () => {

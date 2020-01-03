@@ -1,17 +1,15 @@
-.title {
-    margin-bottom: 8px;
-}
-
 .selector {
-    margin-bottom: 8px;
-}
-
-.controls {
     margin-bottom: 8px;
 }
 
 .insert {
     margin-right: 8px;
+}
+
+.controls {
+    display: flex;
+    margin-bottom: 8px;
+    justify-content: space-between;
 }
 
 .select {
@@ -20,7 +18,13 @@
 }
 
 .start {
-    margin-right: 8px;
+    width: 50%;
+    margin-right: 4px;
+}
+
+.stop {
+    width: 50%;
+    margin-left: 4px;
 }
 
 .dropdown {
