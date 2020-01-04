@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getIpcRenderer } from '../../../common/ipc';
+import { Ipc } from '../../../common/ipc';
 import { IPC_CONTESTS } from '../../../server/ipc/ipc-events';
 import { ContestFormData } from '../../../server/modules/database/tables/contests';
 import { ContestData } from '../../../server/view-data/contests/contests';
@@ -13,7 +13,6 @@ import {
 } from '../../store/contest-info';
 import { Contest, ContestActions, ContestProps } from './contest';
 import { selectContest } from './selectors';
-const ipc = getIpcRenderer();
 
 const mapStateToProps = (state: RootState): ContestProps => ({
     list: state.contestInfo.contestList,
@@ -23,22 +22,22 @@ const mapStateToProps = (state: RootState): ContestProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
     onContestCreate: () => {
-        ipc.send(IPC_CONTESTS.CREATE);
+        Ipc.send(IPC_CONTESTS.CREATE);
     },
     onContestDelete: (id: number) => {
-        ipc.send(IPC_CONTESTS.DELETE, id)
+        Ipc.send(IPC_CONTESTS.DELETE, id)
     },
     onContestSettingsChange: (data: ContestFormData) => {
-        ipc.send(IPC_CONTESTS.SETTINGS_CHANGE, data);
+        Ipc.send(IPC_CONTESTS.SETTINGS_CHANGE, data);
     },
     onContestSelect: (id: number) => {
         dispatch(setSelectedContest(id));
     },
     onContestStart: (id: number) => {
-        ipc.send(IPC_CONTESTS.START, id);
+        Ipc.send(IPC_CONTESTS.START, id);
     },
     onContestClose: (id: number) => {
-        ipc.send(IPC_CONTESTS.CLOSE, id)
+        Ipc.send(IPC_CONTESTS.CLOSE, id)
     },
     setShowContestSettings: (show: boolean) => {
         dispatch(setShowContestSettings(show));
@@ -46,21 +45,21 @@ const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
 });
 
 const { dispatch } = store;
-ipc.on(IPC_CONTESTS.LIST, (_, list: ContestData[]) => {
+Ipc.on<ContestData[]>(IPC_CONTESTS.LIST, (list) => {
     dispatch(setContestList(list));
 });
 
-ipc.on(IPC_CONTESTS.CONTEST_CREATED, (_, id: number) => {
+Ipc.on<number>(IPC_CONTESTS.CONTEST_CREATED, (id) => {
     dispatch(setSelectedContest(id));
     dispatch(setShowContestSettings(true));
 });
 
-ipc.on(IPC_CONTESTS.ON_CONTEST_DELETED, () => {
+Ipc.on(IPC_CONTESTS.ON_CONTEST_DELETED, () => {
    dispatch(setSelectedContest(null));
    dispatch(setShowContestSettings(false));
 });
 
-ipc.on(IPC_CONTESTS.START_ERROR, () => {
+Ipc.on(IPC_CONTESTS.START_ERROR, () => {
    Notification.error('Для того, чтобы начать новое соревнование, нужно завершить уже запущенное', 4000);
 });
 

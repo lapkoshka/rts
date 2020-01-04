@@ -2,9 +2,7 @@ import { MenuItem, Button, NumericInput } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
 import React, { FC, memo, useCallback } from 'react';
 import { makeArr } from '../../../../common/helpers';
-import {
-    MainReaderParams,
-} from '../../../../server/lib/readers/main-reader';
+import { MainReaderParams } from '../../../../server/lib/readers/main-reader';
 
 interface ReaderParamsProps {
     params: MainReaderParams;
