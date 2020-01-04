@@ -31,7 +31,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = memo((p
             document.addEventListener('keyup', keyUpHandler);
             return () => document.removeEventListener('keyup', keyUpHandler);
         },
-        []
+        [keyUpHandler]
     );
 
     return (

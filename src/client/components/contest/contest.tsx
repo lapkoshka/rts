@@ -21,7 +21,7 @@ export interface ContestActions {
     onContestDelete: (id: number) => void;
     onContestStart: (id: number) => void;
     onContestClose: (id: number) => void;
-    showContestSettings: (show: boolean) => void;
+    setShowContestSettings: (show: boolean) => void;
 }
 
 export const Contest: FC<ContestProps & ContestActions> = (props) => {
@@ -35,7 +35,7 @@ export const Contest: FC<ContestProps & ContestActions> = (props) => {
         onContestDelete,
         onContestStart,
         onContestClose,
-        showContestSettings
+        setShowContestSettings
     } = props;
 
     const handleItemSelect = useCallback(
@@ -47,16 +47,16 @@ export const Contest: FC<ContestProps & ContestActions> = (props) => {
 
     const handleSettingsClickHandler = useCallback(
         () => {
-            showContestSettings(true);
+            setShowContestSettings(true);
         },
-        [showContestSettings],
+        [setShowContestSettings],
     );
 
     const handleCloseSettings = useCallback(
         () => {
-            showContestSettings(false);
+            setShowContestSettings(false);
         },
-        [showContestSettings],
+        [setShowContestSettings],
     );
 
     const handleContestStart = useCallback(

@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
     onContestClose: (id: number) => {
         Ipc.send(IPC_CONTESTS.CLOSE, id);
     },
-    showContestSettings: (show: boolean) => {
+    setShowContestSettings: (show: boolean) => {
         dispatch(showContestSettings(show));
     }
 });
