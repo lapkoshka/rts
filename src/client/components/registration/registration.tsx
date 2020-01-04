@@ -9,7 +9,7 @@ export interface RegistrationProps {
 }
 
 export interface RegistrationActions {
-    onCancelRegistration: () => void;
+    onCancelRegistration: VoidFunction;
     submitUser: (user: UserData) => void;
 }
 

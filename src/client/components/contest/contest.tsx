@@ -15,7 +15,7 @@ export interface ContestProps {
 }
 
 export interface ContestActions {
-    onContestCreate: () => void;
+    onContestCreate: VoidFunction;
     onContestSettingsChange: (data: ContestFormData) => void;
     onContestSelect: (id: number) => void;
     onContestDelete: (id: number) => void;

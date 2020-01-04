@@ -25,7 +25,7 @@ interface ContestSettingsProps {
 }
 
 interface ContestSettingsActions {
-    onClose: () => void;
+    onClose: VoidFunction;
     onContestSettingsChange: (data: ContestFormData) => void;
     onContestDelete: (id: number) => void;
 }

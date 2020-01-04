@@ -9,7 +9,7 @@ import {
 interface ReaderParamsProps {
     params: MainReaderParams;
     setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
+    setDefaultMainReaderParams: VoidFunction;
 }
 
 const SESSION_DEFAULT_VALUES = ['0', '1', '2', '3', '255'];
