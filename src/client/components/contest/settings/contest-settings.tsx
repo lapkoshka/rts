@@ -46,7 +46,7 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
             setFormData({
                 ...formData,
                 name: evt.currentTarget.value,
-            })
+            });
         },
         [formData, setFormData]
     );
@@ -56,7 +56,7 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
             setFormData({
                 ...formData,
                 description: evt.target.value,
-            })
+            });
         },
         [formData, setFormData]
     );
@@ -85,10 +85,10 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
 
     const handleDelete = useCallback(
         () => {
-            onContestDelete(props.contest.id)
+            onContestDelete(props.contest.id);
         },
         [onContestDelete, props.contest]
-    )
+    );
 
     // const keyUpHandler = useCallback((evt: KeyboardEvent) => {
     //         if (evt.keyCode === KEYCODES.ENTER) {
@@ -100,13 +100,16 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
     //     [],
     // );
 
-    useEffect(() => {
-        setFormData(selectFormDataFromProps(props.contest));
-        // document.addEventListener('keyup', keyUpHandler);
+    useEffect(
+        () => {
+            setFormData(selectFormDataFromProps(props.contest));
+            // document.addEventListener('keyup', keyUpHandler);
 
-        // return () => document.removeEventListener('keyup', keyUpHandler);
+            // return () => document.removeEventListener('keyup', keyUpHandler);
 
-    }, [props.contest]);
+        },
+        [props.contest]
+    );
 
     return (
         <Overlay
@@ -151,5 +154,5 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
                 </div>
             </div>
         </Overlay>
-    )
-}
+    );
+};

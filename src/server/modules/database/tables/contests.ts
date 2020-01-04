@@ -27,20 +27,20 @@ export const getContestMethods = (database: Database): ContestMethods => ({
 
         return new Promise((resolve, reject) => {
             const stmt: Statement = database.prepare(sql);
-            stmt.run(['Новое мероприятие', '', 1, 0, 0, 0, 0],function(err: Error) {
-                if (err) reject(err)
+            stmt.run(['Новое мероприятие', '', 1, 0, 0, 0, 0], function(err: Error) {
+                if (err) reject(err);
                 resolve(this.lastID);
             });
         });
     },
     delete(id) {
-        const sql = `delete from contests where id = (?)`
+        const sql = `delete from contests where id = (?)`;
 
         return new Promise((resolve, reject) => {
             database.run(sql, id, (err: Error) => {
                 if (err) reject(err);
                 resolve();
-            })
+            });
         });
     },
     start(id, timestamp) {
@@ -99,4 +99,4 @@ export const getContestMethods = (database: Database): ContestMethods => ({
             });
         });
     }
-})
+});

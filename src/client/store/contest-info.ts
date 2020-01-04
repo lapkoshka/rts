@@ -30,12 +30,12 @@ export const setContestList = (payload: ContestData[]) => ({
 export const setSelectedContest = (payload: number) => ({
     type: SET_SELECTED_CONTEST,
     payload,
-})
+});
 
-export const setShowContestSettings = (payload: boolean) => ({
+export const showContestSettings = (payload: boolean) => ({
     type: SET_SHOW_CONTEST_SETTINGS,
     payload,
-})
+});
 
 export const contestInfoReducer = (state = initialState, action: ContestInfoAction) => {
     switch (action.type) {
@@ -52,12 +52,12 @@ export const contestInfoReducer = (state = initialState, action: ContestInfoActi
             return {
                 ...state,
                 selectedContest: action.payload as number,
-            }
+            };
         case SET_SHOW_CONTEST_SETTINGS:
             return {
                 ...state,
                 showContestSettings: action.payload as boolean,
-            }
+            };
         default:
             return state;
     }

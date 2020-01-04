@@ -26,10 +26,13 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = memo((p
     [props, userForm],
     );
 
-    useEffect(() => {
-        document.addEventListener('keyup', keyUpHandler);
-        return () => document.removeEventListener('keyup', keyUpHandler);
-    });
+    useEffect(
+        () => {
+            document.addEventListener('keyup', keyUpHandler);
+            return () => document.removeEventListener('keyup', keyUpHandler);
+        },
+        []
+    );
 
     return (
         <Modal

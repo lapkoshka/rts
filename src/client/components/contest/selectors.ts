@@ -13,4 +13,4 @@ export const selectContest = (list: ContestData[], id: Nullable<number>): Contes
     }
 
     return found;
-}
+};

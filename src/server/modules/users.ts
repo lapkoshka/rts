@@ -17,10 +17,6 @@ const getUsersMap = (users: UserData[]) => {
 };
 
 export const getUserByTag = async (tag: RFIDTag): Promise<UserData> => {
-    try {
-        const users = await getUsers();
-        return getUsersMap(users).get(tag.uid);
-    } catch (err) {
-        throw err;
-    }
+    const users = await getUsers();
+    return getUsersMap(users).get(tag.uid);
 };

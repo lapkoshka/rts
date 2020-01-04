@@ -4,4 +4,4 @@ export const viewUpdater = {
     contests: {
         updateContestsData,
     }
-}
+};

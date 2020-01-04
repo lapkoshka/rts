@@ -3,7 +3,6 @@ import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { viewUpdater } from '../../view-data/view-updater';
-import { updateContestsData } from '../../view-data/contests/updater';
 import { updateRaces } from '../race/race-scenario';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
@@ -33,4 +32,4 @@ export const initViewUpdaterController = () => {
         await pageReady;
         updateView();
     });
-}
+};

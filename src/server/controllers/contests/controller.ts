@@ -12,22 +12,22 @@ export const initContestController = () => {
                 viewUpdater.contests.updateContestsData();
                 rootDispatcher.sendEvent(IPC_CONTESTS.CONTEST_CREATED, id);
             })
-            .catch(console.error)
+            .catch(console.error);
     });
 
     rootDispatcher.addPageListener(IPC_CONTESTS.SETTINGS_CHANGE, (_, data: ContestFormData) => {
        dbMorda.contests.changeSettings(data)
            .then(viewUpdater.contests.updateContestsData)
-           .catch(console.error)
+           .catch(console.error);
     });
 
     rootDispatcher.addPageListener(IPC_CONTESTS.DELETE, (_, id: number) => {
        dbMorda.contests.delete(id)
            .then(() => {
                viewUpdater.contests.updateContestsData();
-               rootDispatcher.sendEvent(IPC_CONTESTS.ON_CONTEST_DELETED)
+               rootDispatcher.sendEvent(IPC_CONTESTS.ON_CONTEST_DELETED);
            })
-           .catch(console.error)
+           .catch(console.error);
     });
 
     rootDispatcher.addPageListener(IPC_CONTESTS.START, async (_, id: number) => {
@@ -48,4 +48,4 @@ export const initContestController = () => {
             .then(viewUpdater.contests.updateContestsData)
             .catch(console.error);
     });
-}
+};

@@ -16,7 +16,7 @@ const openDatabase = (): Database => {
         }
 
         console.log(`Connected to the ${DATABASE_PATH} SQlite database.`);
-    })
+    });
 };
 
 const prepareDatabase = async (db: Database): Promise<void> => {

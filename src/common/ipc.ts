@@ -2,7 +2,11 @@ import { IpcRenderer } from 'electron';
 import {
     IPC_APP,
     IPC_CONTESTS,
-    IPC_MAIN_READER, IPC_PORTABLE_READER, IPC_RACE, IPC_REGISTRATION, IPC_RESULTS,
+    IPC_MAIN_READER,
+    IPC_PORTABLE_READER,
+    IPC_RACE,
+    IPC_REGISTRATION,
+    IPC_RESULTS,
     IPC_RSSI_CHART,
 } from '../server/ipc/ipc-events';
 

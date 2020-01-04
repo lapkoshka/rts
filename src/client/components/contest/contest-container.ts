@@ -9,7 +9,7 @@ import { RootState, store } from '../../store';
 import {
     setContestList,
     setSelectedContest,
-    setShowContestSettings,
+    showContestSettings,
 } from '../../store/contest-info';
 import { Contest, ContestActions, ContestProps } from './contest';
 import { selectContest } from './selectors';
@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
         Ipc.send(IPC_CONTESTS.CREATE);
     },
     onContestDelete: (id: number) => {
-        Ipc.send(IPC_CONTESTS.DELETE, id)
+        Ipc.send(IPC_CONTESTS.DELETE, id);
     },
     onContestSettingsChange: (data: ContestFormData) => {
         Ipc.send(IPC_CONTESTS.SETTINGS_CHANGE, data);
@@ -37,10 +37,10 @@ const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
         Ipc.send(IPC_CONTESTS.START, id);
     },
     onContestClose: (id: number) => {
-        Ipc.send(IPC_CONTESTS.CLOSE, id)
+        Ipc.send(IPC_CONTESTS.CLOSE, id);
     },
-    setShowContestSettings: (show: boolean) => {
-        dispatch(setShowContestSettings(show));
+    showContestSettings: (show: boolean) => {
+        dispatch(showContestSettings(show));
     }
 });
 
@@ -51,12 +51,12 @@ Ipc.on<ContestData[]>(IPC_CONTESTS.LIST, (list) => {
 
 Ipc.on<number>(IPC_CONTESTS.CONTEST_CREATED, (id) => {
     dispatch(setSelectedContest(id));
-    dispatch(setShowContestSettings(true));
+    dispatch(showContestSettings(true));
 });
 
 Ipc.on(IPC_CONTESTS.ON_CONTEST_DELETED, () => {
    dispatch(setSelectedContest(null));
-   dispatch(setShowContestSettings(false));
+   dispatch(showContestSettings(false));
 });
 
 Ipc.on(IPC_CONTESTS.START_ERROR, () => {
