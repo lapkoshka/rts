@@ -1,14 +1,14 @@
 import { Database } from 'sqlite3';
 import { createAndPrepareDatabase } from './init';
-import { EventMethods, getEventMethods } from './tables/events';
+import { ContestMethods, getContestMethods } from './tables/contests';
 
 class DbMorda {
     public database: Database;
-    public events: EventMethods;
+    public contests: ContestMethods;
 
     constructor() {
         this.database = createAndPrepareDatabase();
-        this.events = getEventMethods(this.database);
+        this.contests = getContestMethods(this.database);
         // this.users = getUsersMethods(this.database);
     }
 

@@ -27,7 +27,7 @@ export interface SettingsActions {
     setIpAuto: (enable: boolean) => void;
     setIpAddress: (address: string) => void;
     setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
+    setDefaultMainReaderParams: VoidFunction;
     setChartEnableInfo: (info: ChartEnableInfo) => void;
     setRaceParams: (params: RaceParams) => void;
 }

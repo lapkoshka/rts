@@ -11,9 +11,9 @@ export interface ResultsInfoState {
     total: TotalInfo;
 }
 
-const SET_RACE_HISTORY = 'SET_RACE_HISTORY';
-const SET_USERS = 'SET_USERS';
-const SET_TOTAL_INFO = 'SET_TOTAL_INFO';
+const SET_RACE_HISTORY = 'results/SET_RACE_HISTORY';
+const SET_USERS = 'results/SET_USERS';
+const SET_TOTAL_INFO = 'results/SET_TOTAL_INFO';
 
 export const setRaceHistory = (payload: RaceHistory) => ({
     type: SET_RACE_HISTORY,

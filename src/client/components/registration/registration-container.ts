@@ -9,9 +9,7 @@ import {
 } from '../../store/registration-store';
 import { store, RootState } from '../../store';
 import { UserData } from '../../../server/modules/database/tables/users';
-import { getIpcRenderer } from '../../../common/ipc';
-
-const ipc = getIpcRenderer();
+import { Ipc } from '../../../common/ipc';
 
 const mapStateToProps = (state: RootState): RegistrationProps => ({
     shouldShowPopup: state.registration.shouldShowPopup,
@@ -20,17 +18,17 @@ const mapStateToProps = (state: RootState): RegistrationProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
     onCancelRegistration: () => {
-        ipc.send(IPC_REGISTRATION.CANCEL);
+        Ipc.send(IPC_REGISTRATION.CANCEL);
         dispatch(closeRegistrationPopup());
     },
     submitUser: (user: UserData) => {
-        ipc.send(IPC_REGISTRATION.SUBMIT, user);
+        Ipc.send(IPC_REGISTRATION.SUBMIT, user);
         dispatch(closeRegistrationPopup());
     },
 });
 
 const { dispatch } = store;
-ipc.on(IPC_PORTABLE_READER.TAG, (_: Event, user: UserData) => {
+Ipc.on<UserData>(IPC_PORTABLE_READER.TAG, (user) => {
     dispatch(setRegistrationUser(user));
     dispatch(openRegistrationPopup());
 });

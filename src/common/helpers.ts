@@ -1,4 +1,4 @@
-export const makeArr = (fromOrTo: number, to?: number, step: number = 1) => {
+export const makeArr = (fromOrTo: number, to?: number, step = 1) => {
     const start = to ? fromOrTo : 0;
     const end = to || fromOrTo;
 
@@ -10,3 +10,4 @@ export const makeArr = (fromOrTo: number, to?: number, step: number = 1) => {
     return arr;
 };
 
+export const getTimestamp = (): number => new Date().valueOf();

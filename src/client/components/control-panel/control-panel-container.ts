@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { getIpcRenderer } from '../../../common/ipc';
+import { Ipc } from '../../../common/ipc';
 import {
     IPC_MAIN_READER,
     IPC_PORTABLE_READER,
@@ -17,17 +17,16 @@ import {
     setPortableReaderStatus,
 } from '../../store/control-panel-store';
 import { store, RootState } from '../../store';
-const ipc = getIpcRenderer();
 
 const mapStateToProps = (state: RootState): ControlPanelProps => ({
     mainStatus: state.readersControl.main.status,
     portableStatus: state.readersControl.portable.status,
     mainReaderSettings: state.readersControl.mainReaderSettings,
     triggerMainReader: (settings: MainReaderSettings) => {
-        ipc.send(IPC_MAIN_READER.TRIGGER_CLICK, settings);
+        Ipc.send(IPC_MAIN_READER.TRIGGER_CLICK, settings);
     },
     triggerPortableReader: () => {
-        ipc.send(IPC_PORTABLE_READER.TRIGGER_CLICK);
+        Ipc.send(IPC_PORTABLE_READER.TRIGGER_CLICK);
     },
 });
 
@@ -36,31 +35,31 @@ const mapDispatchToProps = (dispatch: Dispatch): ControlPanelActions => ({
 });
 
 const { dispatch } = store;
-ipc.on(IPC_MAIN_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
+Ipc.on<READER_STATUS>(IPC_MAIN_READER.STATUS_CHANGE, (status) => {
     dispatch(setMainReaderStatus(status));
 });
 
-ipc.on(IPC_MAIN_READER.ERROR, (_: Event, msg: string) => {
+Ipc.on<string>(IPC_MAIN_READER.ERROR, (msg) => {
     Notification.error(msg, 5000);
 });
 
-ipc.on(IPC_MAIN_READER.DISCONNECT, (_: Event, msg: string) => {
+Ipc.on<string>(IPC_MAIN_READER.DISCONNECT, (msg) => {
     Notification.warn(msg, 2000);
 });
 
-ipc.on(IPC_MAIN_READER.IP_RECIEVED, (_: Event, ip: string) => {
+Ipc.on<string>(IPC_MAIN_READER.IP_RECIEVED, (ip) => {
     console.log(ip);
 });
 
-ipc.on(IPC_PORTABLE_READER.STATUS_CHANGE, (_: Event, status: READER_STATUS) => {
+Ipc.on<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, (status) => {
     dispatch(setPortableReaderStatus(status));
 });
 
-ipc.on(IPC_PORTABLE_READER.ERROR, (_: Event, msg: string) => {
+Ipc.on<string>(IPC_PORTABLE_READER.ERROR, (msg) => {
     Notification.error(msg, 5000);
 });
 
-ipc.on(IPC_PORTABLE_READER.DISCONNECT, (_: Event, msg: string) => {
+Ipc.on<string>(IPC_PORTABLE_READER.DISCONNECT, (msg) => {
     Notification.warn(msg, 2000);
 });
 

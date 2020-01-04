@@ -1,53 +1,60 @@
 export enum IPC_APP {
-    START = 'ipcAppStart',
-    VIEW_DID_MOUNT = 'ipcAppViewDidMount',
-    FAKE_MAIN_TAG = 'ipcAppFakeMainTag',
-    FAKE_PORTABLE_TAG = 'ipcAppFakePortableTag',
+    START = 'ipc/app/start',
+    VIEW_DID_MOUNT = 'ipc/app/view_did_mount',
+    FAKE_MAIN_TAG = 'ipc/app/fake_main_tag',
+    FAKE_PORTABLE_TAG = 'ipc/app/fake_portable_tag',
 }
 
 export enum IPC_MAIN_READER {
-    STATUS_CHANGE = 'ipcMainReaderOnStatusChange',
-    ERROR = 'ipcMainReaderError',
-    DISCONNECT = 'ipcMainReaderDisconnect',
-    IP_RECIEVED = 'ipcMainReaderIpRecieved',
-    TAG = 'ipcMainReaderTag',
-    TRIGGER_CLICK = 'ipcMainReaderTriggerClick',
+    STATUS_CHANGE = 'ipc/main_reader/status_change',
+    ERROR = 'ipc/main_reader/error',
+    DISCONNECT = 'ipc/main_reader/disconnect',
+    IP_RECIEVED = 'ipc/main_reader/ip_recieved',
+    TAG = 'ipc/main_reader/tag',
+    TRIGGER_CLICK = 'ipc/main_reader/trigger_click',
 }
 
 export enum IPC_PORTABLE_READER {
-    STATUS_CHANGE = 'ipcPortableReaderOnStatusChange',
-    ERROR = 'ipcPortableReaderError',
-    DISCONNECT = 'ipcPortableReaderDisconnect',
-    IP_RECIEVED = 'ipcPortableReaderIpRecieved',
-    TAG = 'ipcPortableReaderTag',
-    TRIGGER_CLICK = 'ipcPortableReaderTriggerClick',
+    STATUS_CHANGE = 'ipc/portable_reader/status_change',
+    ERROR = 'ipc/portable_reader/error',
+    DISCONNECT = 'ipc/portable_reader/disconnect',
+    IP_RECIEVED = 'ipc/portable_reader/ip_recieved',
+    TAG = 'ipc/portable_reader/tag',
+    TRIGGER_CLICK = 'ipc/portable_reader/trigger_click',
 }
 
 export enum IPC_RACE {
-    CURRENT_RACES_CHANGED = 'ipcRaceCurrentRacesChanged',
-    UPDATE_RACE_PARAMS = 'ipcRaceUpdateRaceParams',
-    ON_CLOSE_RACE = 'ipcRaceOnCloseRace',
+    CURRENT_RACES_CHANGED = 'ipc/race/current_races_changed',
+    UPDATE_RACE_PARAMS = 'ipc/race/update_race_params',
+    ON_CLOSE_RACE = 'ipc/race/on_close_race',
 }
 
 export enum IPC_REGISTRATION {
-    CANCEL = 'ipcRegistrationCancel',
-    SUBMIT = 'ipcRegistrationSubmit',
+    CANCEL = 'ipc/registration/cancel',
+    SUBMIT = 'ipc/registration/submit',
 }
 
 export enum IPC_RESULTS {
-    USERS_DATA_UPDATE = 'ipcResultsUserDataUpdate',
-    TOTAL_INFO_UPDATE = 'ipcResultsTotalInfoUpdate',
-    RACE_HISTORY_UPDATE = 'ipcResultsRaceHistoryUpdate',
-    ON_RACE_DELETE = 'ipcResultsOnRaceDelete',
-    ON_USER_DELETE = 'ipcResultsOnUserDelete',
+    USERS_DATA_UPDATE = 'ipc/results/user_data_update',
+    TOTAL_INFO_UPDATE = 'ipc/results/total_info_update',
+    RACE_HISTORY_UPDATE = 'ipc/results/race_history_update',
+    ON_RACE_DELETE = 'ipc/results/on_race_delete',
+    ON_USER_DELETE = 'ipc/results/on_user_delete',
 }
 
 export enum IPC_RSSI_CHART {
-    DATA = 'ipcRssiChartData',
-    ENABLE = 'ipcRssiEnable',
+    DATA = 'ipc/rssi_chart/data',
+    ENABLE = 'ipc/rssi_chart/enable',
 }
 
-export enum IPC_EVENTS {
-    CREATE = 'ipcEventsCreate',
-    LIST = 'ipcEventsList',
+export enum IPC_CONTESTS {
+    CREATE = 'ipc/contests/create',
+    LIST = 'ipc/contests/list',
+    SETTINGS_CHANGE = 'ipc/contests/settings_change',
+    CONTEST_CREATED = 'ipc/contests/contest_created',
+    DELETE = 'ipc/contests/delete',
+    ON_CONTEST_DELETED = 'ipc/contests/on_contest_deleted',
+    START = 'ipc/contests/start',
+    CLOSE = 'ipc/contests/close',
+    START_ERROR = 'ipc/contests/start_error',
 }

@@ -54,7 +54,7 @@ export class RSSITrace extends EventEmitter {
         return this.getSortedPoints()[0];
     }
 
-    private openTraceFilling(autoclose: boolean = true): void {
+    private openTraceFilling(autoclose = true): void {
         if (autoclose) {
             setTimeout(() => {
                 this.completed = true;

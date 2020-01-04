@@ -9,7 +9,7 @@ import './control-panel.scss';
 interface ReaderButtonProps {
     status: READER_STATUS;
     name: string;
-    onClick: () => void;
+    onClick: VoidFunction;
 }
 
 const ReaderButton: FC<ReaderButtonProps> = (props) => {
@@ -31,7 +31,7 @@ export interface ControlPanelProps {
     portableStatus: READER_STATUS;
     mainReaderSettings: MainReaderSettings;
     triggerMainReader: (settings: MainReaderSettings) => void;
-    triggerPortableReader: () => void;
+    triggerPortableReader: VoidFunction;
 }
 
 export interface ControlPanelActions {

@@ -2,14 +2,12 @@ import { MenuItem, Button, NumericInput } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
 import React, { FC, memo, useCallback } from 'react';
 import { makeArr } from '../../../../common/helpers';
-import {
-    MainReaderParams,
-} from '../../../../server/lib/readers/main-reader';
+import { MainReaderParams } from '../../../../server/lib/readers/main-reader';
 
 interface ReaderParamsProps {
     params: MainReaderParams;
     setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
+    setDefaultMainReaderParams: VoidFunction;
 }
 
 const SESSION_DEFAULT_VALUES = ['0', '1', '2', '3', '255'];

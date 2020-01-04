@@ -1,6 +1,6 @@
 import { combineReducers, createStore, Store } from 'redux';
 import { readersControlReducer as readersControl, ReaderControlState } from './control-panel-store';
-import { eventsInfoReducer as eventsInfo, EventsInfoState } from './events-info';
+import { contestInfoReducer as contestInfo, ContestInfoState } from './contest-info';
 import { raceInfoReducer as raceInfo, RaceInfoState } from './race-info-store';
 import { resultsInfoReducer as resultsInfo, ResultsInfoState } from './results-info-store';
 import { registrationReducer as registration, RegistrationState } from './registration-store';
@@ -12,7 +12,7 @@ export interface Action<T> {
 }
 
 export interface RootState {
-    eventsInfo: EventsInfoState;
+    contestInfo: ContestInfoState;
     readersControl: ReaderControlState;
     raceInfo: RaceInfoState;
     resultsInfo: ResultsInfoState;
@@ -21,7 +21,7 @@ export interface RootState {
 }
 
 export const store: Store<RootState> = createStore(combineReducers({
-    eventsInfo,
+    contestInfo,
     readersControl,
     raceInfo,
     resultsInfo,

@@ -1,6 +1,6 @@
 interface DatabaseCache {
     [key: string]: any;
-    clear: () => void;
+    clear: VoidFunction;
 }
 
 export const databaseCache: DatabaseCache = {

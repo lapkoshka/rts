@@ -9,8 +9,8 @@ export interface RaceInfoState {
     raceParams: RaceParams;
 }
 
-const SET_CURRENT_RACES = 'SET_CURRENT_RACES';
-const SET_RACE_PARAMS = 'SET_RACE_PARAMS';
+const SET_CURRENT_RACES = 'race/SET_CURRENT_RACES';
+const SET_RACE_PARAMS = 'race/SET_RACE_PARAMS';
 
 export const initialState: RaceInfoState = {
     currentRaces: [],

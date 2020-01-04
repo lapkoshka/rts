@@ -8,9 +8,9 @@ export interface RegistrationState {
     user: UserData;
 }
 
-const CLOSE_REGISTRATION_POPUP = 'CLOSE_REGISTRATION_POPUP';
-const OPEN_REGISTRATION_POPUP = 'OPEN_REGISTRATION_POPUP';
-const SET_REGISTRATION_USER = 'SET_REGISTRATION_USER';
+const CLOSE_REGISTRATION_POPUP = 'registration/CLOSE_REGISTRATION_POPUP';
+const OPEN_REGISTRATION_POPUP = 'registration/OPEN_REGISTRATION_POPUP';
+const SET_REGISTRATION_USER = 'registration/SET_REGISTRATION_USER';
 
 export const closeRegistrationPopup = () => ({
     type: CLOSE_REGISTRATION_POPUP,
