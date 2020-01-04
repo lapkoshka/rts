@@ -11,7 +11,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "build:client": "react-scripts build",
     "build:dist": "node scripts/copy-electron-entrypoint.js && electron-builder",
-    "server-watch": "tsc -p tsconfig.server.json -w",
+    "server": "tsc -p tsconfig.server.json -w",
     "dev": "nf start -p 3000",
     "start": "react-scripts start",
     "postinstall": "install-app-deps"

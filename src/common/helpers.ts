@@ -10,3 +10,4 @@ export const makeArr = (fromOrTo: number, to?: number, step: number = 1) => {
     return arr;
 };
 
+export const getTimestamp = (): number => new Date().valueOf();

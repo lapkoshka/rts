@@ -1,8 +1,7 @@
 import React, { FC, memo, useCallback, useEffect } from 'react';
 import { Modal, Input, Form } from 'antd';
 import { UserData } from '../../../server/modules/database/tables/users';
-
-const ENTER_KEY_CODE = 13;
+import { KEYCODES } from '../../lib/keycodes';
 
 export interface RegistrationProps {
     shouldShowPopup: boolean;
@@ -19,7 +18,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = memo((p
 
     const keyUpHandler = useCallback((evt: KeyboardEvent) => {
         const isPressEnterWhenPopupOpened =
-                evt.keyCode === ENTER_KEY_CODE && props.shouldShowPopup;
+            evt.keyCode === KEYCODES.ENTER && props.shouldShowPopup;
         if (isPressEnterWhenPopupOpened) {
             props.submitUser(userForm);
         }

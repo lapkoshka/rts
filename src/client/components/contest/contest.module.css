@@ -1,4 +1,5 @@
 .selector {
+    display: flex;
     margin-bottom: 8px;
 }
 
@@ -14,6 +15,13 @@
 
 .select {
     margin-right: 8px;
+    width: 100%;
+}
+
+.select-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 

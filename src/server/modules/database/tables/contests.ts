@@ -1,12 +1,16 @@
-import { Database } from 'sqlite3';
+import { Database, Statement } from 'sqlite3';
 import { ContestData } from '../../../view-data/contests/contests';
 
 export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description' | 'laps'>;
 
 export interface ContestMethods {
-    create: () => Promise<void>;
+    create: () => Promise<number>;
+    delete: (id: number) => Promise<void>;
+    start: (id: number, timestamp: number) => Promise<void>;
+    close: (id: number, timestamp: number) => Promise<void>;
     get: () => Promise<ContestData[]>;
     changeSettings: (data: ContestFormData) => Promise<void>;
+    getStartedContests: () => Promise<ContestData[]>;
 }
 
 export const getContestMethods = (database: Database): ContestMethods => ({
@@ -19,15 +23,44 @@ export const getContestMethods = (database: Database): ContestMethods => ({
             finished_flag,
             start_time,
             finish_time
-        ) values (?, ?, ?, ?, ?, ?)`;
+        ) values (?, ?, ?, ?, ?, ?, ?)`;
 
         return new Promise((resolve, reject) => {
-            database.run(sql, ['Новое мероприятие', '', 1, 0, 0, 0, 0], (err: Error) => {
-                if (err) {
-                    throw Error(err.message);
-                    reject();
-                }
+            const stmt: Statement = database.prepare(sql);
+            stmt.run(['Новое мероприятие', '', 1, 0, 0, 0, 0],function(err: Error) {
+                if (err) reject(err)
+                resolve(this.lastID);
+            });
+        });
+    },
+    delete(id) {
+        const sql = `delete from contests where id = (?)`
 
+        return new Promise((resolve, reject) => {
+            database.run(sql, id, (err: Error) => {
+                if (err) reject(err);
+                resolve();
+            })
+        });
+    },
+    start(id, timestamp) {
+        const sql = `update contests set started_flag = (?), start_time = (?) where id = (?)`;
+        const startedFlag = 1;
+
+        return new Promise((resolve, reject) => {
+            database.run(sql, [startedFlag, timestamp, id], (err: Error) => {
+                if (err) reject(err);
+                resolve();
+            });
+        });
+    },
+    close(id, timestamp) {
+        const sql = `update contests set finished_flag = (?), finish_time = (?) where id = (?)`;
+        const finishedFlag = 1;
+
+        return new Promise((resolve, reject) => {
+            database.run(sql, [finishedFlag, timestamp, id], (err: Error) => {
+                if (err) reject(err);
                 resolve();
             });
         });
@@ -51,10 +84,19 @@ export const getContestMethods = (database: Database): ContestMethods => ({
                 description,
                 laps,
                 id
-            ], (err: any) => {
+            ], (err: Error) => {
                 if (err) reject(err);
                 resolve();
             });
         });
     },
+    getStartedContests() {
+        const sql = `select * from contests where started_flag = 1 and finished_flag = 0`;
+        return new Promise((resolve, reject) => {
+            database.all(sql, [], (err, rows) => {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+    }
 })

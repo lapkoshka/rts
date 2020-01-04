@@ -1,3 +1,4 @@
+import { getTimestamp } from '../../common/helpers';
 import { RFIDTag } from './readers/base-reader';
 
 export class RSSITracePoint {
@@ -6,6 +7,6 @@ export class RSSITracePoint {
 
     constructor(tag: RFIDTag) {
         this.tag = tag;
-        this.timestamp = new Date().valueOf();
+        this.timestamp = getTimestamp();
     }
 }

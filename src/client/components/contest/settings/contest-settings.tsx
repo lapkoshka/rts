@@ -27,6 +27,7 @@ interface ContestSettingsProps {
 interface ContestSettingsActions {
     onClose: () => void;
     onContestSettingsChange: (data: ContestFormData) => void;
+    onContestDelete: (id: number) => void;
 }
 
 const selectFormDataFromProps = (contest: ContestData): ContestFormData => ({
@@ -37,12 +38,8 @@ const selectFormDataFromProps = (contest: ContestData): ContestFormData => ({
 });
 
 export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> = (props) => {
-    const { isOpen, onClose, onContestSettingsChange } = props;
+    const { isOpen, onClose, onContestSettingsChange, onContestDelete } = props;
     const [formData, setFormData] = useState(selectFormDataFromProps(props.contest));
-
-    useEffect(() => {
-        setFormData(selectFormDataFromProps(props.contest))
-    }, [props.contest]);
 
     const handleNameChange = useCallback(
             (evt: FormEvent<HTMLInputElement>) => {
@@ -86,6 +83,31 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
         [onContestSettingsChange, formData, onClose],
     );
 
+    const handleDelete = useCallback(
+        () => {
+            onContestDelete(props.contest.id)
+        },
+        [onContestDelete, props.contest]
+    )
+
+    // const keyUpHandler = useCallback((evt: KeyboardEvent) => {
+    //         if (evt.keyCode === KEYCODES.ENTER) {
+    //             // todo: баг, если не убрать фокус с выбранного поля, то formdata не обновится
+    //             // потому что она обновляется по onChange поля
+    //             handleSubmit();
+    //         }
+    //     },
+    //     [],
+    // );
+
+    useEffect(() => {
+        setFormData(selectFormDataFromProps(props.contest));
+        // document.addEventListener('keyup', keyUpHandler);
+
+        // return () => document.removeEventListener('keyup', keyUpHandler);
+
+    }, [props.contest]);
+
     return (
         <Overlay
             isOpen={isOpen}
@@ -96,6 +118,7 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
                     <Label>
                         Название
                         <InputGroup
+                            autoFocus
                             onChange={handleNameChange}
                             value={formData.name}
                         />
@@ -120,6 +143,10 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
                     <Button
                         onClick={handleSubmit}>
                         Сохранить
+                    </Button>
+                    <Button
+                        onClick={handleDelete}>
+                        Удалить
                     </Button>
                 </div>
             </div>
