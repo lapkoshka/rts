@@ -20,19 +20,6 @@ const openDatabase = (): Database => {
 };
 
 const prepareDatabase = async (db: Database): Promise<void> => {
-await db.run(`create table if not exists users(
-uid not null unique,
-firstname text,
-lastname text,
-thirdname text,
-email text,
-phone text,
-about text,
-number integer,
-dob integer,
-city text,
-bike text
-);`);
 
 await db.run(`create table if not exists race(
 id integer primary key autoincrement,
@@ -53,17 +40,17 @@ event text
             start_time unsigned integer,
             finish_time unsigned integer)`);
 
-    // await db.run(`create table if not exists users(
-    //     id integer primary key autoincrement,
-    //     firstname text,
-    //     lastname text,
-    //     thirdname text,
-    //     email text,
-    //     phone text,
-    //     about text,
-    //     number integer,
-    //     city text,
-    //     bike text)`);
+    await db.run(`create table if not exists users(
+        id integer primary key autoincrement,
+        firstname text,
+        lastname text,
+        thirdname text,
+        email text,
+        phone text,
+        about text,
+        number integer,
+        city text,
+        bike text)`);
 
     await db.run(`create table if not exists races(
         id integer primary key autoincrement,
@@ -95,6 +82,16 @@ event text
         constraint fk_user_id
             foreign key (user_id)
             references users(id));`);
+
+    await db.run(`create table if not exists user_contest(
+        user_id integer,
+        contest_id integer,
+        constraint fk_user_id
+            foreign key (user_id)
+            references users(id),
+        constraint fk_contest_id
+            foreign key (contest_id)
+            references contests(id))`);
 };
 
 /**

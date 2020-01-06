@@ -32,6 +32,8 @@ export enum IPC_RACE {
 export enum IPC_REGISTRATION {
     CANCEL = 'ipc/registration/cancel',
     SUBMIT = 'ipc/registration/submit',
+    UPDATE_USER_TAG = 'ipc/registration/update_user_tag',
+    DEATTACH_TAG = 'ipc/registration/deattach_tag',
 }
 
 export enum IPC_RESULTS {

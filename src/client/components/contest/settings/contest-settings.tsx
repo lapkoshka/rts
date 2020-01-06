@@ -4,7 +4,6 @@ import {
     Intent,
     Label,
     NumericInput,
-    Overlay,
     TextArea,
 } from '@blueprintjs/core';
 import React, {
@@ -17,6 +16,7 @@ import React, {
 } from 'react';
 import { ContestFormData } from '../../../../server/modules/database/tables/contests';
 import { ContestData } from '../../../../server/view-data/contests/contests';
+import { OverlayPopup } from '../../ui/overlay-popup/overlay-popup';
 import styles from './contest-settings.module.css';
 
 interface ContestSettingsProps {
@@ -112,47 +112,44 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
     );
 
     return (
-        <Overlay
+        <OverlayPopup
+            title='Параметры соревнования'
             isOpen={isOpen}
             onClose={onClose}
         >
-            <div className={styles.overlay}>
-                <div className={styles.popup}>
-                    <Label>
-                        Название
-                        <InputGroup
-                            autoFocus
-                            onChange={handleNameChange}
-                            value={formData.name}
-                        />
-                    </Label>
-                    <Label>
-                        Описание
-                        <TextArea
-                            className={styles.description}
-                            growVertically={true}
-                            intent={Intent.PRIMARY}
-                            onChange={handleDescriptionChange}
-                            value={formData.description}
-                        />
-                    </Label>
-                    <Label>
-                        Количество кругов
-                        <NumericInput
-                            onValueChange={handleLapsChange}
-                            value={formData.laps}
-                        />
-                    </Label>
-                    <Button
-                        onClick={handleSubmit}>
-                        Сохранить
-                    </Button>
-                    <Button
-                        onClick={handleDelete}>
-                        Удалить
-                    </Button>
-                </div>
-            </div>
-        </Overlay>
+            <Label>
+                Название
+                <InputGroup
+                    autoFocus
+                    onChange={handleNameChange}
+                    value={formData.name}
+                />
+            </Label>
+            <Label>
+                Описание
+                <TextArea
+                    className={styles.description}
+                    growVertically={true}
+                    intent={Intent.PRIMARY}
+                    onChange={handleDescriptionChange}
+                    value={formData.description}
+                />
+            </Label>
+            <Label>
+                Количество кругов
+                <NumericInput
+                    onValueChange={handleLapsChange}
+                    value={formData.laps}
+                />
+            </Label>
+            <Button
+                onClick={handleSubmit}>
+                Сохранить
+            </Button>
+            <Button
+                onClick={handleDelete}>
+                Удалить
+            </Button>
+        </OverlayPopup>
     );
 };

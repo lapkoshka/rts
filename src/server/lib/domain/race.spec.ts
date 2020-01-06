@@ -7,6 +7,7 @@ jest.setTimeout(20000);
 
 describe('race', () => {
     const fakeUser: UserData = {
+        id: undefined,
         uid: '123',
         firstname: '',
         lastname: '',

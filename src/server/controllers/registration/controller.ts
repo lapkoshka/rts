@@ -1,14 +1,12 @@
 
 import { IPC_REGISTRATION } from '../../ipc/ipc-events';
-import { insertUser, updateUser, UserData } from '../../modules/database/tables/users';
+import { dbMorda } from '../../modules/database/database';
+import { UserData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
-import { updateRaceHistory } from '../results/history';
-import { updateTotalInfo } from '../results/total';
-import { updateUsers } from '../results/users';
 
-const submitNewUser = (user: UserData): Promise<string> =>
-    (user.alreadyRegistred ? updateUser : insertUser)(user);
+const submitNewUser = (user: UserData): Promise<void> =>
+    (user.alreadyRegistred ? dbMorda.users.updateUser : dbMorda.users.insertUser)(user);
 
 export const initRegistrationController = () => {
     rootDispatcher.addPageListener(IPC_REGISTRATION.CANCEL, () => {
@@ -16,16 +14,23 @@ export const initRegistrationController = () => {
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, user: UserData) => {
-        submitNewUser(user).then(() => {
-            updateRaceHistory();
-            updateTotalInfo();
-            updateUsers();
-        })
-            .catch((err: string) => {
-                throw Error(err);
-            });
+        submitNewUser(user)
+            .then(() => {
+                // todo: обновление таблиц после обновления пользователей?
+            })
+            .catch(console.error);
 
         portableReader.continue();
+    });
+
+    rootDispatcher.addPageListener(IPC_REGISTRATION.UPDATE_USER_TAG, (_, user: UserData) => {
+       dbMorda.users.addTagForUser(user)
+           .catch(console.error);
+    });
+
+    rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
+       dbMorda.users.deleteTag(uid)
+           .catch(console.error);
     });
 };
 

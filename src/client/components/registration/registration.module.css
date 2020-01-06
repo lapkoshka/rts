@@ -1,0 +1,10 @@
+.already-registred-alert {
+    margin: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.submit {
+    margin-right: 8px;
+}
