@@ -1,9 +1,10 @@
 import { Action } from './index';
 import { UserData } from '../../server/modules/database/tables/users';
 
-type RegistrationStore = Action<UserData | UserData[]>;
+type RegistrationStore = Action<UserData | UserData[] | string>;
 
 export interface RegistrationState {
+    incomingUid: string;
     shouldShowPopup: boolean;
     user: UserData;
     userList: UserData[];
@@ -18,8 +19,9 @@ export const closeRegistrationPopup = () => ({
     type: CLOSE_REGISTRATION_POPUP,
 });
 
-export const openRegistrationPopup = () => ({
+export const openRegistrationPopup = (payload: string) => ({
     type: OPEN_REGISTRATION_POPUP,
+    payload,
 });
 
 export const setRegistrationUser = (payload: UserData) => ({
@@ -34,14 +36,9 @@ export const setUserList = (payload: UserData[]) => ({
 
 const initialState: RegistrationState = {
     shouldShowPopup: false,
-    user: {
-        id: undefined,
-        uid: '',
-        firstname: '',
-        lastname: '',
-        alreadyRegistred: false,
-    },
+    user: null,
     userList: [],
+    incomingUid: '',
 };
 
 export const registrationReducer = (state = initialState, action: RegistrationStore) => {
@@ -50,11 +47,14 @@ export const registrationReducer = (state = initialState, action: RegistrationSt
             return {
                 ...state,
                 shouldShowPopup: false,
+                incomingUid: '',
+                user: null,
             };
         case OPEN_REGISTRATION_POPUP:
             return {
                 ...state,
                 shouldShowPopup: true,
+                incomingUid: action.payload as string,
             };
         case SET_REGISTRATION_USER:
             return {

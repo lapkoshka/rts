@@ -1,9 +1,12 @@
-import { Button, Divider, Intent, Label, Switch, Tag } from '@blueprintjs/core';
+import { Button, Divider, Intent, Label, Tag } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import React, { FC, FormEvent, useCallback, useEffect, useState } from 'react';
-import { UserData } from '../../../server/modules/database/tables/users';
+import React, { FC, FormEvent, useCallback, useEffect } from 'react';
+import { Nullable } from '../../../common/types';
+import { UserData, UserFormData } from '../../../server/modules/database/tables/users';
+import { ContestData } from '../../../server/view-data/contests/contests';
 import { KEYCODES } from '../../lib/keycodes';
 import { OverlayPopup } from '../ui/overlay-popup/overlay-popup';
+import { ContestAttach } from './contest-attach/contest-attach';
 import { UserSelect } from './user-select/user-select';
 import styles from './registration.module.css';
 
@@ -11,48 +14,58 @@ export interface RegistrationProps {
     shouldShowPopup: boolean;
     user: UserData;
     userList: UserData[];
+    incomingUid: string;
+    currentContest: Nullable<ContestData>;
 }
 
 export interface RegistrationActions {
     onCancelRegistration: VoidFunction;
-    submitUser: (user: UserData) => void;
-    updateUserTag: (user: UserData) => void;
+    submitUser: (formData: UserFormData) => void;
+    attachUser: (formData: UserFormData) => void;
     onDeattachTag: (uid: string) => void;
+    onDeattachContest: (userId: number, contestId: number) => void;
 }
 
-const contestName = 'TEST';
+const isUserAttach = (formData: UserFormData): boolean => formData.attachUserId !== undefined;
 
 export const Registration: FC<RegistrationProps & RegistrationActions> = (props) => {
-    const { user, userList, shouldShowPopup, onCancelRegistration } = props;
-    const formData = { ...user };
-    const [isInputsEnabled, setInputsEnabled] = useState(true);
+    const { user, userList, incomingUid, currentContest } = props;
+    const formData: UserFormData = {
+        ...user,
+        firstname: user ? user.firstname : '',
+        lastname: user ? user.lastname : '',
+        uid: incomingUid,
+        contests: user ? user.contests : [],
+        constestId: currentContest ? currentContest.id : undefined, // если активный контесть есть, то привязка на него
+        alreadyRegistred: Boolean(user),
+    };
+
+    const handleContestAttachChange = useCallback(
+        (id: number | undefined) => {
+            formData.constestId = id;
+        },
+        [formData],
+    );
 
     const handleUserSelect = useCallback(
         (id: number | undefined) => {
-            formData.id = id;
-
-            if (id === undefined) {
-                setInputsEnabled(true);
-                return;
-            }
-
-            setInputsEnabled(false);
+            formData.attachUserId = id;
+            // todo:
+            // заблокировать поля, но через state это делать нельзя, потому что formData перезатрётся
+            // setInputsEnabled(id === undefined);
         },
-        [formData, setInputsEnabled]
+        [formData]
     );
 
     const handleSubmit = useCallback(
         () => {
-            console.log(1);
-            const isNewTag = !formData.alreadyRegistred;
-            const isNewTagWithExistedUser = isNewTag && formData.id !== undefined;
-
-            if (isNewTagWithExistedUser) {
-                props.updateUserTag(formData);
+            if (isUserAttach(formData)) {
+                props.attachUser(formData);
                 return;
             }
 
             props.submitUser(formData);
+            // console.log(formData);
         },
         [props, formData]
     );
@@ -68,39 +81,35 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         [props, handleSubmit],
     );
 
+    const handleInput = useCallback(
+        (evt: FormEvent<HTMLInputElement>) => {
+            const fieldType = evt.currentTarget.name as 'firstname' | 'lastname';
+
+            formData[fieldType] = evt.currentTarget.value;
+        },
+        [formData]
+    );
+
+    const handleDeattachTag = useCallback(
+        () => {
+            props.onDeattachTag(incomingUid);
+        },
+        [props, incomingUid]
+    );
+
     useEffect(
         () => {
             document.addEventListener('keyup', keyUpHandler);
 
             return () => document.removeEventListener('keyup', keyUpHandler);
         },
-        [keyUpHandler]
-    );
-
-    const handleInput = useCallback(
-        (evt: FormEvent<HTMLInputElement>) => {
-            const fieldType = evt.currentTarget.name;
-            formData[fieldType] = evt.currentTarget.value;
-        },
-        [formData]
-    );
-    const handleSwitchChange = useCallback(
-        (evt: FormEvent<HTMLInputElement>) => {
-        },
-        [],
-    );
-
-    const handleDeattachTag = useCallback(
-        () => {
-            props.onDeattachTag(user.uid);
-        },
-        [props, user.uid]
+        [currentContest, keyUpHandler]
     );
 
     return (
         <OverlayPopup
-            isOpen={shouldShowPopup}
-            onClose={onCancelRegistration}
+            isOpen={props.shouldShowPopup}
+            onClose={props.onCancelRegistration}
             title='Регистрация нового участника'
         >
             <Tag
@@ -108,7 +117,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 fill
                 large
             >
-                {user.uid}
+                {incomingUid}
             </Tag>
 
             <Divider />
@@ -116,7 +125,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 <Label>
                     Имя
                     <input
-                        disabled={!isInputsEnabled}
                         autoFocus
                         className='bp3-input'
                         type='text'
@@ -130,7 +138,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 <Label>
                     Фамилия
                     <input
-                        disabled={!isInputsEnabled}
                         className='bp3-input'
                         type='text'
                         placeholder='Имя'
@@ -140,23 +147,24 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                         defaultValue={formData.lastname}
                     />
                 </Label>
-                <Switch
-                    checked={false}
-                    disabled={true}
-                    label={`Привязать к текущему мероприятию: ${contestName}`}
-                    onChange={handleSwitchChange}
+
+                <ContestAttach
+                    user={formData}
+                    currentContest={currentContest}
+                    onAttachChange={handleContestAttachChange}
+                    onDeattachContest={props.onDeattachContest}
                 />
 
                 <Divider />
                 {
-                    user.alreadyRegistred ? (
+                    formData.alreadyRegistred ? (
                         <div className={styles['already-registred-alert']}>
                             <strong>Метка уже связана с пользователем</strong>
                             <Button
                                 onClick={handleDeattachTag}
                                 intent={Intent.WARNING}
                             >
-                                Разорвать связь?
+                                Отвязать
                             </Button>
                         </div>
                     ) : (
@@ -166,10 +174,9 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                         />
                     )
                 }
-                <Divider />
 
                 <Button className={styles.submit} onClick={handleSubmit}>Ок</Button>
-                <Button onClick={onCancelRegistration}>Отмена</Button>
+                <Button onClick={props.onCancelRegistration}>Отмена</Button>
             </form>
         </OverlayPopup>
     );

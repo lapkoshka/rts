@@ -20,6 +20,7 @@ const openDatabase = (): Database => {
 };
 
 const prepareDatabase = async (db: Database): Promise<void> => {
+    try {
 
 await db.run(`create table if not exists race(
 id integer primary key autoincrement,
@@ -29,69 +30,71 @@ time integer,
 date integer,
 event text
 );`);
+        await db.run(`create table if not exists contests(
+                id integer primary key autoincrement,
+                name text,
+                description text,
+                laps unsigned integer,
+                started_flag unsigned integer,
+                finished_flag unsigned integer,
+                start_time unsigned integer,
+                finish_time unsigned integer)`);
 
-    await db.run(`create table if not exists contests(
+        await db.run(`create table if not exists users(
             id integer primary key autoincrement,
-            name text,
-            description text,
-            laps unsigned integer,
-            started_flag unsigned integer,
-            finished_flag unsigned integer,
-            start_time unsigned integer,
-            finish_time unsigned integer)`);
+            firstname text,
+            lastname text,
+            thirdname text,
+            email text,
+            phone text,
+            about text,
+            number integer,
+            city text,
+            bike text)`);
 
-    await db.run(`create table if not exists users(
-        id integer primary key autoincrement,
-        firstname text,
-        lastname text,
-        thirdname text,
-        email text,
-        phone text,
-        about text,
-        number integer,
-        city text,
-        bike text)`);
+        await db.run(`create table if not exists races(
+            id integer primary key autoincrement,
+            user_id unsigned integer,
+            contest_id unsigned integer,
+            timestamp datetime default current_timestamp,
+            time unsigned integer,
+    
+            constraint fk_user_id
+                foreign key (user_id)
+                references users(id),
+            constraint fk_contest_id
+                foreign key (contest_id)
+                references contest(id))`);
 
-    await db.run(`create table if not exists races(
-        id integer primary key autoincrement,
-        user_id unsigned integer,
-        contest_id unsigned integer,
-        timestamp datetime default current_timestamp,
-        time unsigned integer,
+        await db.run(`create table if not exists laps(
+            id integer primary key autoincrement,
+            number unsigned integer,
+            race_id unsigned integer,
+            time unsigned integer,
+            created_at datetime default current_timestamp,
+            constraint fk_race_id
+                foreign key (race_id)
+                references races(id))`);
 
-        constraint fk_user_id
-            foreign key (user_id)
-            references users(id),
-        constraint fk_contest_id
-            foreign key (contest_id)
-            references contest(id))`);
+        await db.run(`create table if not exists tags(
+            uid text not null unique,
+            user_id unsigned integer,
+            constraint fk_user_id
+                foreign key (user_id)
+                references users(id));`);
 
-    await db.run(`create table if not exists laps(
-        id integer primary key autoincrement,
-        number unsigned integer,
-        race_id unsigned integer,
-        time unsigned integer,
-        created_at datetime default current_timestamp,
-        constraint fk_race_id
-            foreign key (race_id)
-            references races(id))`);
-
-    await db.run(`create table if not exists tags(
-        uid text not null,
-        user_id unsigned integer,
-        constraint fk_user_id
-            foreign key (user_id)
-            references users(id));`);
-
-    await db.run(`create table if not exists user_contest(
-        user_id integer,
-        contest_id integer,
-        constraint fk_user_id
-            foreign key (user_id)
-            references users(id),
-        constraint fk_contest_id
-            foreign key (contest_id)
-            references contests(id))`);
+        await db.run(`create table if not exists user_contest(
+            user_id integer,
+            contest_id integer,
+            constraint fk_user_id
+                foreign key (user_id)
+                references users(id),
+            constraint fk_contest_id
+                foreign key (contest_id)
+                references contests(id))`);
+    } catch (e) {
+        throw Error(e.message);
+    }
 };
 
 /**

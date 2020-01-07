@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Ipc } from '../../../common/ipc';
-import { PortableReaderTagData } from '../../../server/controllers/portable-reader/controller';
+import { PortableReaderRegistrationData } from '../../../server/controllers/portable-reader/controller';
 import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
-import { UserData } from '../../../server/modules/database/tables/users';
+import { UserFormData } from '../../../server/modules/database/tables/users';
 import { RootState, store } from '../../store';
 import {
     closeRegistrationPopup,
@@ -11,12 +11,15 @@ import {
     setRegistrationUser,
     setUserList,
 } from '../../store/registration-store';
+import { selectCurrentContest } from '../contest/selectors';
 import { Registration, RegistrationActions, RegistrationProps } from './registration';
 
 const mapStateToProps = (state: RootState): RegistrationProps => ({
     shouldShowPopup: state.registration.shouldShowPopup,
     user: state.registration.user,
     userList: state.registration.userList,
+    incomingUid: state.registration.incomingUid,
+    currentContest: selectCurrentContest(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
@@ -24,25 +27,29 @@ const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
         Ipc.send(IPC_REGISTRATION.CANCEL);
         dispatch(closeRegistrationPopup());
     },
-    submitUser: (user: UserData) => {
-        Ipc.send(IPC_REGISTRATION.SUBMIT, user);
+    submitUser: (formData: UserFormData) => {
+        Ipc.send(IPC_REGISTRATION.SUBMIT, formData);
         dispatch(closeRegistrationPopup());
     },
-    updateUserTag: (user: UserData) => {
-        Ipc.send(IPC_REGISTRATION.UPDATE_USER_TAG, user);
+    attachUser: (formData: UserFormData) => {
+        Ipc.send(IPC_REGISTRATION.USER_ATTACH, formData);
         dispatch(closeRegistrationPopup());
     },
     onDeattachTag: (uid: string) => {
         Ipc.send(IPC_REGISTRATION.DEATTACH_TAG, uid);
         dispatch(closeRegistrationPopup());
     },
+    onDeattachContest: (userId: number, contestId: number) => {
+        Ipc.send(IPC_REGISTRATION.DEATTACH_CONTEST, { userId, contestId });
+        dispatch(closeRegistrationPopup());
+    },
 });
 
 const { dispatch } = store;
-Ipc.on<PortableReaderTagData>(IPC_PORTABLE_READER.TAG, (data) => {
-    dispatch(setRegistrationUser(data.newUser));
+Ipc.on<PortableReaderRegistrationData>(IPC_PORTABLE_READER.TAG, (data) => {
+    dispatch(setRegistrationUser(data.user));
     dispatch(setUserList(data.allUsers));
-    dispatch(openRegistrationPopup());
+    dispatch(openRegistrationPopup(data.uid));
 });
 
 export const RegistrationContainer = connect(mapStateToProps, mapDispatchToProps)(Registration);

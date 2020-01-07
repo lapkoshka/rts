@@ -11,7 +11,7 @@ describe('race', () => {
         uid: '123',
         firstname: '',
         lastname: '',
-        alreadyRegistred: true,
+        contests: [],
     };
 
     it('should dispatch START', (done) => {

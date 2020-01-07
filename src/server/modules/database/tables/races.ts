@@ -17,53 +17,53 @@ export interface UserRacesData {
 }
 
 export const getRaces = (): Promise<RaceData[]> => {
-    const query = `
-        select
-        r.id as "id",
-        r.timestamp as "timestamp",
-        u.firstname as "firstname",
-        u.lastname as "lastname",
-        r.time as "time"
-        from race r
-        join users u
-        on r.uid = u.uid
-        order by id desc
-        limit 40
-        `;
+    // const query = `
+    //     select
+    //     r.id as "id",
+    //     r.timestamp as "timestamp",
+    //     u.firstname as "firstname",
+    //     u.lastname as "lastname",
+    //     r.time as "time"
+    //     from race r
+    //     join users u
+    //     on r.uid = u.uid
+    //     order by id desc
+    //     limit 40
+    //     `;
 
     return new Promise((resolve, reject) => {
-        database.all(query, (err: any, rows: any) => {
-            if (err) {
-                reject(err);
-            }
+        // database.all(query, (err: any, rows: any) => {
+        //     if (err) {
+        //         reject(err);
+        //     }
 
-            resolve(rows);
-        });
+            resolve([]);
+        // });
     });
 };
 
 export const getTotalUserRaces = (): Promise<UserRacesData[]> => {
-    const query = `
-        select u.uid as "uid",
-        u.firstname as "firstname",
-        u.lastname as "lastname",
-        count(r.uid) as "count",
-        min(r.time) as "besttime"
-        from race r
-        join users u
-        on r.uid = u.uid
-        group by r.uid
-        order by besttime asc
-    `;
+    // const query = `
+    //     select u.uid as "uid",
+    //     u.firstname as "firstname",
+    //     u.lastname as "lastname",
+    //     count(r.uid) as "count",
+    //     min(r.time) as "besttime"
+    //     from race r
+    //     join users u
+    //     on r.uid = u.uid
+    //     group by r.uid
+    //     order by besttime asc
+    // `;
 
     return new Promise((resolve, reject) => {
-        database.all(query, (err: any, rows: any) => {
-            if (err) {
-                reject(err);
-            }
+        // database.all(query, (err: any, rows: any) => {
+        //     if (err) {
+        //         reject(err);
+        //     }
 
-            resolve(rows);
-        });
+            resolve([]);
+        // });
     });
 };
 
