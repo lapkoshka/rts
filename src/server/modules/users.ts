@@ -1,5 +1,6 @@
 import { RFIDTag } from '../lib/readers/base-reader';
-import { getUsers, UserData } from './database/tables/users';
+import { dbMorda } from './database/database';
+import { UserData } from './database/tables/users';
 
 const usersMapCache = new Map();
 const getUsersMap = (users: UserData[]) => {
@@ -17,6 +18,6 @@ const getUsersMap = (users: UserData[]) => {
 };
 
 export const getUserByTag = async (tag: RFIDTag): Promise<UserData> => {
-    const users = await getUsers();
+    const users = await dbMorda.users.getUsers();
     return getUsersMap(users).get(tag.uid);
 };

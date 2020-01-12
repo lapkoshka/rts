@@ -1,8 +1,16 @@
+import { Nullable } from '../../../common/types';
 import { IPC_PORTABLE_READER } from '../../ipc/ipc-events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { getUser, UserData } from '../../modules/database/tables/users';
+import { dbMorda } from '../../modules/database/database';
+import { UserData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
+
+export interface PortableReaderRegistrationData {
+    uid: string;
+    user: Nullable<UserData>;
+    allUsers: UserData[];
+}
 
 export const initPortableReaderController = () => {
     portableReader.on(READER_EVENT.CONNECTING_START, () => {
@@ -24,11 +32,11 @@ export const initPortableReaderController = () => {
     });
 
     portableReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
-        getUser(tag.uid).then((user: UserData) => {
-            rootDispatcher.sendEvent(IPC_PORTABLE_READER.TAG, user);
-        }).catch((err: Error) => {
-            throw err;
-        });
+        rootDispatcher.sendEvent(IPC_PORTABLE_READER.TAG, {
+            uid: tag.uid,
+            user: await dbMorda.users.getUser(tag.uid),
+            allUsers: await dbMorda.users.getUsers(),
+        } as PortableReaderRegistrationData);
     });
 };
 

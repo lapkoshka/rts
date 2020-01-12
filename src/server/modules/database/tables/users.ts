@@ -1,168 +1,148 @@
-// import { Database } from 'sqlite3';
-import { databaseCache } from '../cache';
-import { dbMorda } from '../database';
-
-const database = dbMorda.database;
+import { Database, Statement } from 'sqlite3';
+import { Nullable } from '../../../../common/types';
 
 export interface UserData {
     uid: string;
+    id: number;
     firstname: string;
     lastname: string;
-    alreadyRegistred: boolean;
+    contest_id: Nullable<number>;
 }
 
-// export interface UserMethods {
-//     get: (uid: string) => void;
-// }
+export interface UserFormData extends UserData {
+    alreadyRegistred: boolean;
+    attachUserId?: number;
+    attachContestId?: number;
+}
 
-// export const getUserMethods = (database: Database): UserMethods => {
-//     return {
-//         // getUser
-//
-//             // select u.uid as "uid",
-//             // u.firstname as "firstname",
-//             // u.lastname as "lastname",
-//             // count(r.uid) as "count",
-//             // min(r.time) as "besttime"
-//             // from race r
-//             // join users u
-//             // on r.uid = u.uid
-//             // group by r.uid
-//             // order by besttime asc
-//
-//         get(uid: string) {
-//         //     const query = `select user_id from tags where uid = (?)`;
-//         //     const user: UserData = {
-//         //         firstname: '',
-//         //         lastname: '',
-//         //         uid,
-//         //         alreadyRegistred: false,
-//         //     };
-//         //
-//         //     return new Promise((resolve, reject) => {
-//         //         database.get(query, [uid], (err, row) => {
-//         //             if (err) {
-//         //                 reject(err);
-//         //             }
-//         //
-//         //             if (!row) {
-//         //                 resolve(user);
-//         //                 return;
-//         //             }
-//         //
-//         //             user.alreadyRegistred = true;
-//         //             resolve(Object.assign(user, row));
-//         //         });
-//         //     });
-//         // }
-//     }
-// }
+export interface UserMethods {
+    getUser: (uid: string) => Promise<Nullable<UserData>>;
+    getUsers: () => Promise<UserData[]>;
+    updateUser: (user: UserData) => Promise<number>;
+    insertUser: (user: UserData) => Promise<number>;
+    addTagForUser: (user: UserFormData) => Promise<void>;
+    deleteTag: (uid: string) => Promise<void>;
+    attachTagToContest: (uid: string, contestId: number) => Promise<void>;
+    deattachContest: (uid: string, contestId: number) => Promise<void>;
+}
 
-export const getUser = async (uid: string): Promise<UserData> => {
-    const query = `select * from users where uid = (?)`;
-    const user: UserData = {
-        firstname: '',
-        lastname: '',
-        uid,
-        alreadyRegistred: false,
-    };
+export const getUserMethods = (database: Database): UserMethods => ({
+    getUser(uid) {
+        const sql = `select tags.uid, users.*, tag_contest.contest_id from tags
+            join users on tags.user_id = users.id and tags.uid = (?)
+            left join tag_contest on tags.uid = tag_contest.tag_uid;`;
 
-    return new Promise((resolve, reject) => {
-        database.get(query, [uid], (err, row) => {
-            if (err) {
-                reject(err);
-            }
+        return new Promise((resolve, reject) => {
+            database.get(sql, [uid], (err, row) => {
+                if (err) reject(err);
 
-            if (!row) {
-                resolve(user);
-                return;
-            }
+                if (!row) {
+                    resolve(null);
+                    return;
+                }
 
-            user.alreadyRegistred = true;
-            resolve(Object.assign(user, row));
+                resolve(row);
+            });
         });
-    });
-};
+    },
+    getUsers() {
+        const sql = 'select * from users';
 
-export const getUsers = async (): Promise<UserData[]> => {
-    const query = 'select * from users';
-    const cache = databaseCache[query];
-    if (cache) {
-        return Promise.resolve(cache);
+        return new Promise((resolve, reject) => {
+            database.all(sql, (err: Error, rows: UserData[]) => {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+    },
+    updateUser(user) {
+        const { id, firstname, lastname} = user;
+        const sql = `update users set firstname = (?), lastname = (?) where id = (?)`;
+
+        return new Promise((resolve, reject) => {
+            database.run(sql, [firstname, lastname, id], (err: Error) => {
+                if (err) reject(err);
+
+                resolve(id);
+            });
+        });
+    },
+    insertUser(user) {
+        const { uid, firstname, lastname } = user;
+
+        return new Promise((resolve, reject) => {
+            let lastId: number;
+            database.serialize(() => {
+                database.run(`begin transaction`);
+
+                const usersInsertStmt: Statement = database.prepare(`insert into users (firstname, lastname) values (?, ?)`);
+                usersInsertStmt.run([firstname, lastname], function() {
+                    lastId = this.lastID;
+                });
+
+                database.run(`insert into tags (uid, user_id) values (?, (SELECT last_insert_rowid()))`, uid);
+                database.run("commit", (err) => {
+                    if (err) reject(err);
+                    resolve(lastId);
+                });
+            });
+        });
+    },
+    addTagForUser(user) {
+        const { attachUserId, uid } = user;
+        const sql = `insert into tags (uid, user_id) values (?, ?)`;
+
+        return new Promise((resolve, reject) => {
+           database.run(sql, [uid, attachUserId], (err: Error) => {
+               if (err) reject(err);
+               resolve();
+           });
+        });
+    },
+    deleteTag(uid) {
+        return new Promise((resolve, reject) => {
+            database.run('begin transaction');
+            database.run('delete from tags where uid = (?)', uid);
+            database.run('delete from tag_contest where tag_uid = (?)', uid);
+            database.run('commit', (err: Error) => {
+               if (err) reject(err);
+               resolve();
+           });
+        });
+    },
+    attachTagToContest(uid, contestId) {
+        const sql = `insert into tag_contest (tag_uid, contest_id) values (?, ?)`;
+
+        return new Promise((resolve, reject) => {
+           database.run(sql, [uid, contestId], (err: Error) => {
+              if (err) reject(err);
+              resolve();
+           });
+        });
+    },
+    deattachContest(uid, contestId) {
+        const sql = `delete from tag_contest where tag_uid = (?) and contest_id = (?)`;
+
+        return new Promise((resolve, reject) => {
+           database.run(sql, [uid, contestId], (err: Error) => {
+              if (err) reject(err);
+              resolve();
+           });
+        });
     }
+});
 
-    return new Promise((resolve, reject) => {
-        database.all(query, (err: any, rows: any) => {
-            if (err) {
-                reject(err);
-            }
-
-            databaseCache[query] = rows;
-            resolve(rows);
-        });
-    });
-};
-
-export const updateUser = (user: UserData): Promise<string> => {
-    const {uid, firstname, lastname} = user;
-    return new Promise((resolve, reject) => {
-        database.run(`
-            update users
-            set
-            firstname = (?),
-            lastname = (?)
-            where uid = (?)
-        `, [
-            firstname,
-            lastname,
-            uid,
-        ], (err: any) => {
-            if (err) {
-                reject(`Something went wrong with user update: ${err.message}`);
-            }
-
-            databaseCache.clear();
-            resolve('User updated');
-        });
-    });
-};
-
-export const insertUser = (user: UserData): Promise<string> => {
-    const {uid, firstname, lastname} = user;
-    return new Promise((resolve, reject) => {
-        database.run(`
-        insert into users(
-            uid,
-            firstname,
-            lastname
-        ) values (?, ?, ?)`, [
-            uid,
-            firstname,
-            lastname,
-        ], (err: any) => {
-
-            const isUserAlreadyExist = err &&
-                err.message === 'SQLITE_CONSTRAINT: UNIQUE constraint failed: users.uid';
-            if (isUserAlreadyExist) {
-                reject(`User with uid ${uid} already exist`);
-            }
-
-            databaseCache.clear();
-            resolve(`A row has been inserted with uid ${uid}`);
-        });
-    });
-};
-
-export const deleteUser = (uid: string): Promise<void> => {
-    const query = `delete from users where uid = (?);`;
-    return new Promise((resolve, reject) => {
-        database.run(query, uid, (err: Error) => {
-            if (err) {
-                reject(err);
-            }
-
-            databaseCache.clear();
-            resolve();
-        });
-    });
-};
+//
+// export const deleteUser = (uid: string): Promise<void> => {
+//     const query = `delete from users where uid = (?);`;
+//     return new Promise((resolve, reject) => {
+//         database.run(query, uid, (err: Error) => {
+//             if (err) {
+//                 reject(err);
+//             }
+//
+//             databaseCache.clear();
+//             resolve();
+//         });
+//     });
+// };
