@@ -42,7 +42,9 @@ export const getUserMethods = (database: Database): UserMethods => ({
         });
     },
     getUsers() {
-        const sql = 'select * from users';
+        const sql = `select tags.uid, users.*, tag_contest.contest_id from tags
+          join users on tags.user_id = users.id
+          left join tag_contest on tags.uid = tag_contest.tag_uid;`;
 
         return new Promise((resolve, reject) => {
             database.all(sql, (err: Error, rows: UserData[]) => {
@@ -85,18 +87,3 @@ export const getUserMethods = (database: Database): UserMethods => ({
         });
     },
 });
-
-//
-// export const deleteUser = (uid: string): Promise<void> => {
-//     const query = `delete from users where uid = (?);`;
-//     return new Promise((resolve, reject) => {
-//         database.run(query, uid, (err: Error) => {
-//             if (err) {
-//                 reject(err);
-//             }
-//
-//             databaseCache.clear();
-//             resolve();
-//         });
-//     });
-// };

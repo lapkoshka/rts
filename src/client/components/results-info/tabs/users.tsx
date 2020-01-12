@@ -1,15 +1,16 @@
 import { Table } from 'antd';
 import React from 'react';
-import { UserRow, Users } from '../../../../server/controllers/results/users';
+import { UserData } from '../../../../server/modules/database/tables/users';
 import { renderDeleteButton } from '../../ui/delete/delete';
 
-export const renderUsers = (users: Users, deleteUser: (uid: string) => void) => {
-    const usersWithKeys = users.map((item: UserRow) => ({
-        ...item,
-        key: item.uid,
+export const renderUsers = (users: UserData[], deleteUser: (uid: string) => void) => {
+    const usersWithKeys = users.map((item: UserData) => ({
+        key: item.id,
+        uid: item.uid,
+        username: item.firstname + ' ' + item.lastname,
     }));
 
-    const deleteTitle = 'Вы уверены что хотите удалить пользователя?';
+    const deleteTitle = 'Вы уверены что хотите удалить пользователя из этого соревнования?';
     return (
         <Table dataSource={usersWithKeys}>
             <Table.Column key='uid' title='Метка' dataIndex='uid'/>

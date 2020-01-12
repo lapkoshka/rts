@@ -101,6 +101,9 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         [keyUpHandler]
     );
 
+    // TODO: BUG
+    const shouldInitiallyChecked = Boolean(currentContest) && !formData.contest_id;
+
     return (
         <OverlayPopup
             isOpen={props.shouldShowPopup}
@@ -143,6 +146,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 </Label>
 
                 <ContestAttach
+                    checked={shouldInitiallyChecked}
                     user={formData}
                     currentContest={currentContest}
                     onAttach={handleContestAttach}

@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { TotalInfo } from '../../../server/controllers/results/total';
-import { Users } from '../../../server/controllers/results/users';
+import { UserData } from '../../../server/modules/database/tables/users';
+import { ContestData } from '../../../server/view-data/contests/contests';
 import { Block } from '../ui/block/block';
 import { renderRaceHistory } from './tabs/history';
 import { renderUsers } from './tabs/users';
@@ -11,13 +12,16 @@ import './results-info.scss';
 
 export interface ResultsInfoProps {
     history: RaceHistory;
-    users: Users;
+    users: UserData[];
     total: TotalInfo;
+    selectedContest: ContestData;
     deleteRace: (id: number) => void;
-    deleteUser: (uid: string) => void;
+    deleteUser: (uid: string, contestId: number) => void;
 }
 
 export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
+    const { deleteUser, selectedContest } = props;
+
     const [tabId, setTabId] = useState('0');
     const onChangeHandler = useCallback(
         (tabId: string) => {
@@ -25,6 +29,20 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
         },
         [],
     );
+
+    const handleUserDelete = useCallback(
+        (uid: string) => {
+                deleteUser(uid, selectedContest.id);
+            },
+        [deleteUser, selectedContest]
+    );
+
+    // TODO: NON IDEAL STATE
+    if (!props.selectedContest) {
+        return (
+            <div>Нихуя нет</div>
+        );
+    }
 
     return (
         <Block>
@@ -43,7 +61,7 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
                     id='1'
                     className='results-info-tab-button'
                     title='Участники'
-                    panel={renderUsers(props.users, props.deleteUser)}
+                    panel={renderUsers(props.users, handleUserDelete)}
                 />
                 <Tab
                     id='2'

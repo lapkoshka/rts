@@ -3,6 +3,7 @@ import { dbMorda } from '../../modules/database/database';
 import { UserFormData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
+import { viewUpdater } from '../../view-data/view-updater';
 
 export interface DeattachContestData {
     uid: string;
@@ -36,7 +37,7 @@ export const initRegistrationController = () => {
             .then(() => {
                 return attachTagToContest(formData);
             })
-            // .then(viewUpdate)
+            .then(viewUpdater.updateAll)
             .catch(console.error);
 
         portableReader.continue();
@@ -44,15 +45,20 @@ export const initRegistrationController = () => {
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.ATTACH_USER, (_, formData: UserFormData) => {
         dbMorda.tagsMethods.addTagForUser(formData)
+            .then(() => {
+                return attachTagToContest(formData);
+            })
+            .then(viewUpdater.updateAll)
             .catch(console.error);
-        attachTagToContest(formData);
+
 
         portableReader.continue();
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
-       dbMorda.tagsMethods.deleteTag(uid)
-           .catch(console.error);
+        dbMorda.tagsMethods.deleteTag(uid)
+            .then(viewUpdater.updateAll)
+            .catch(console.error);
 
        portableReader.continue();
     });
@@ -61,6 +67,7 @@ export const initRegistrationController = () => {
         const { uid, contestId } = data;
 
         dbMorda.tagContest.deattachContest(uid, contestId)
+            .then(viewUpdater.updateAll)
             .catch(console.error);
 
         portableReader.continue();

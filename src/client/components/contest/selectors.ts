@@ -5,15 +5,18 @@ import { RootState } from '../../store';
 const isContestStarted = (contest: ContestData): boolean =>
     contest.started_flag === 1 && contest.finished_flag === 0;
 
-export const selectContest = (list: ContestData[], id: Nullable<number>): ContestData => {
-    if (id === null) {
-        return list[0];
+export const selectContest = (state: RootState): ContestData => {
+    const { selectedContest } = state.contestInfo;
+
+    if (selectedContest === null) {
+        return state.contestInfo.contestList[0];
     }
 
-    const found = list.find((contestData: ContestData) => contestData.id === id);
+    const found = state.contestInfo.contestList.find((contestData: ContestData) =>
+        contestData.id === selectedContest);
 
     if (!found) {
-        return list[0];
+        return state.contestInfo.contestList[0];
     }
 
     return found;

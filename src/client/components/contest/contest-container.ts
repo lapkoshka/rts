@@ -16,7 +16,7 @@ import { selectContest } from './selectors';
 
 const mapStateToProps = (state: RootState): ContestProps => ({
     list: state.contestInfo.contestList,
-    selectedContest: selectContest(state.contestInfo.contestList, state.contestInfo.selectedContest),
+    selectedContest: selectContest(state),
     showContestSettings: state.contestInfo.showContestSettings,
 });
 

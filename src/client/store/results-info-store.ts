@@ -1,13 +1,13 @@
+import { UserData } from '../../server/modules/database/tables/users';
 import { Action } from './index';
 import { RaceHistory } from '../../server/controllers/results/history';
-import { Users } from '../../server/controllers/results/users';
 import { TotalInfo } from '../../server/controllers/results/total';
 
-type ResultsInfoStore = Action<RaceHistory | Users | TotalInfo>;
+type ResultsInfoStore = Action<RaceHistory | UserData[] | TotalInfo>;
 
 export interface ResultsInfoState {
     history: RaceHistory;
-    users: Users;
+    users: UserData[];
     total: TotalInfo;
 }
 
@@ -20,7 +20,7 @@ export const setRaceHistory = (payload: RaceHistory) => ({
     payload,
 });
 
-export const setUsers = (payload: Users) => ({
+export const setUsers = (payload: UserData[]) => ({
     type: SET_USERS,
     payload,
 });
@@ -46,7 +46,7 @@ export const resultsInfoReducer = (state = initialState, action: ResultsInfoStor
         case SET_USERS:
             return {
                 ...state,
-                users: action.payload as Users,
+                users: action.payload as UserData[],
             };
         case SET_TOTAL_INFO:
             return {
