@@ -1,17 +1,23 @@
 import { Database } from 'sqlite3';
 import { createAndPrepareDatabase } from './init';
 import { ContestMethods, getContestMethods } from './tables/contests';
+import { getTagContestMethods, TagContestMethods } from './tables/tag-contest';
+import { getTagsMethods, TagsMethods } from './tables/tags';
 import { UserMethods, getUserMethods } from './tables/users';
 
 class DbMorda {
     public database: Database;
     public contests: ContestMethods;
     public users: UserMethods;
+    public tagContest: TagContestMethods;
+    public tagsMethods: TagsMethods;
 
     constructor() {
         this.database = createAndPrepareDatabase();
         this.contests = getContestMethods(this.database);
         this.users = getUserMethods(this.database);
+        this.tagContest = getTagContestMethods(this.database);
+        this.tagsMethods = getTagsMethods(this.database);
     }
 
     public async closeDatabase(): Promise<void> {

@@ -20,10 +20,6 @@ export interface UserMethods {
     getUsers: () => Promise<UserData[]>;
     updateUser: (user: UserData) => Promise<number>;
     insertUser: (user: UserData) => Promise<number>;
-    addTagForUser: (user: UserFormData) => Promise<void>;
-    deleteTag: (uid: string) => Promise<void>;
-    attachTagToContest: (uid: string, contestId: number) => Promise<void>;
-    deattachContest: (uid: string, contestId: number) => Promise<void>;
 }
 
 export const getUserMethods = (database: Database): UserMethods => ({
@@ -88,48 +84,6 @@ export const getUserMethods = (database: Database): UserMethods => ({
             });
         });
     },
-    addTagForUser(user) {
-        const { attachUserId, uid } = user;
-        const sql = `insert into tags (uid, user_id) values (?, ?)`;
-
-        return new Promise((resolve, reject) => {
-           database.run(sql, [uid, attachUserId], (err: Error) => {
-               if (err) reject(err);
-               resolve();
-           });
-        });
-    },
-    deleteTag(uid) {
-        return new Promise((resolve, reject) => {
-            database.run('begin transaction');
-            database.run('delete from tags where uid = (?)', uid);
-            database.run('delete from tag_contest where tag_uid = (?)', uid);
-            database.run('commit', (err: Error) => {
-               if (err) reject(err);
-               resolve();
-           });
-        });
-    },
-    attachTagToContest(uid, contestId) {
-        const sql = `insert into tag_contest (tag_uid, contest_id) values (?, ?)`;
-
-        return new Promise((resolve, reject) => {
-           database.run(sql, [uid, contestId], (err: Error) => {
-              if (err) reject(err);
-              resolve();
-           });
-        });
-    },
-    deattachContest(uid, contestId) {
-        const sql = `delete from tag_contest where tag_uid = (?) and contest_id = (?)`;
-
-        return new Promise((resolve, reject) => {
-           database.run(sql, [uid, contestId], (err: Error) => {
-              if (err) reject(err);
-              resolve();
-           });
-        });
-    }
 });
 
 //

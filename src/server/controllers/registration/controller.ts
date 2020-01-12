@@ -23,7 +23,7 @@ const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<voi
         return Promise.resolve();
     }
 
-    return dbMorda.users.attachTagToContest(uid, attachContestId);
+    return dbMorda.tagContest.attachTagToContest(uid, attachContestId);
 };
 
 export const initRegistrationController = () => {
@@ -43,7 +43,7 @@ export const initRegistrationController = () => {
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.ATTACH_USER, (_, formData: UserFormData) => {
-        dbMorda.users.addTagForUser(formData)
+        dbMorda.tagsMethods.addTagForUser(formData)
             .catch(console.error);
         attachTagToContest(formData);
 
@@ -51,7 +51,7 @@ export const initRegistrationController = () => {
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
-       dbMorda.users.deleteTag(uid)
+       dbMorda.tagsMethods.deleteTag(uid)
            .catch(console.error);
 
        portableReader.continue();
@@ -60,7 +60,7 @@ export const initRegistrationController = () => {
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_CONTEST, (_, data: DeattachContestData) => {
         const { uid, contestId } = data;
 
-        dbMorda.users.deattachContest(uid, contestId)
+        dbMorda.tagContest.deattachContest(uid, contestId)
             .catch(console.error);
 
         portableReader.continue();
