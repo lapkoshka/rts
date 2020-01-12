@@ -4,8 +4,8 @@ import { UserFormData } from '../../modules/database/tables/users';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 
-interface DeattachContestData {
-    userId: number;
+export interface DeattachContestData {
+    uid: string;
     contestId: number;
 }
 
@@ -17,13 +17,13 @@ const submitNewUser = (user: UserFormData): Promise<number> => {
     return dbMorda.users.insertUser(user);
 };
 
-const attachUserToContest = (userId: number, contestId?: number): Promise<void> => {
-    const shouldAttachToContest = contestId !== undefined;
+const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<void> => {
+    const shouldAttachToContest = attachContestId !== undefined;
     if (!shouldAttachToContest) {
         return Promise.resolve();
     }
 
-    return dbMorda.users.attachUserToContest(userId, contestId);
+    return dbMorda.users.attachTagToContest(uid, attachContestId);
 };
 
 export const initRegistrationController = () => {
@@ -33,8 +33,8 @@ export const initRegistrationController = () => {
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, formData: UserFormData) => {
         submitNewUser(formData)
-            .then((userId: number) => {
-                return attachUserToContest(userId, formData.constestId);
+            .then(() => {
+                return attachTagToContest(formData);
             })
             // .then(viewUpdate)
             .catch(console.error);
@@ -42,10 +42,10 @@ export const initRegistrationController = () => {
         portableReader.continue();
     });
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.USER_ATTACH, (_, formData: UserFormData) => {
+    rootDispatcher.addPageListener(IPC_REGISTRATION.ATTACH_USER, (_, formData: UserFormData) => {
         dbMorda.users.addTagForUser(formData)
             .catch(console.error);
-        attachUserToContest(formData.attachUserId, formData.constestId);
+        attachTagToContest(formData);
 
         portableReader.continue();
     });
@@ -53,13 +53,17 @@ export const initRegistrationController = () => {
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
        dbMorda.users.deleteTag(uid)
            .catch(console.error);
+
+       portableReader.continue();
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_CONTEST, (_, data: DeattachContestData) => {
-        const { userId, contestId } = data;
+        const { uid, contestId } = data;
 
-        dbMorda.users.deattachContest(userId, contestId)
+        dbMorda.users.deattachContest(uid, contestId)
             .catch(console.error);
+
+        portableReader.continue();
     });
 };
 

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Ipc } from '../../../common/ipc';
 import { PortableReaderRegistrationData } from '../../../server/controllers/portable-reader/controller';
+import { DeattachContestData } from '../../../server/controllers/registration/controller';
 import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
 import { UserFormData } from '../../../server/modules/database/tables/users';
 import { RootState, store } from '../../store';
@@ -32,15 +33,15 @@ const mapDispatchToProps = (dispatch: Dispatch): RegistrationActions => ({
         dispatch(closeRegistrationPopup());
     },
     attachUser: (formData: UserFormData) => {
-        Ipc.send(IPC_REGISTRATION.USER_ATTACH, formData);
+        Ipc.send(IPC_REGISTRATION.ATTACH_USER, formData);
+        dispatch(closeRegistrationPopup());
+    },
+    onDeattachContest: (uid: string, contestId: number) => {
+        Ipc.send<DeattachContestData>(IPC_REGISTRATION.DEATTACH_CONTEST, { uid, contestId });
         dispatch(closeRegistrationPopup());
     },
     onDeattachTag: (uid: string) => {
         Ipc.send(IPC_REGISTRATION.DEATTACH_TAG, uid);
-        dispatch(closeRegistrationPopup());
-    },
-    onDeattachContest: (userId: number, contestId: number) => {
-        Ipc.send(IPC_REGISTRATION.DEATTACH_CONTEST, { userId, contestId });
         dispatch(closeRegistrationPopup());
     },
 });

@@ -32,7 +32,7 @@ export enum IPC_RACE {
 export enum IPC_REGISTRATION {
     CANCEL = 'ipc/registration/cancel',
     SUBMIT = 'ipc/registration/submit',
-    USER_ATTACH = 'ipc/registration/user_attach',
+    ATTACH_USER = 'ipc/registration/attach_user',
     DEATTACH_TAG = 'ipc/registration/deattach_tag',
     DEATTACH_CONTEST = 'ipc/registration/deattach_contest',
 }

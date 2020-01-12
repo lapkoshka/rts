@@ -30,7 +30,7 @@ export class Ipc {
         });
     }
 
-    public static send(type: IpcEventType, data?: any): void {
+    public static send<T>(type: IpcEventType, data?: T): void {
         ipc.send(type, data);
     }
 }

@@ -12,35 +12,37 @@ interface UserSelectProps {
 
 const selectName = (user: UserData): string => `${user.firstname} ${user.lastname}`;
 
+const filterUsers = (users: UserData[], filter: string): UserData[] =>
+    users.filter((user: UserData) =>
+        new RegExp(filter.toLowerCase())
+        .test(
+            (user.firstname + user.lastname).toLowerCase()
+        ));
+
 export const UserSelect: FC<UserSelectProps> = (props) => {
     const { users, onUserSelect } = props;
 
     const [filterQueryText, handleFilterQueryChange] = useState('');
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUser, setSelected] = useState(null);
 
-    const handleUserSelect = useCallback(
+    const handleSelect = useCallback(
         (user: UserData) => {
             onUserSelect(user.id);
-            setSelectedUser(user);
+            setSelected(user);
         },
-        [onUserSelect, setSelectedUser]
+        [onUserSelect, setSelected]
     );
 
     const handleCancel = useCallback(
         () => {
             onUserSelect(undefined);
-            setSelectedUser(null);
+            setSelected(null);
         },
-        [onUserSelect, setSelectedUser]
+        [onUserSelect, setSelected]
     );
 
     const displayedName = selectedUser ? selectName(selectedUser) : 'Выбрать';
-
-    const items = users.filter((user: UserData) =>
-        new RegExp(filterQueryText.toLowerCase())
-            .test(
-                (user.firstname + user.lastname).toLowerCase()
-            ));
+    const items = filterUsers(users, filterQueryText);
 
     return (
         <div className={styles.content}>
@@ -55,7 +57,7 @@ export const UserSelect: FC<UserSelectProps> = (props) => {
                         onClick={handleClick}
                     />
                 )}
-                onItemSelect={handleUserSelect}
+                onItemSelect={handleSelect}
                 onQueryChange={handleFilterQueryChange}
             >
                 <Button

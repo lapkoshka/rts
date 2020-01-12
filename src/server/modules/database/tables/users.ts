@@ -2,17 +2,17 @@ import { Database, Statement } from 'sqlite3';
 import { Nullable } from '../../../../common/types';
 
 export interface UserData {
-    id: number;
     uid: string;
+    id: number;
     firstname: string;
     lastname: string;
-    contests: number[];
+    contest_id: Nullable<number>;
 }
 
 export interface UserFormData extends UserData {
     alreadyRegistred: boolean;
-    constestId?: number;
     attachUserId?: number;
+    attachContestId?: number;
 }
 
 export interface UserMethods {
@@ -22,14 +22,15 @@ export interface UserMethods {
     insertUser: (user: UserData) => Promise<number>;
     addTagForUser: (user: UserFormData) => Promise<void>;
     deleteTag: (uid: string) => Promise<void>;
-    attachUserToContest: (userId: number, contestId: number) => Promise<void>;
-    getUserContests: (user: UserData) => Promise<number[]>;
-    deattachContest: (userId: number, contestId: number) => Promise<void>;
+    attachTagToContest: (uid: string, contestId: number) => Promise<void>;
+    deattachContest: (uid: string, contestId: number) => Promise<void>;
 }
 
 export const getUserMethods = (database: Database): UserMethods => ({
     getUser(uid) {
-        const sql = `select * from tags join users on tags.user_id = users.id and tags.uid = (?);`;
+        const sql = `select tags.uid, users.*, tag_contest.contest_id from tags
+            join users on tags.user_id = users.id and tags.uid = (?)
+            left join tag_contest on tags.uid = tag_contest.tag_uid;`;
 
         return new Promise((resolve, reject) => {
             database.get(sql, [uid], (err, row) => {
@@ -46,10 +47,6 @@ export const getUserMethods = (database: Database): UserMethods => ({
     },
     getUsers() {
         const sql = 'select * from users';
-        // const cache = databaseCache[sql];
-        // if (cache) {
-        //     return Promise.resolve(cache);
-        // }
 
         return new Promise((resolve, reject) => {
             database.all(sql, (err: Error, rows: UserData[]) => {
@@ -64,7 +61,7 @@ export const getUserMethods = (database: Database): UserMethods => ({
 
         return new Promise((resolve, reject) => {
             database.run(sql, [firstname, lastname, id], (err: Error) => {
-                if (err) reject(`Something went wrong with user update: ${err.message}`);
+                if (err) reject(err);
 
                 resolve(id);
             });
@@ -103,40 +100,31 @@ export const getUserMethods = (database: Database): UserMethods => ({
         });
     },
     deleteTag(uid) {
-        const sql = 'delete from tags where uid = (?)';
-
         return new Promise((resolve, reject) => {
-           database.run(sql, uid, (err: Error) => {
+            database.run('begin transaction');
+            database.run('delete from tags where uid = (?)', uid);
+            database.run('delete from tag_contest where tag_uid = (?)', uid);
+            database.run('commit', (err: Error) => {
                if (err) reject(err);
                resolve();
            });
         });
     },
-    attachUserToContest(userId, contestId) {
-        const sql = `insert into user_contest (user_id, contest_id) values (?, ?)`;
+    attachTagToContest(uid, contestId) {
+        const sql = `insert into tag_contest (tag_uid, contest_id) values (?, ?)`;
 
         return new Promise((resolve, reject) => {
-           database.run(sql, [userId, contestId], (err: Error) => {
+           database.run(sql, [uid, contestId], (err: Error) => {
               if (err) reject(err);
               resolve();
            });
         });
     },
-    getUserContests({ id }) {
-        const sql = `select contest_id from user_contest where user_id = (?)`;
+    deattachContest(uid, contestId) {
+        const sql = `delete from tag_contest where tag_uid = (?) and contest_id = (?)`;
 
         return new Promise((resolve, reject) => {
-           database.all(sql, id, (err: Error, rows: { contest_id: number }[]) => {
-               if (err) reject(err);
-               resolve(rows.map((contest) => contest.contest_id));
-           });
-        });
-    },
-    deattachContest(userId, contestId) {
-        const sql = `delete from user_contest where user_id = (?) and contest_id = (?)`;
-
-        return new Promise((resolve, reject) => {
-           database.run(sql, [userId, contestId], (err: Error) => {
+           database.run(sql, [uid, contestId], (err: Error) => {
               if (err) reject(err);
               resolve();
            });

@@ -24,4 +24,4 @@ export const OverlayPopup: FC<OverlayPopupProps> = (props) => (
             </div>
         </div>
     </Overlay>
-)
+);

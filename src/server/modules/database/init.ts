@@ -83,12 +83,9 @@ event text
                 foreign key (user_id)
                 references users(id));`);
 
-        await db.run(`create table if not exists user_contest(
-            user_id integer,
+        await db.run(`create table if not exists tag_contest(
+            tag_uid text,
             contest_id integer,
-            constraint fk_user_id
-                foreign key (user_id)
-                references users(id),
             constraint fk_contest_id
                 foreign key (contest_id)
                 references contests(id))`);

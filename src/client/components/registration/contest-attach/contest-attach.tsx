@@ -8,59 +8,63 @@ import style from './contest-attach.module.css';
 interface ContestAttachProps {
     user: UserData;
     currentContest: Nullable<ContestData>;
-    onAttachChange: (id: number | undefined) => void;
-    onDeattachContest: (userId: number, contestId: number) => void;
+    onAttach: (id: number | undefined) => void;
+    onDeattach: (uid: string, contestId: number) => void;
 }
 
 const isUserAlreadyAttached = (user: UserData, contest: ContestData): boolean =>
-    Boolean(user.contests.find((id: number) => contest.id === id));
+    user.contest_id === contest.id;
 
 export const ContestAttach: FC<ContestAttachProps> = (props) => {
-    const { user, currentContest, onAttachChange } = props;
+    const { user, currentContest, onAttach } = props;
 
     const [checked, setChecked] = useState(Boolean(currentContest));
+
+    if (checked) {
+        onAttach(currentContest.id);
+    }
 
     const handleSwitchChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {
             const { checked } = evt.currentTarget;
-            onAttachChange(checked ? currentContest.id : undefined);
+            onAttach(checked ? currentContest.id : undefined);
             setChecked(evt.currentTarget.checked);
         },
-        [onAttachChange, currentContest, setChecked],
+        [onAttach, currentContest, setChecked],
     );
 
     const handleDeattach = useCallback(
         () => {
-            props.onDeattachContest(user.id, currentContest.id);
+            props.onDeattach(user.uid, currentContest.id);
         },
         [props, user, currentContest]
     );
 
     if (!currentContest) {
         return (
-            <strong>Участник не будет привязан к мероприятию</strong>
-        )
+            <strong>Метка не будет привязана к мероприятию</strong>
+        );
     }
 
     if (isUserAlreadyAttached(user, currentContest)) {
         return (
             <div className={style['already-attached-alert']}>
                 <strong className={style['already-attached-label']}>
-                    Участник уже привязан к текущему мероприятию
+                    Метка уже привязана к текущему мероприятию
                 </strong>
                 <Button
                     intent={Intent.WARNING}
                     onClick={handleDeattach}
                 >Отвязать</Button>
             </div>
-        )
+        );
     }
 
     return (
         <Switch
             checked={checked}
-            label={`Привязать к текущему мероприятию: ${currentContest.name}`}
+            label={`Привязать к: ${currentContest.name}`}
             onChange={handleSwitchChange}
         />
-    )
+    );
 };

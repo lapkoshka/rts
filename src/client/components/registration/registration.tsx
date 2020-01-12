@@ -23,7 +23,7 @@ export interface RegistrationActions {
     submitUser: (formData: UserFormData) => void;
     attachUser: (formData: UserFormData) => void;
     onDeattachTag: (uid: string) => void;
-    onDeattachContest: (userId: number, contestId: number) => void;
+    onDeattachContest: (uid: string, contestId: number) => void;
 }
 
 const isUserAttach = (formData: UserFormData): boolean => formData.attachUserId !== undefined;
@@ -35,24 +35,20 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         firstname: user ? user.firstname : '',
         lastname: user ? user.lastname : '',
         uid: incomingUid,
-        contests: user ? user.contests : [],
-        constestId: currentContest ? currentContest.id : undefined, // если активный контесть есть, то привязка на него
+        contest_id: user ? user.contest_id : null,
         alreadyRegistred: Boolean(user),
     };
 
-    const handleContestAttachChange = useCallback(
+    const handleContestAttach = useCallback(
         (id: number | undefined) => {
-            formData.constestId = id;
+            formData.attachContestId = id;
         },
         [formData],
     );
 
-    const handleUserSelect = useCallback(
+    const handleSelect = useCallback(
         (id: number | undefined) => {
             formData.attachUserId = id;
-            // todo:
-            // заблокировать поля, но через state это делать нельзя, потому что formData перезатрётся
-            // setInputsEnabled(id === undefined);
         },
         [formData]
     );
@@ -65,7 +61,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
             }
 
             props.submitUser(formData);
-            // console.log(formData);
         },
         [props, formData]
     );
@@ -103,7 +98,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
 
             return () => document.removeEventListener('keyup', keyUpHandler);
         },
-        [currentContest, keyUpHandler]
+        [keyUpHandler]
     );
 
     return (
@@ -119,7 +114,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
             >
                 {incomingUid}
             </Tag>
-
             <Divider />
             <form>
                 <Label>
@@ -151,10 +145,9 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 <ContestAttach
                     user={formData}
                     currentContest={currentContest}
-                    onAttachChange={handleContestAttachChange}
-                    onDeattachContest={props.onDeattachContest}
+                    onAttach={handleContestAttach}
+                    onDeattach={props.onDeattachContest}
                 />
-
                 <Divider />
                 {
                     formData.alreadyRegistred ? (
@@ -170,11 +163,10 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                     ) : (
                         <UserSelect
                             users={userList}
-                            onUserSelect={handleUserSelect}
+                            onUserSelect={handleSelect}
                         />
                     )
                 }
-
                 <Button className={styles.submit} onClick={handleSubmit}>Ок</Button>
                 <Button onClick={props.onCancelRegistration}>Отмена</Button>
             </form>

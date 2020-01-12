@@ -32,14 +32,9 @@ export const initPortableReaderController = () => {
     });
 
     portableReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
-        const user = await dbMorda.users.getUser(tag.uid);
-        if (user) {
-            user.contests = await dbMorda.users.getUserContests(user);
-        }
-
         rootDispatcher.sendEvent(IPC_PORTABLE_READER.TAG, {
             uid: tag.uid,
-            user,
+            user: await dbMorda.users.getUser(tag.uid),
             allUsers: await dbMorda.users.getUsers(),
         } as PortableReaderRegistrationData);
     });
