@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
-import { OnUserDeleteData } from '../../../server/controllers/results/controller';
 import { IPC_RESULTS } from '../../../server/ipc/ipc-events';
 import { UserData } from '../../../server/modules/database/tables/users';
 import { selectContest } from '../contest/selectors';
@@ -21,12 +20,6 @@ const mapStateToProps = (state: RootState): ResultsInfoProps => ({
     total: state.resultsInfo.total,
     selectedContest: selectContest(state),
     deleteRace: (id: number) => Ipc.send(IPC_RESULTS.ON_RACE_DELETE, id),
-    deleteUser: (uid: string, contestId: number) => {
-        Ipc.send<OnUserDeleteData>(IPC_RESULTS.ON_USER_DELETE, {
-            uid,
-            contestId,
-        });
-    },
 });
 
 const { dispatch } = store;

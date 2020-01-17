@@ -22,12 +22,17 @@ export interface UserMethods {
     insertUser: (user: UserData) => Promise<number>;
 }
 
-const parseContests = (groupConcatValue: string) => groupConcatValue
-    .split(',')
-    .map((strContestId: string) =>
-        parseInt(strContestId, 10));
+// todo: to hydrate
+const parseContests = (groupConcatValue?: string) => {
+    return groupConcatValue ? groupConcatValue
+        .split(',')
+        .map((strContestId: string) =>
+            parseInt(strContestId, 10)) : [];
+};
 
-const parseTags = (groupConcatValue: string) => groupConcatValue.split(',');
+// todo: to hydrate
+const parseTags = (groupConcatValue?: string) =>
+    groupConcatValue ? groupConcatValue.split(',') : [];
 
 export const getUserMethods = (database: Database): UserMethods => ({
     getUser(uid) {
@@ -50,9 +55,9 @@ export const getUserMethods = (database: Database): UserMethods => ({
     getUsers() {
         const sql = `select users.*, 
             group_concat(distinct tag_uid) as "tags",
-            group_concat(tag_contest.contest_id) as "contests" 
+            group_concat(distinct tag_contest.contest_id) as "contests" 
             from users
-                join tags t on users.id = t.user_id
+                left join tags t on users.id = t.user_id
                 left join tag_contest on tag_uid = t.uid
             group by user_id;`;
 

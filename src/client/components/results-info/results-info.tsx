@@ -16,25 +16,15 @@ export interface ResultsInfoProps {
     total: TotalInfo;
     selectedContest: ContestData;
     deleteRace: (id: number) => void;
-    deleteUser: (uid: string, contestId: number) => void;
 }
 
 export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
-    const { deleteUser, selectedContest } = props;
-
     const [tabId, setTabId] = useState('0');
     const onChangeHandler = useCallback(
         (tabId: string) => {
             setTabId(tabId);
         },
         [],
-    );
-
-    const handleUserDelete = useCallback(
-        (uid: string) => {
-                deleteUser(uid, selectedContest.id);
-            },
-        [deleteUser, selectedContest]
     );
 
     if (!props.selectedContest) {
@@ -66,7 +56,7 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
                     id='1'
                     className='results-info-tab-button'
                     title='Участники'
-                    panel={renderUsers(props.users, handleUserDelete)}
+                    panel={renderUsers(props.users)}
                 />
                 <Tab
                     id='2'
