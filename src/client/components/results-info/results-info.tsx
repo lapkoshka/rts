@@ -37,10 +37,15 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
         [deleteUser, selectedContest]
     );
 
-    // TODO: NON IDEAL STATE
     if (!props.selectedContest) {
         return (
-            <div>Нихуя нет</div>
+            <div className="bp3-non-ideal-state">
+                <div className="bp3-non-ideal-state-visual">
+                    <span className="bp3-icon bp3-icon-folder-open"></span>
+                </div>
+                <h4 className="bp3-heading">Ничего нет</h4>
+                <div>Создайте мероприятие для того чтобы начать</div>
+            </div>
         );
     }
 
