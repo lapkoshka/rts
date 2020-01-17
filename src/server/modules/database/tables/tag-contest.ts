@@ -3,6 +3,7 @@ import { Database } from 'sqlite3';
 export interface TagContestMethods {
     attachTagToContest: (uid: string, contestId: number) => Promise<void>;
     deattachContest: (uid: string, contestId: number) => Promise<void>;
+    getContests: (uid: string) => Promise<number[]>;
 }
 
 export const getTagContestMethods = (database: Database): TagContestMethods => ({
@@ -24,6 +25,16 @@ export const getTagContestMethods = (database: Database): TagContestMethods => (
                 if (err) reject(err);
                 resolve();
             });
+        });
+    },
+    getContests(uid) {
+        const sql = `select contest_id from tag_contest where tag_uid = (?)`;
+
+        return new Promise((resolve, reject) => {
+           database.all(sql, [uid], (err: Error, rows: { contest_id: number }[]) => {
+               if (err) reject(err);
+               resolve(rows.map(row => row.contest_id));
+           });
         });
     }
 });

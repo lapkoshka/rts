@@ -6,7 +6,7 @@ export interface UserData {
     id: number;
     firstname: string;
     lastname: string;
-    contest_id: Nullable<number>;
+    contests: number[];
 }
 
 export interface UserFormData extends UserData {
@@ -22,11 +22,17 @@ export interface UserMethods {
     insertUser: (user: UserData) => Promise<number>;
 }
 
+const parseContests = (groupConcatValue: string) => groupConcatValue
+    .split(',')
+    .map((strContestId: string) =>
+        parseInt(strContestId, 10));
+
+const parseTags = (groupConcatValue: string) => groupConcatValue.split(',');
+
 export const getUserMethods = (database: Database): UserMethods => ({
     getUser(uid) {
-        const sql = `select tags.uid, users.*, tag_contest.contest_id from tags
-            join users on tags.user_id = users.id and tags.uid = (?)
-            left join tag_contest on tags.uid = tag_contest.tag_uid;`;
+        const sql = `select tags.uid, users.* from tags
+            join users on tags.user_id = users.id and tags.uid = (?)`;
 
         return new Promise((resolve, reject) => {
             database.get(sql, [uid], (err, row) => {
@@ -42,14 +48,22 @@ export const getUserMethods = (database: Database): UserMethods => ({
         });
     },
     getUsers() {
-        const sql = `select tags.uid, users.*, tag_contest.contest_id from tags
-          join users on tags.user_id = users.id
-          left join tag_contest on tags.uid = tag_contest.tag_uid;`;
+        const sql = `select users.*, 
+            group_concat(distinct tag_uid) as "tags",
+            group_concat(tag_contest.contest_id) as "contests" 
+            from users
+                join tags t on users.id = t.user_id
+                left join tag_contest on tag_uid = t.uid
+            group by user_id;`;
 
         return new Promise((resolve, reject) => {
-            database.all(sql, (err: Error, rows: UserData[]) => {
+            database.all(sql, (err: Error, rows) => {
                 if (err) reject(err);
-                resolve(rows);
+                resolve(rows.map((row) => ({
+                  ...row,
+                  contests: parseContests(row.contests),
+                  tags: parseTags(row.tags),
+                })));
             });
         });
     },

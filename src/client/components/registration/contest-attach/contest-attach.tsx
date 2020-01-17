@@ -6,7 +6,6 @@ import { ContestData } from '../../../../server/view-data/contests/contests';
 import style from './contest-attach.module.css';
 
 interface ContestAttachProps {
-    checked: boolean;
     user: UserData;
     currentContest: Nullable<ContestData>;
     onAttach: (id: number | undefined) => void;
@@ -14,11 +13,11 @@ interface ContestAttachProps {
 }
 
 const isUserAlreadyAttached = (user: UserData, contest: ContestData): boolean =>
-    user.contest_id === contest.id;
+    user.contests.some((contestId: number) => contestId === contest.id);
 
 export const ContestAttach: FC<ContestAttachProps> = (props) => {
     const { user, currentContest, onAttach } = props;
-    const [checked, setChecked] = useState(props.checked);
+    const [checked, setChecked] = useState(true);
 
     const handleSwitchChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {

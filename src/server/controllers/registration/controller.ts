@@ -34,9 +34,7 @@ export const initRegistrationController = () => {
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, formData: UserFormData) => {
         submitNewUser(formData)
-            .then(() => {
-                return attachTagToContest(formData);
-            })
+            .then(() => attachTagToContest(formData))
             .then(viewUpdater.updateAll)
             .catch(console.error);
 

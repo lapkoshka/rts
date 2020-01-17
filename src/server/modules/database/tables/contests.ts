@@ -34,21 +34,23 @@ export const getContestMethods = (database: Database): ContestMethods => ({
         });
     },
     delete(id) {
-        const sql = `delete from contests where id = (?)`;
-
         return new Promise((resolve, reject) => {
-            database.run(sql, id, (err: Error) => {
-                if (err) reject(err);
-                resolve();
+            database.serialize(() => {
+                database.run('begin transaction');
+                database.run(`delete from contests where id = (?)`, id);
+                database.run(`delete from tag_contest where contest_id = (?)`, id);
+                database.run('commit', (err: Error) => {
+                    if (err) reject(err);
+                    resolve();
+                });
             });
         });
     },
     start(id, timestamp) {
-        const sql = `update contests set started_flag = (?), start_time = (?) where id = (?)`;
-        const startedFlag = 1;
+        const sql = `update contests set started_flag = 1, start_time = (?) where id = (?)`;
 
         return new Promise((resolve, reject) => {
-            database.run(sql, [startedFlag, timestamp, id], (err: Error) => {
+            database.run(sql, [timestamp, id], (err: Error) => {
                 if (err) reject(err);
                 resolve();
             });

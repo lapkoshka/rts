@@ -35,8 +35,9 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         firstname: user ? user.firstname : '',
         lastname: user ? user.lastname : '',
         uid: incomingUid,
-        contest_id: user ? user.contest_id : null,
+        contests: user ? user.contests : [],
         alreadyRegistred: Boolean(user),
+        attachContestId: currentContest ? currentContest.id : undefined,
     };
 
     const handleContestAttach = useCallback(
@@ -101,9 +102,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         [keyUpHandler]
     );
 
-    // TODO: BUG
-    const shouldInitiallyChecked = Boolean(currentContest) && !formData.contest_id;
-
     return (
         <OverlayPopup
             isOpen={props.shouldShowPopup}
@@ -146,7 +144,6 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 </Label>
 
                 <ContestAttach
-                    checked={shouldInitiallyChecked}
                     user={formData}
                     currentContest={currentContest}
                     onAttach={handleContestAttach}
