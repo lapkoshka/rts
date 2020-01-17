@@ -57,11 +57,10 @@ export const getContestMethods = (database: Database): ContestMethods => ({
         });
     },
     close(id, timestamp) {
-        const sql = `update contests set finished_flag = (?), finish_time = (?) where id = (?)`;
-        const finishedFlag = 1;
+        const sql = `update contests set finished_flag = 1, finish_time = (?) where id = (?)`;
 
         return new Promise((resolve, reject) => {
-            database.run(sql, [finishedFlag, timestamp, id], (err: Error) => {
+            database.run(sql, [timestamp, id], (err: Error) => {
                 if (err) reject(err);
                 resolve();
             });

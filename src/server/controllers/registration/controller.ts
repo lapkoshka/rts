@@ -49,7 +49,6 @@ export const initRegistrationController = () => {
             .then(viewUpdater.updateAll)
             .catch(console.error);
 
-
         portableReader.continue();
     });
 
