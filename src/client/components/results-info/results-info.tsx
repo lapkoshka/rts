@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 import { RaceHistory } from '../../../server/controllers/results/history';
 import { TotalInfo } from '../../../server/controllers/results/total';
-import { Users } from '../../../server/controllers/results/users';
+import { UserData } from '../../../server/modules/database/tables/users';
+import { ContestData } from '../../../server/view-data/contests/contests';
 import { Block } from '../ui/block/block';
 import { renderRaceHistory } from './tabs/history';
 import { renderUsers } from './tabs/users';
@@ -11,10 +12,10 @@ import './results-info.scss';
 
 export interface ResultsInfoProps {
     history: RaceHistory;
-    users: Users;
+    users: UserData[];
     total: TotalInfo;
+    selectedContest: ContestData;
     deleteRace: (id: number) => void;
-    deleteUser: (uid: string) => void;
 }
 
 export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
@@ -25,6 +26,18 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
         },
         [],
     );
+
+    if (!props.selectedContest) {
+        return (
+            <div className="bp3-non-ideal-state">
+                <div className="bp3-non-ideal-state-visual">
+                    <span className="bp3-icon bp3-icon-folder-open"></span>
+                </div>
+                <h4 className="bp3-heading">Ничего нет</h4>
+                <div>Создайте мероприятие для того чтобы начать</div>
+            </div>
+        );
+    }
 
     return (
         <Block>
@@ -43,7 +56,7 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
                     id='1'
                     className='results-info-tab-button'
                     title='Участники'
-                    panel={renderUsers(props.users, props.deleteUser)}
+                    panel={renderUsers(props.users)}
                 />
                 <Tab
                     id='2'

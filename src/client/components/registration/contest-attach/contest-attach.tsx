@@ -13,16 +13,11 @@ interface ContestAttachProps {
 }
 
 const isUserAlreadyAttached = (user: UserData, contest: ContestData): boolean =>
-    user.contest_id === contest.id;
+    user.contests.some((contestId: number) => contestId === contest.id);
 
 export const ContestAttach: FC<ContestAttachProps> = (props) => {
     const { user, currentContest, onAttach } = props;
-
-    const [checked, setChecked] = useState(Boolean(currentContest));
-
-    if (checked) {
-        onAttach(currentContest.id);
-    }
+    const [checked, setChecked] = useState(true);
 
     const handleSwitchChange = useCallback(
         (evt: FormEvent<HTMLInputElement>) => {

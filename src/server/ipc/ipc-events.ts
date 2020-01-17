@@ -42,7 +42,6 @@ export enum IPC_RESULTS {
     TOTAL_INFO_UPDATE = 'ipc/results/total_info_update',
     RACE_HISTORY_UPDATE = 'ipc/results/race_history_update',
     ON_RACE_DELETE = 'ipc/results/on_race_delete',
-    ON_USER_DELETE = 'ipc/results/on_user_delete',
 }
 
 export enum IPC_RSSI_CHART {

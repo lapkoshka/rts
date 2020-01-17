@@ -6,7 +6,6 @@ import { viewUpdater } from '../../view-data/view-updater';
 import { updateRaces } from '../race/race-scenario';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
-import { updateUsers } from '../results/users';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -18,11 +17,11 @@ const updateView = (): void => {
     rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
     viewUpdater.contests.updateContestsData();
+    viewUpdater.results.updateUsersData();
 
     // deprecated
     updateRaceHistory();
     updateTotalInfo();
-    updateUsers();
     updateRaces();
 };
 

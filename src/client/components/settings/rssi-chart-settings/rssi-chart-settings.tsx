@@ -1,10 +1,10 @@
 import { Switch } from '@blueprintjs/core';
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback } from 'react';
-import { UserRow, Users } from '../../../../server/controllers/results/users';
 import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart/controller';
+import { UserData } from '../../../../server/modules/database/tables/users';
 
 interface RSSIChartSettingsProps {
-    users: Users;
+    users: UserData[];
     chartEnableInfo: ChartEnableInfo;
     setChartEnableInfo: (info: ChartEnableInfo) => void;
 }
@@ -41,8 +41,8 @@ export const RSSIChartSettings: FC<RSSIChartSettingsProps> = memo((props) => {
             <div className='bp3-select .fill'>
                 <select onChange={onSelectChange}>
                     {
-                        props.users.map((user: UserRow) => (
-                            <option key={user.uid} value={user.uid}>{user.username}</option>
+                        props.users.map(({ id, uid, firstname, lastname}: UserData) => (
+                            <option key={id} value={uid}>{`${firstname} ${lastname}`}</option>
                         ))
                     }
                 </select>
