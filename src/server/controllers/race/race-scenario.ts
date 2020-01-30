@@ -1,9 +1,11 @@
 import { Lap } from '../../lib/domain/lap';
 import { RFIDTag } from '../../lib/readers/base-reader';
+import { dbMorda } from '../../modules/database/database';
 import { insertRace } from '../../modules/database/tables/races';
 import { UserData } from '../../modules/database/tables/users';
 
 import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
+import { viewUpdater } from '../../view-data/view-updater';
 import { updateRaceHistory } from '../results/history';
 import { updateTotalInfo } from '../results/total';
 import { updateRaceInfoView } from './race-info-view';
@@ -18,30 +20,35 @@ const raceStartHandler = (): void => {
     updateRaceInfoView(currentRaces);
 };
 
-const raceLapFinishHandler = (user: UserData, lap: Lap): void => {
+const raceLapFinishHandler = (user: UserData, lap: Lap, raceId: number): void => {
     insertRace(user.uid, lap.getTotalTime());
+    await dbMorda.laps.insertLap();
 
+    viewUpdater.results.update()//??
     updateRaceInfoView(currentRaces);
     updateTotalInfo();
     updateRaceHistory();
 };
 
-const raceFinishHandler = (uid: string): void => {
+const raceFinishHandler = async (uid: string, id: number): void => {
     delete currentRaces[uid];
+    await dbMorda.races.finishRace(raceId);
 
+    viewUpdater.results.update()//??
     updateRaceInfoView(currentRaces);
     updateTotalInfo();
     updateRaceHistory();
 };
 
-const createRace = (user: UserData, params: RaceParams, uid: string): Race => {
-    const race = new Race(user, params);
+const createRace = async (user: UserData, params: RaceParams, uid: string): Race => {
+    const raceId = await dbMorda.races.createRace(user.id, contestId);
+    const race = new Race(raceId, user, params);
     race.on(RACE_EVENT.START, raceStartHandler);
     race.on(RACE_EVENT.LAP_FINISH, (lap: Lap) => {
-        raceLapFinishHandler(user, lap);
+        raceLapFinishHandler(user, lap, raceId);
     });
     race.on(RACE_EVENT.FINISH, () => {
-        raceFinishHandler(uid);
+        raceFinishHandler(uid, raceId);
     });
 
     return race;
