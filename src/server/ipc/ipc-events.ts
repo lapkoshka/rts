@@ -59,4 +59,6 @@ export enum IPC_CONTESTS {
     START = 'ipc/contests/start',
     CLOSE = 'ipc/contests/close',
     START_ERROR = 'ipc/contests/start_error',
+    SET_SELECTED_CONTEST = 'ipc/contests/set_selected_contest',
+    SELECTED_CONTEST_ID = 'ipc/contests/selected_contest_id'
 }

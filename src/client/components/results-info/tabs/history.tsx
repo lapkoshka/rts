@@ -1,9 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import {
-    RaceHistory,
-    RaceHistoryRow,
-} from '../../../../server/controllers/results/history';
+import { RaceHistory, RaceHistoryRow } from '../../../../server/view-data/results/updater';
 import { renderDeleteButton } from '../../ui/delete/delete';
 
 export const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {
@@ -17,7 +14,7 @@ export const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number
         <Table dataSource={historyWithKeys}>
             <Table.Column key='id' title='N' dataIndex='id'/>
             <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column key='time' title='Время' dataIndex='formattedTIme'/>
+            <Table.Column key='time' title='Время' dataIndex='formattedTime'/>
             <Table.Column key='date' title='Дата' dataIndex='timestamp'/>
             {
                 deleteRace ? (

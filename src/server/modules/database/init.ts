@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { Database, verbose } from 'sqlite3';
 
 const sqlite3 = verbose();
-const DATABASE_CATALOG = './database';
+const DATABASE_CATALOG = './data';
 const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
 const openDatabase = (): Database => {
@@ -21,15 +21,6 @@ const openDatabase = (): Database => {
 
 const prepareDatabase = async (db: Database): Promise<void> => {
     try {
-
-await db.run(`create table if not exists race(
-id integer primary key autoincrement,
-timestamp datetime default current_timestamp,
-uid not null,
-time integer,
-date integer,
-event text
-);`);
         await db.run(`create table if not exists contests(
                 id integer primary key autoincrement,
                 name text,

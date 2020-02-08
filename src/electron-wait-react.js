@@ -23,7 +23,7 @@ tryConnection();
 
 let timer = -Infinity;
 client.on('error', (error) => {
-    console.log('client error event from electeron wait react');
+    console.log('client error event from electron wait react');
     clearInterval(timer);
     timer = setTimeout(tryConnection, 1000);
 });

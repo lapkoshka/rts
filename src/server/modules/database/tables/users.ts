@@ -20,6 +20,7 @@ export interface UserMethods {
     getUsers: () => Promise<UserData[]>;
     updateUser: (user: UserData) => Promise<number>;
     insertUser: (user: UserData) => Promise<number>;
+    getUsersByContest: (contestId: number) => Promise<UserData[]>;
 }
 
 // todo: to hydrate
@@ -103,6 +104,20 @@ export const getUserMethods = (database: Database): UserMethods => ({
                     resolve(lastId);
                 });
             });
+        });
+    },
+    getUsersByContest(contestId) {
+        const sql = `select t.user_id, u.*, tag_contest.*  from tag_contest
+            left join tags t on t.uid = tag_contest.tag_uid
+            join users u on t.user_id = u.id
+            and tag_contest.contest_id = (?)
+        group by contest_id;`;
+
+        return new Promise((resolve, reject) => {
+           database.all(sql, [contestId], (err: Error, rows) => {
+              if (err) reject(err);
+              resolve(rows);
+           });
         });
     },
 });

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
-import { RaceHistory } from '../../../server/controllers/results/history';
-import { TotalInfo } from '../../../server/controllers/results/total';
+import { RaceHistory } from '../../../server/view-data/results/updater';
+import { TotalInfo } from '../../../server/view-data/results/updater';
 import { UserData } from '../../../server/modules/database/tables/users';
 import { ContestData } from '../../../server/view-data/contests/contests';
 import { Block } from '../ui/block/block';

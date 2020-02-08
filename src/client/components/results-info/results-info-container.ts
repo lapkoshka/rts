@@ -10,13 +10,12 @@ import {
     setUsers,
     setTotalInfo,
 } from '../../store/results-info-store';
-import { RaceHistory } from '../../../server/controllers/results/history';
-import { TotalInfo } from '../../../server/controllers/results/total';
-import { selectCurrentUsers } from './selectors';
+import { RaceHistory } from '../../../server/view-data/results/updater';
+import { TotalInfo } from '../../../server/view-data/results/updater';
 
 const mapStateToProps = (state: RootState): ResultsInfoProps => ({
     history: state.resultsInfo.history,
-    users: selectCurrentUsers(state),
+    users: state.resultsInfo.users,
     total: state.resultsInfo.total,
     selectedContest: selectContest(state),
     deleteRace: (id: number) => Ipc.send(IPC_RESULTS.ON_RACE_DELETE, id),

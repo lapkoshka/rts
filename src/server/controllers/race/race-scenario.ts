@@ -1,67 +1,63 @@
-import { Lap } from '../../lib/domain/lap';
 import { RFIDTag } from '../../lib/readers/base-reader';
-import { insertRace } from '../../modules/database/tables/races';
+import { dbMorda } from '../../modules/database/database';
 import { UserData } from '../../modules/database/tables/users';
-
 import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
-import { updateRaceHistory } from '../results/history';
-import { updateTotalInfo } from '../results/total';
-import { updateRaceInfoView } from './race-info-view';
+import { viewUpdater } from '../../view-data/view-updater';
 
 export interface Races {
     [key: string]: Race;
 }
 
-const currentRaces: Races = {};
+export const currentRaces: Races = {};
 
-const raceStartHandler = (): void => {
-    updateRaceInfoView(currentRaces);
+const writeRace = async (race: Race): Promise<void> => {
+    try {
+        const contestId = await dbMorda.contests.getCurrentContestId();
+        const raceId = await dbMorda.races.insertRace(race.user.id, contestId, race.getTotalTime());
+
+        let counter = 0;
+        for (const lap of race.laps) {
+            await dbMorda.laps.insertLap(raceId, counter, lap.getTotalTime());
+            counter++;
+        }
+    } catch (e) {
+        throw Error(e);
+    }
 };
 
-const raceLapFinishHandler = (user: UserData, lap: Lap): void => {
-    insertRace(user.uid, lap.getTotalTime());
-
-    updateRaceInfoView(currentRaces);
-    updateTotalInfo();
-    updateRaceHistory();
-};
-
-const raceFinishHandler = (uid: string): void => {
-    delete currentRaces[uid];
-
-    updateRaceInfoView(currentRaces);
-    updateTotalInfo();
-    updateRaceHistory();
-};
-
-const createRace = (user: UserData, params: RaceParams, uid: string): Race => {
+const createRace = (uid: string, user: UserData, params: RaceParams): Race => {
     const race = new Race(user, params);
-    race.on(RACE_EVENT.START, raceStartHandler);
-    race.on(RACE_EVENT.LAP_FINISH, (lap: Lap) => {
-        raceLapFinishHandler(user, lap);
+    race.on(RACE_EVENT.START, () => {
+        viewUpdater.race.updateRaceInfo();
     });
-    race.on(RACE_EVENT.FINISH, () => {
-        raceFinishHandler(uid);
+
+    race.on(RACE_EVENT.LAP_FINISH, () => {
+        viewUpdater.race.updateRaceInfo();
+    });
+
+    race.on(RACE_EVENT.FINISH, async () => {
+        const race = currentRaces[uid];
+        await writeRace(race);
+        delete currentRaces[uid];
+
+        viewUpdater.race.updateRaceInfo();
     });
 
     return race;
 };
 
 export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race => {
-    const race = currentRaces[tag.uid];
+    const { uid } = tag;
+    const race = currentRaces[uid];
     if (race) {
         return race;
     }
 
-    currentRaces[tag.uid] = createRace(user, params, tag.uid);
-    return currentRaces[tag.uid];
+    currentRaces[uid] = createRace(uid, user, params);
+    return currentRaces[uid];
 };
 
 export const closeRace = (uid: string): void => {
     delete currentRaces[uid];
-    updateRaceInfoView(currentRaces);
-};
-
-export const updateRaces = (): void => {
-    updateRaceInfoView(currentRaces);
+    viewUpdater.race.updateRaceInfo();
 };

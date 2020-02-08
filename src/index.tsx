@@ -18,6 +18,7 @@ window.fakePortableTag = (uid, rssi) =>
 window.fakeMainTag = (uid, rssi) =>
     Ipc.send(IPC_APP.FAKE_MAIN_TAG, { uid, rssi});
 
+// todo: вероятно, событие должно отрабатывать по готовности вьюхи на ЖЦ компонента
 Ipc.send(IPC_APP.START);
 
 ReactDOM.render(

@@ -4,7 +4,7 @@ import { IPC_RACE } from '../../../server/ipc/ipc-events';
 import { store, RootState } from '../../store';
 import { RaceInfo, RaceInfoProps } from './race-info';
 import { setCurrentRaces } from '../../store/race-info-store';
-import { CurrentRaces } from '../../../server/controllers/race/race-info-view';
+import { CurrentRaces } from '../../../server/view-data/race/updater';
 
 const mapStateToProps = (state: RootState): RaceInfoProps => ({
     currentRaces: state.raceInfo.currentRaces,

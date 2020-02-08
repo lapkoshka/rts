@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import { TotalInfo, TotalInfoRow } from '../../../../server/controllers/results/total';
+import { TotalInfo, TotalInfoRow } from '../../../../server/view-data/results/updater';
 
 export const renderTotalInfo = (info: TotalInfo) => {
     const infoWithKeys = info.map((item: TotalInfoRow, index: number) => ({

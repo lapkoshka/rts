@@ -25,19 +25,19 @@ const mapDispatchToProps = (dispatch: Dispatch): ContestActions => ({
         Ipc.send(IPC_CONTESTS.CREATE);
     },
     onContestDelete: (id: number) => {
-        Ipc.send(IPC_CONTESTS.DELETE, id);
+        Ipc.send<number>(IPC_CONTESTS.DELETE, id);
     },
     onContestSettingsChange: (data: ContestFormData) => {
-        Ipc.send(IPC_CONTESTS.SETTINGS_CHANGE, data);
+        Ipc.send<ContestFormData>(IPC_CONTESTS.SETTINGS_CHANGE, data);
     },
     onContestSelect: (id: number) => {
-        dispatch(setSelectedContest(id));
+        Ipc.send<number>(IPC_CONTESTS.SET_SELECTED_CONTEST, id);
     },
     onContestStart: (id: number) => {
-        Ipc.send(IPC_CONTESTS.START, id);
+        Ipc.send<number>(IPC_CONTESTS.START, id);
     },
     onContestClose: (id: number) => {
-        Ipc.send(IPC_CONTESTS.CLOSE, id);
+        Ipc.send<number>(IPC_CONTESTS.CLOSE, id);
     },
     setShowContestSettings: (show: boolean) => {
         dispatch(showContestSettings(show));
@@ -61,6 +61,10 @@ Ipc.on(IPC_CONTESTS.ON_CONTEST_DELETED, () => {
 
 Ipc.on(IPC_CONTESTS.START_ERROR, () => {
    Notification.error('Для того, чтобы начать новое соревнование, нужно завершить уже запущенное', 4000);
+});
+
+Ipc.on<number>(IPC_CONTESTS.SELECTED_CONTEST_ID, (id) => {
+    dispatch(setSelectedContest(id));
 });
 
 export const ContestContainer = connect(mapStateToProps, mapDispatchToProps)(Contest);

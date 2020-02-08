@@ -1,5 +1,8 @@
 import { updateContestsData } from './contests/updater';
-import { updateUsersData } from './results/updater';
+import { updateUsersData, updateRaceHistory, updateTotalInfo } from './results/updater';
+import { updateRaceInfo } from './race/updater';
+
+// todo: interface of methods
 
 export const viewUpdater = {
     contests: {
@@ -7,9 +10,10 @@ export const viewUpdater = {
     },
     results: {
         updateUsersData,
+        updateRaceHistory,
+        updateTotalInfo
     },
-    updateAll: (): void => {
-        updateContestsData();
-        updateUsersData();
+    race: {
+        updateRaceInfo,
     },
 };

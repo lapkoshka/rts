@@ -1,9 +1,11 @@
 import { Database } from 'sqlite3';
+import { Nullable } from '../../../../common/types';
 import { UserFormData } from './users';
 
 export interface TagsMethods {
     addTagForUser: (user: UserFormData) => Promise<void>;
     deleteTag: (uid: string) => Promise<void>;
+    getUserId: (uid: string) => Promise<number | undefined>;
 }
 
 export const getTagsMethods = (database: Database): TagsMethods => ({
@@ -26,6 +28,15 @@ export const getTagsMethods = (database: Database): TagsMethods => ({
             database.run('commit', (err: Error) => {
                 if (err) reject(err);
                 resolve();
+            });
+        });
+    },
+    getUserId(uid) {
+        const sql = `select user_id from tags where uid = (?)`;
+        return new Promise((resolve, reject) => {
+            database.get(sql, [uid], (err: Error, row) => {
+               if (err) reject (err);
+               resolve(row && row.user_id || undefined);
             });
         });
     }

@@ -3,9 +3,6 @@ import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { mainReader } from '../../modules/readers/main-reader';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { viewUpdater } from '../../view-data/view-updater';
-import { updateRaces } from '../race/race-scenario';
-import { updateRaceHistory } from '../results/history';
-import { updateTotalInfo } from '../results/total';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -16,13 +13,12 @@ const waitView = (): Promise<void> => {
 const updateView = (): void => {
     rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
     rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
+
     viewUpdater.contests.updateContestsData();
     viewUpdater.results.updateUsersData();
-
-    // deprecated
-    updateRaceHistory();
-    updateTotalInfo();
-    updateRaces();
+    viewUpdater.results.updateRaceHistory();
+    viewUpdater.results.updateTotalInfo();
+    viewUpdater.race.updateRaceInfo();
 };
 
 export const initViewUpdaterController = () => {

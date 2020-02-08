@@ -1,7 +1,7 @@
 import { IPC_RACE } from '../../ipc/ipc-events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
-import { Races } from './race-scenario';
+import { currentRaces as racesState } from './../../controllers/race/race-scenario';
 
 export interface CurrentRaceRow {
     uid: string;
@@ -12,10 +12,10 @@ export interface CurrentRaceRow {
 
 export type CurrentRaces = CurrentRaceRow[];
 
-export const updateRaceInfoView = (races: Races) => {
-    const currentRaces = Object.keys(races)
+export const updateRaceInfo = (): void => {
+    const currentRaces = Object.keys(racesState)
         .reduce((currentRaces: CurrentRaces, uid: string) => {
-            const race = races[uid];
+            const race = racesState[uid];
             const bestTime = race.getBestTime();
             currentRaces.push({
                 uid,

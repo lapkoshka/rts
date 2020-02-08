@@ -5,11 +5,16 @@ import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { viewUpdater } from '../../view-data/view-updater';
 
+// todo: переделать на async/await чтобы было едино везде
+
 export interface DeattachContestData {
     uid: string;
     contestId: number;
 }
 
+/**
+ * Сохраняет нового участника или обновляет существующего если на форме был клик по submit
+ */
 const submitNewUser = (user: UserFormData): Promise<number> => {
     if (user.alreadyRegistred) {
         return dbMorda.users.updateUser(user);
@@ -18,6 +23,9 @@ const submitNewUser = (user: UserFormData): Promise<number> => {
     return dbMorda.users.insertUser(user);
 };
 
+/**
+ * Закрепляет метку за определенным контестом
+ */
 const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<void> => {
     const shouldAttachToContest = attachContestId !== undefined;
     if (!shouldAttachToContest) {
@@ -35,8 +43,10 @@ export const initRegistrationController = () => {
     rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, formData: UserFormData) => {
         submitNewUser(formData)
             .then(() => attachTagToContest(formData))
-            .then(viewUpdater.updateAll)
-            .catch(console.error);
+            .then(viewUpdater.results.updateUsersData)
+            .catch((e) => {
+                throw Error(e);
+            });
 
         portableReader.continue();
     });
@@ -46,16 +56,20 @@ export const initRegistrationController = () => {
             .then(() => {
                 return attachTagToContest(formData);
             })
-            .then(viewUpdater.updateAll)
-            .catch(console.error);
+            .then(viewUpdater.results.updateUsersData)
+            .catch((e) => {
+                throw Error(e);
+            });
 
         portableReader.continue();
     });
 
     rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
         dbMorda.tagsMethods.deleteTag(uid)
-            .then(viewUpdater.updateAll)
-            .catch(console.error);
+            .then(viewUpdater.results.updateUsersData)
+            .catch((e) => {
+                throw Error(e);
+            });
 
        portableReader.continue();
     });
@@ -64,8 +78,10 @@ export const initRegistrationController = () => {
         const { uid, contestId } = data;
 
         dbMorda.tagContest.deattachContest(uid, contestId)
-            .then(viewUpdater.updateAll)
-            .catch(console.error);
+            .then(viewUpdater.results.updateUsersData)
+            .catch((e) => {
+                throw Error(e);
+            });
 
         portableReader.continue();
     });
