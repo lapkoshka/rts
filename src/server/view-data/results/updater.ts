@@ -1,9 +1,9 @@
-import { IPC_RESULTS } from '../../ipc/ipc-events';
+import { IPC_RESULTS } from '../../databus/ipc/events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { dbMorda } from '../../modules/database/database';
 import { RaceData, UserRacesData } from '../../modules/database/tables/races';
 import { UserData } from '../../modules/database/tables/users';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { Storage } from '../../storage';
 
 export interface TotalInfoRow extends UserRacesData {
@@ -24,7 +24,7 @@ export const updateUsersData = async (): Promise<void> => {
     try {
         const selectedContestId = Storage.contests.getSelectedContest();
         const users: UserData[] = await dbMorda.users.getUsersByContest(selectedContestId);
-        rootDispatcher.sendEvent<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
+        IpcRoot.send<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
     } catch (e) {
         throw Error(e);
     }
@@ -35,13 +35,13 @@ export const updateRaceHistory = async (): Promise<void> => {
         const selectedContestId = Storage.contests.getSelectedContest();
         const raceData = await dbMorda.races.getRacesByContest(selectedContestId);
 
-        const updateData: RaceHistory = raceData.map((race: RaceData) => ({
+        const updateData = raceData.map((race: RaceData) => ({
             ...race,
             username: race.firstname + ' ' + race.lastname,
             formattedTime: toHumanReadableTime(race.time),
         }));
 
-        rootDispatcher.sendEvent(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
+        IpcRoot.send<RaceHistory>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
     } catch (e) {
         throw Error(e);
     }
@@ -50,7 +50,7 @@ export const updateRaceHistory = async (): Promise<void> => {
 export const updateTotalInfo = async (): Promise<void> => {
     // const totalInfo =
     // const updateData
-    // rootDispatcher.sendEvent(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
+    // IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
 
 
     // getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
@@ -59,7 +59,7 @@ export const updateTotalInfo = async (): Promise<void> => {
     //         username: row.firstname + ' ' + row.lastname,
     //         formattedTime: toHumanReadableTime(row.besttime),
     //     }));
-    //     rootDispatcher.sendEvent(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
+    //     IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
     // }).catch((err: Error) => {
     //     throw err;
     // });

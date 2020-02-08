@@ -8,7 +8,7 @@ import {
     IPC_REGISTRATION,
     IPC_RESULTS,
     IPC_RSSI_CHART,
-} from '../server/ipc/ipc-events';
+} from '../server/databus/ipc/events';
 
 type IpcEventType =
     IPC_APP |

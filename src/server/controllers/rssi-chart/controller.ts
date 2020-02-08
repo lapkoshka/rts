@@ -1,6 +1,6 @@
-import { IPC_RSSI_CHART } from '../../ipc/ipc-events';
+import { IPC_RSSI_CHART } from '../../databus/ipc/events';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { mainReader } from '../../modules/readers/main-reader';
 import { performance } from 'perf_hooks';
 
@@ -33,7 +33,7 @@ const enableInfo: ChartEnableInfo = {
 };
 
 export const initRSSIController = () => {
-    rootDispatcher.addPageListener(IPC_RSSI_CHART.ENABLE, (_, info: ChartEnableInfo) => {
+    IpcRoot.on<ChartEnableInfo>(IPC_RSSI_CHART.ENABLE, (info) => {
         enableInfo.enable = info.enable;
         enableInfo.uid = info.uid;
     });
@@ -47,6 +47,6 @@ export const initRSSIController = () => {
         const point = getPoint(tag);
         trace.push(point);
 
-        rootDispatcher.sendEvent(IPC_RSSI_CHART.DATA, trace);
+        IpcRoot.send<RSSIChartTrace>(IPC_RSSI_CHART.DATA, trace);
     });
 };

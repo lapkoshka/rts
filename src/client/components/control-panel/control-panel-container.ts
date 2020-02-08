@@ -3,7 +3,7 @@ import { Ipc } from '../../../common/ipc';
 import {
     IPC_MAIN_READER,
     IPC_PORTABLE_READER,
-} from '../../../server/ipc/ipc-events';
+} from '../../../server/databus/ipc/events';
 import { READER_STATUS } from '../../../server/lib/readers/base-reader';
 import {
     MainReaderSettings,

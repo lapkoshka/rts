@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Ipc } from '../../../common/ipc';
-import { IPC_CONTESTS } from '../../../server/ipc/ipc-events';
+import { IPC_CONTESTS } from '../../../server/databus/ipc/events';
 import { ContestFormData } from '../../../server/modules/database/tables/contests';
 import { ContestData } from '../../../server/view-data/contests/contests';
 import { Notification } from '../../lib/notification';
