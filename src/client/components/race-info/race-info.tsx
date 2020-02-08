@@ -1,10 +1,7 @@
 import { Icon } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import React, { FC } from 'react';
-import {
-    CurrentRaceRow,
-    CurrentRaces,
-} from '../../../server/controllers/race/race-info-view';
+import { CurrentRaceRow, CurrentRaces } from '../../../server/view-data/race/updater';
 import './race-info.scss';
 
 export interface RaceInfoProps {

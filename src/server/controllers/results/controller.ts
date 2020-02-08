@@ -1,16 +1,12 @@
 import { IPC_RESULTS } from '../../ipc/ipc-events';
-import { deleteRace } from '../../modules/database/tables/races';
 import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
-import { updateRaceHistory } from './history';
-import { updateTotalInfo } from './total';
+import { Storage } from '../../storage';
+import { viewUpdater } from '../../view-data/view-updater';
 
 export const initResultsController = () => {
-    rootDispatcher.addPageListener(IPC_RESULTS.ON_RACE_DELETE, (_, id: number) => {
-        deleteRace(id).then(() => {
-            updateRaceHistory();
-            updateTotalInfo();
-        }).catch((err: Error) => {
-            throw err;
-        });
+    rootDispatcher.addPageListener(IPC_RESULTS.ON_RACE_DELETE, async (_, id: number) => {
+        await Storage.races.deleteRace(id);
+        viewUpdater.results.updateRaceHistory();
+        viewUpdater.results.updateTotalInfo();
     });
 };

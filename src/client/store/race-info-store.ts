@@ -1,4 +1,4 @@
-import { CurrentRaces } from '../../server/controllers/race/race-info-view';
+import { CurrentRaces } from '../../server/view-data/race/updater';
 import { defaultRaceParams, RaceParams } from '../../server/lib/domain/race';
 import { Action } from './index';
 

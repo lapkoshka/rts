@@ -1,6 +1,6 @@
-import { dbMorda } from '../database';
-const database = dbMorda.database;
+import { Database, Statement } from 'sqlite3';
 
+// todo: интерфейсы уезжают в гидраторы данных
 export interface RaceData {
     id: number;
     timestamp: string;
@@ -16,77 +16,47 @@ export interface UserRacesData {
     count: number;
 }
 
-export const getRaces = (): Promise<RaceData[]> => {
-    // const query = `
-    //     select
-    //     r.id as "id",
-    //     r.timestamp as "timestamp",
-    //     u.firstname as "firstname",
-    //     u.lastname as "lastname",
-    //     r.time as "time"
-    //     from race r
-    //     join users u
-    //     on r.uid = u.uid
-    //     order by id desc
-    //     limit 40
-    //     `;
+export interface RacesMethods {
+    insertRace: (userId: number, contestId: number, totalTime: number) => Promise<number>;
+    deleteRace: (id: number) => Promise<void>;
+    getRacesByContest: (contestId: number) => Promise<any>; // todo: any??
 
-    return new Promise((resolve, reject) => {
-        // database.all(query, (err: any, rows: any) => {
-        //     if (err) {
-        //         reject(err);
-        //     }
+}
 
-            resolve([]);
-        // });
-    });
-};
+export const getRacesMethods = (database: Database): RacesMethods => ({
+    insertRace(userId, contestId, totalTime) {
+        const sql = 'insert into races(user_id, contest_id, time) values (?, ?, ?)';
 
-export const getTotalUserRaces = (): Promise<UserRacesData[]> => {
-    // const query = `
-    //     select u.uid as "uid",
-    //     u.firstname as "firstname",
-    //     u.lastname as "lastname",
-    //     count(r.uid) as "count",
-    //     min(r.time) as "besttime"
-    //     from race r
-    //     join users u
-    //     on r.uid = u.uid
-    //     group by r.uid
-    //     order by besttime asc
-    // `;
-
-    return new Promise((resolve, reject) => {
-        // database.all(query, (err: any, rows: any) => {
-        //     if (err) {
-        //         reject(err);
-        //     }
-
-            resolve([]);
-        // });
-    });
-};
-
-export const insertRace = (uid: string, timestamp: number): void => {
-    database.run(`insert into race (
-        uid,
-        time
-    ) values (?, ?)`, [uid, timestamp], (err: any) => {
-        if (err) {
-            throw Error(err);
-        }
-    });
-};
-
-export const deleteRace = (id: number): Promise<void> => {
-    const query = `delete from race where id = ?`;
-    return new Promise((resolve, reject) => {
-        database.run(query, id, (err: Error) => {
-            if (err) {
-                reject(Error);
-            }
-
-            resolve();
+        return new Promise((resolve, reject) => {
+            const stmt: Statement = database.prepare(sql);
+            stmt.run([userId, contestId, totalTime], function(err: Error) {
+                if (err) reject(err);
+                resolve(this.lastID);
+            });
         });
-    });
-};
+    },
+    deleteRace(id) {
+        return new Promise((resolve, reject) => {
+            database.run('begin transaction');
+            database.run('delete from races where id = (?)', id);
+            database.run('delete from laps where race_id = (?)', id);
+            database.run('commit', (err: Error) => {
+                if (err) reject(err);
+                resolve();
+            });
+        });
+    },
+    getRacesByContest(contestId) {
+        const sql = `select races.*, users.firstname, users.lastname from races
+            join users on races.user_id = users.id
+            and races.contest_id = (?)
+        `;
+
+        return new Promise((resolve, reject) => {
+            database.all(sql, [contestId], (err: Error, rows) => {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+    }
+});

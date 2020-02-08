@@ -36,7 +36,6 @@ export const getTagsMethods = (database: Database): TagsMethods => ({
         return new Promise((resolve, reject) => {
             database.get(sql, [uid], (err: Error, row) => {
                if (err) reject (err);
-               console.log('select from tags', row);
                resolve(row && row.user_id || undefined);
             });
         });

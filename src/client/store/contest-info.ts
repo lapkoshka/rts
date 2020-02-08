@@ -1,4 +1,3 @@
-import { Nullable } from '../../common/types';
 import { ContestData } from '../../server/view-data/contests/contests';
 import { Action } from './index';
 
@@ -8,17 +7,15 @@ const SET_CONTEST_LIST = 'contest/SET_CONTEST_LIST';
 const SET_SELECTED_CONTEST = 'contest/SET_SELECTED_CONTEST';
 const SET_SHOW_CONTEST_SETTINGS = 'contest/SET_SHOW_CONTEST_SETTINGS';
 
-const LS_CONTEST_ID = 'SELECTED_CONTEST';
-
 export interface ContestInfoState {
     contestList: ContestData[];
-    selectedContest: Nullable<number>;
+    selectedContest: number|undefined;
     showContestSettings: boolean;
 }
 
 export const initialState: ContestInfoState = {
     contestList: [],
-    selectedContest: Number(localStorage.getItem(LS_CONTEST_ID)),
+    selectedContest: undefined,
     showContestSettings: false,
 };
 
@@ -45,10 +42,6 @@ export const contestInfoReducer = (state = initialState, action: ContestInfoActi
                 contestList: action.payload as ContestData[],
             };
         case SET_SELECTED_CONTEST:
-            if (action.payload) {
-                localStorage.setItem(LS_CONTEST_ID, action.payload.toString());
-            }
-
             return {
                 ...state,
                 selectedContest: action.payload as number,

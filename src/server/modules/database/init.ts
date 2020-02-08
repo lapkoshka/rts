@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { Database, verbose } from 'sqlite3';
 
 const sqlite3 = verbose();
-const DATABASE_CATALOG = './database';
+const DATABASE_CATALOG = './data';
 const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
 const openDatabase = (): Database => {
