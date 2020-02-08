@@ -1,11 +1,9 @@
-import { IPC_REGISTRATION } from '../../ipc/ipc-events';
+import { IPC_REGISTRATION } from '../../databus/ipc/events';
 import { dbMorda } from '../../modules/database/database';
 import { UserFormData } from '../../modules/database/tables/users';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { portableReader } from '../../modules/readers/portable-reader';
 import { viewUpdater } from '../../view-data/view-updater';
-
-// todo: переделать на async/await чтобы было едино везде
 
 export interface DeattachContestData {
     uid: string;
@@ -36,54 +34,37 @@ const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<voi
 };
 
 export const initRegistrationController = () => {
-    rootDispatcher.addPageListener(IPC_REGISTRATION.CANCEL, () => {
-        portableReader.continue();
-    });
+    IpcRoot.on(IPC_REGISTRATION.CANCEL, portableReader.continue);
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.SUBMIT, (_, formData: UserFormData) => {
-        submitNewUser(formData)
-            .then(() => attachTagToContest(formData))
-            .then(viewUpdater.results.updateUsersData)
-            .catch((e) => {
-                throw Error(e);
-            });
+    IpcRoot.on<UserFormData>(IPC_REGISTRATION.SUBMIT, async(formData) => {
+        await submitNewUser(formData);
+        await attachTagToContest(formData);
+        viewUpdater.results.updateUsersData();
 
         portableReader.continue();
     });
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.ATTACH_USER, (_, formData: UserFormData) => {
-        dbMorda.tagsMethods.addTagForUser(formData)
-            .then(() => {
-                return attachTagToContest(formData);
-            })
-            .then(viewUpdater.results.updateUsersData)
-            .catch((e) => {
-                throw Error(e);
-            });
+    IpcRoot.on<UserFormData>(IPC_REGISTRATION.ATTACH_USER, async (formData) => {
+        await dbMorda.tagsMethods.addTagForUser(formData);
+        await attachTagToContest(formData);
+        viewUpdater.results.updateUsersData();
 
         portableReader.continue();
     });
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_TAG, (_, uid: string) => {
-        dbMorda.tagsMethods.deleteTag(uid)
-            .then(viewUpdater.results.updateUsersData)
-            .catch((e) => {
-                throw Error(e);
-            });
+    IpcRoot.on<string>(IPC_REGISTRATION.DEATTACH_TAG, async (uid) => {
+        await dbMorda.tagsMethods.deleteTag(uid);
+        viewUpdater.results.updateUsersData();
 
-       portableReader.continue();
+        portableReader.continue();
     });
 
-    rootDispatcher.addPageListener(IPC_REGISTRATION.DEATTACH_CONTEST, (_, data: DeattachContestData) => {
+    IpcRoot.on<DeattachContestData>(IPC_REGISTRATION.DEATTACH_CONTEST, async (data) => {
         const { uid, contestId } = data;
 
-        dbMorda.tagContest.deattachContest(uid, contestId)
-            .then(viewUpdater.results.updateUsersData)
-            .catch((e) => {
-                throw Error(e);
-            });
+        dbMorda.tagContest.deattachContest(uid, contestId);
+        viewUpdater.results.updateUsersData();
 
         portableReader.continue();
     });
 };
-

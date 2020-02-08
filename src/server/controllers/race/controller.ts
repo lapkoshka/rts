@@ -1,10 +1,10 @@
 import { Nullable } from '../../../common/types';
-import { IPC_RACE } from '../../ipc/ipc-events';
+import { IPC_RACE } from '../../databus/ipc/events';
 import { defaultRaceParams, RaceParams } from '../../lib/domain/race';
 import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import { dbMorda } from '../../modules/database/database';
 import { UserData } from '../../modules/database/tables/users';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { mainReader } from '../../modules/readers/main-reader';
 import { closeRace, getRace } from './race-scenario';
 
@@ -15,11 +15,11 @@ const selectUser = (users: UserData[], userId: number, contestId: number): Nulla
         user.id === userId && user.contests.some((id: number) => id === contestId));
 
 export const initRaceController = (): void => {
-    rootDispatcher.addPageListener(IPC_RACE.UPDATE_RACE_PARAMS, (_, params: RaceParams) => {
+    IpcRoot.on<RaceParams>(IPC_RACE.UPDATE_RACE_PARAMS, (params) => {
         raceParams = params;
     });
 
-    rootDispatcher.addPageListener(IPC_RACE.ON_CLOSE_RACE, (_, uid: string) => {
+    IpcRoot.on<string>(IPC_RACE.ON_CLOSE_RACE, (uid) => {
         closeRace(uid);
     });
 
@@ -42,6 +42,8 @@ export const initRaceController = (): void => {
                 return;
             }
 
+            // todo:
+            // scenario.appendTag();
             const race = getRace(tag, user, raceParams);
             race.appendTag(tag);
         } catch (e) {

@@ -1,6 +1,6 @@
-import { IPC_RACE } from '../../ipc/ipc-events';
+import { IPC_RACE } from '../../databus/ipc/events';
 import { toHumanReadableTime } from '../../lib/functions';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { currentRaces as racesState } from './../../controllers/race/race-scenario';
 
 export interface CurrentRaceRow {
@@ -27,5 +27,5 @@ export const updateRaceInfo = (): void => {
             return currentRaces;
         }, []);
 
-    rootDispatcher.sendEvent(IPC_RACE.CURRENT_RACES_CHANGED, currentRaces);
+    IpcRoot.send<CurrentRaces>(IPC_RACE.CURRENT_RACES_CHANGED, currentRaces);
 };

@@ -8,7 +8,7 @@ import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import './client/static/style/main.scss';
 import { Ipc } from './common/ipc';
-import { IPC_APP } from './server/ipc/ipc-events';
+import { IPC_APP } from './server/databus/ipc/events';
 
 // TODO make a component with fields and buttons
 // @ts-ignore

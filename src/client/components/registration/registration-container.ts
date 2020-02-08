@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { Ipc } from '../../../common/ipc';
 import { PortableReaderRegistrationData } from '../../../server/controllers/portable-reader/controller';
 import { DeattachContestData } from '../../../server/controllers/registration/controller';
-import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/ipc/ipc-events';
+import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/databus/ipc/events';
 import { UserFormData } from '../../../server/modules/database/tables/users';
 import { RootState, store } from '../../store';
 import {

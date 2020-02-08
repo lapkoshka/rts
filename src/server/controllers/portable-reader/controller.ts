@@ -1,9 +1,9 @@
 import { Nullable } from '../../../common/types';
-import { IPC_PORTABLE_READER } from '../../ipc/ipc-events';
-import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
+import { IPC_PORTABLE_READER } from '../../databus/ipc/events';
+import { READER_EVENT, READER_STATUS, RFIDTag } from '../../lib/readers/base-reader';
 import { dbMorda } from '../../modules/database/database';
 import { UserData } from '../../modules/database/tables/users';
-import { rootDispatcher } from '../../modules/dispatcher/root-dispatcher';
+import { IpcRoot } from '../../databus/ipc/root';
 import { portableReader } from '../../modules/readers/portable-reader';
 
 export interface PortableReaderRegistrationData {
@@ -14,21 +14,21 @@ export interface PortableReaderRegistrationData {
 
 export const initPortableReaderController = () => {
     portableReader.on(READER_EVENT.CONNECTING_START, () => {
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
+        IpcRoot.send<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
     });
 
     portableReader.on(READER_EVENT.CONNECTED, () => {
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
+        IpcRoot.send<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
     });
 
     portableReader.on(READER_EVENT.CONNECTING_FAILED, (message: string) => {
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.ERROR, message);
+        IpcRoot.send<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
+        IpcRoot.send<string>(IPC_PORTABLE_READER.ERROR, message);
     });
 
     portableReader.on(READER_EVENT.DISCONNECT, (message: string) => {
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
-        rootDispatcher.sendEvent(IPC_PORTABLE_READER.DISCONNECT, message);
+        IpcRoot.send<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
+        IpcRoot.send<string>(IPC_PORTABLE_READER.DISCONNECT, message);
     });
 
     portableReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
@@ -38,11 +38,11 @@ export const initPortableReaderController = () => {
                 user.contests = await dbMorda.tagContest.getContests(tag.uid);
             }
 
-            rootDispatcher.sendEvent(IPC_PORTABLE_READER.TAG, {
+            IpcRoot.send<PortableReaderRegistrationData>(IPC_PORTABLE_READER.TAG, {
                 uid: tag.uid,
                 user,
                 allUsers: await dbMorda.users.getUsers(),
-            } as PortableReaderRegistrationData);
+            });
         } catch (e) {
             throw Error(e);
         }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
-import { IPC_RESULTS } from '../../../server/ipc/ipc-events';
+import { IPC_RESULTS } from '../../../server/databus/ipc/events';
 import { UserData } from '../../../server/modules/database/tables/users';
 import { selectContest } from '../contest/selectors';
 import { ResultsInfo, ResultsInfoProps } from './results-info';
