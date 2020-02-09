@@ -1,8 +1,6 @@
 import { Database, Statement } from 'sqlite3';
 import { Nullable } from '../../../../../common/types';
-import { ContestData } from '../../../../view-data/contests/contests';
-
-export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description' | 'laps'>;
+import { ContestData } from '../../../domains/contests';
 
 export interface ContestMethods {
     create: () => Promise<number>;
@@ -10,7 +8,7 @@ export interface ContestMethods {
     start: (id: number, timestamp: number) => Promise<void>;
     close: (id: number, timestamp: number) => Promise<void>;
     get: () => Promise<ContestData[]>;
-    changeSettings: (data: ContestFormData) => Promise<void>;
+    changeSettings: (id: number, name: string, description: string, laps: number) => Promise<void>;
     getStartedContests: () => Promise<ContestData[]>;
     getCurrentContestId: () => Promise<Nullable<number|undefined>>;
 }
@@ -77,8 +75,7 @@ export const getContestMethods = (database: Database): ContestMethods => ({
             });
         });
     },
-    changeSettings(data) {
-        const { id, name, description, laps } = data;
+    changeSettings(id, name, description, laps) {
         const sql = `update contests set name = (?), description = (?), laps = (?) where id = (?)`;
 
         return new Promise((resolve, reject) => {

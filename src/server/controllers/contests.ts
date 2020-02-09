@@ -1,64 +1,43 @@
 import { getTimestamp } from '../../common/helpers';
 import { IPC_CONTESTS } from '../databus/ipc/events';
-import { dbMorda } from '../storage/tools/database/database';
-import { ContestFormData } from '../storage/tools/database/tables/contests';
+import { ContestFormData } from '../storage/domains/contests';
 import { IpcRoot } from '../databus/ipc/root';
 import { Storage } from '../storage';
 import { viewUpdater } from '../view-data/view-updater';
 
 export const initContestController = () => {
     IpcRoot.on(IPC_CONTESTS.CREATE, async () => {
-        try {
-            const id = await dbMorda.contests.create();
-            viewUpdater.contests.updateContestsData();
-            IpcRoot.send<number>(IPC_CONTESTS.CONTEST_CREATED, id);
-        } catch (e) {
-            throw Error(e);
-        }
+        const id = await Storage.contests.create();
+        viewUpdater.contests.updateContestsData();
+        IpcRoot.send<number>(IPC_CONTESTS.CONTEST_CREATED, id);
     });
 
     IpcRoot.on<ContestFormData>(IPC_CONTESTS.SETTINGS_CHANGE, async (data) => {
-        try {
-            await dbMorda.contests.changeSettings(data);
-            viewUpdater.contests.updateContestsData();
-        } catch (e) {
-            throw Error(e);
-        }
+        await Storage.contests.changeSettings(data);
+        viewUpdater.contests.updateContestsData();
     });
 
     IpcRoot.on<number>(IPC_CONTESTS.DELETE, async (id) => {
-        try {
-            await dbMorda.contests.delete(id);
-            viewUpdater.contests.updateContestsData();
-            IpcRoot.send(IPC_CONTESTS.ON_CONTEST_DELETED);
-        } catch (e) {
-            throw Error(e);
-        }
+        await Storage.contests.delete(id);
+        viewUpdater.contests.updateContestsData();
+        IpcRoot.send(IPC_CONTESTS.ON_CONTEST_DELETED);
     });
 
     IpcRoot.on<number>(IPC_CONTESTS.START, async (id) => {
-        try {
-            const startedContests = await dbMorda.contests.getStartedContests();
+        const startedContests = await Storage.contests.getStartedContests();
 
-            if (startedContests.length > 0) {
-                IpcRoot.send(IPC_CONTESTS.START_ERROR);
-                return;
-            }
-
-            await dbMorda.contests.start(id, getTimestamp());
-            viewUpdater.contests.updateContestsData();
-        } catch (e) {
-            throw Error(e);
+        if (startedContests.length > 0) {
+            IpcRoot.send(IPC_CONTESTS.START_ERROR);
+            return;
         }
+
+        await Storage.contests.start(id, getTimestamp());
+        viewUpdater.contests.updateContestsData();
     });
 
     IpcRoot.on<number>(IPC_CONTESTS.CLOSE, async (id) => {
-        try {
-            await dbMorda.contests.close(id, getTimestamp());
-            viewUpdater.contests.updateContestsData();
-        } catch (e) {
-            throw Error(e);
-        }
+        await Storage.contests.close(id, getTimestamp());
+        viewUpdater.contests.updateContestsData();
     });
 
     IpcRoot.on<number>(IPC_CONTESTS.SET_SELECTED_CONTEST, (id) => {

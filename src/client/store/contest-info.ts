@@ -1,4 +1,4 @@
-import { ContestData } from '../../server/view-data/contests/contests';
+import { ContestData } from '../../server/storage/domains/contests';
 import { Action } from './index';
 
 type ContestInfoAction = Action<ContestData[] | number | boolean>;

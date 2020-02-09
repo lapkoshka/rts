@@ -1,8 +1,8 @@
 import { Button, Intent, Switch } from '@blueprintjs/core';
 import React, { FC, FormEvent, useCallback, useState } from 'react';
 import { Nullable } from '../../../../common/types';
+import { ContestData } from '../../../../server/storage/domains/contests';
 import { UserData } from '../../../../server/storage/tools/database/tables/users';
-import { ContestData } from '../../../../server/view-data/contests/contests';
 import style from './contest-attach.module.css';
 
 interface ContestAttachProps {
