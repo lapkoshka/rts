@@ -26,9 +26,8 @@ class DbMorda {
         this.laps = getLapsMethods(this.database);
     }
 
-    public async closeDatabase(): Promise<void> {
-        const db = await this.database;
-        db.close((err: Error) => {
+    public closeDatabase(): void {
+        this.database.close((err: Error) => {
             if (err) {
                 console.log('Cant close database, msg:' + err.message);
                 throw err;
