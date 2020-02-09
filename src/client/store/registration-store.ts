@@ -1,5 +1,5 @@
+import { UserData } from '../../server/storage/domains/users';
 import { Action } from './index';
-import { UserData } from '../../server/storage/tools/database/tables/users';
 
 type RegistrationStore = Action<UserData | UserData[] | string>;
 

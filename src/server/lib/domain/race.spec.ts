@@ -1,4 +1,4 @@
-import { UserData } from '../../storage/tools/database/tables/users';
+import { UserData } from '../../storage/domains/users';
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
 import { Race, defaultRaceParams, RACE_EVENT } from './race';

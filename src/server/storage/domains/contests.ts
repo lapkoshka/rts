@@ -85,4 +85,12 @@ export class Contests {
             throw Error(e);
         }
     }
+
+    public static getContestIds(uid: string): Promise<number[]> {
+        try {
+            return dbMorda.tagContest.getContests(uid);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
 }

@@ -3,8 +3,8 @@ import { IPC_RACE } from '../databus/ipc/events';
 import { defaultRaceParams, RaceParams } from '../lib/domain/race';
 import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
 import { MainReader } from '../lib/readers/main-reader';
+import { UserData } from '../storage/domains/users';
 import { dbMorda } from '../storage/tools/database/database';
-import { UserData } from '../storage/tools/database/tables/users';
 import { IpcRoot } from '../databus/ipc/root';
 import { CirclesScenario } from '../modules/race-scenarios/circles';
 

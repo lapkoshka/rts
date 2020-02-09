@@ -6,7 +6,7 @@ import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
-import { UserData } from '../../../server/storage/tools/database/tables/users';
+import { UserData } from '../../../server/storage/domains/users';
 import { RaceSettings } from './race-settings/race-settings';
 import { MainReaderIpSettings } from './reader-settings/main-reader-ip-settings';
 import './settings.scss';

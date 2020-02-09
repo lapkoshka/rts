@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { UserFormData } from './users';
+import { UserFormData } from '../../../domains/users';
 
 export interface TagsMethods {
     addTagForUser: (user: UserFormData) => Promise<void>;

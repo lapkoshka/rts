@@ -1,8 +1,8 @@
 import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import { Storage } from '../../storage';
+import { UserData } from '../../storage/domains/users';
 import { viewUpdater } from '../../view-data/view-updater';
-import { UserData } from '../../storage/tools/database/tables/users';
 
 export interface Races {
     [key: string]: Race;

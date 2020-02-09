@@ -1,39 +1,14 @@
 import { Database, Statement } from 'sqlite3';
 import { Nullable } from '../../../../../common/types';
-
-export interface UserData {
-    uid: string;
-    id: number;
-    firstname: string;
-    lastname: string;
-    contests: number[];
-}
-
-export interface UserFormData extends UserData {
-    alreadyRegistred: boolean;
-    attachUserId?: number;
-    attachContestId?: number;
-}
+import { UserData } from '../../../domains/users';
 
 export interface UserMethods {
-    getUser: (uid: string) => Promise<Nullable<UserData>>;
-    getUsers: () => Promise<UserData[]>;
+    getUser: (uid: string) => Promise<Nullable<any>>;
+    getUsers: () => Promise<any[]>;
     updateUser: (user: UserData) => Promise<number>;
     insertUser: (user: UserData) => Promise<number>;
     getUsersByContest: (contestId: number) => Promise<UserData[]>;
 }
-
-// todo: to hydrate
-const parseContests = (groupConcatValue?: string) => {
-    return groupConcatValue ? groupConcatValue
-        .split(',')
-        .map((strContestId: string) =>
-            parseInt(strContestId, 10)) : [];
-};
-
-// todo: to hydrate
-const parseTags = (groupConcatValue?: string) =>
-    groupConcatValue ? groupConcatValue.split(',') : [];
 
 export const getUserMethods = (database: Database): UserMethods => ({
     getUser(uid) {
@@ -65,11 +40,7 @@ export const getUserMethods = (database: Database): UserMethods => ({
         return new Promise((resolve, reject) => {
             database.all(sql, (err: Error, rows) => {
                 if (err) reject(err);
-                resolve(rows.map((row) => ({
-                  ...row,
-                  contests: parseContests(row.contests),
-                  tags: parseTags(row.tags),
-                })));
+                resolve(rows);
             });
         });
     },

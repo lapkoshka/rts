@@ -3,7 +3,7 @@ import { IconNames } from '@blueprintjs/icons';
 import React, { FC, FormEvent, useCallback, useEffect } from 'react';
 import { Nullable } from '../../../common/types';
 import { ContestData } from '../../../server/storage/domains/contests';
-import { UserData, UserFormData } from '../../../server/storage/tools/database/tables/users';
+import { UserData, UserFormData } from '../../../server/storage/domains/users';
 import { KEYCODES } from '../../lib/keycodes';
 import { OverlayPopup } from '../ui/overlay-popup/overlay-popup';
 import { ContestAttach } from './contest-attach/contest-attach';

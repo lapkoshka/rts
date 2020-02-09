@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useState } from 'react';
 import { ContestData } from '../../../server/storage/domains/contests';
+import { UserData } from '../../../server/storage/domains/users';
 import { RaceHistory } from '../../../server/view-data/results/updater';
 import { TotalInfo } from '../../../server/view-data/results/updater';
-import { UserData } from '../../../server/storage/tools/database/tables/users';
 import { Block } from '../ui/block/block';
 import { renderRaceHistory } from './tabs/history';
 import { renderUsers } from './tabs/users';

@@ -4,7 +4,7 @@ import { Ipc } from '../../../common/ipc';
 import { PortableReaderRegistrationData } from '../../../server/controllers/portable-reader';
 import { DeattachContestData } from '../../../server/controllers/registration';
 import { IPC_PORTABLE_READER, IPC_REGISTRATION } from '../../../server/databus/ipc/events';
-import { UserFormData } from '../../../server/storage/tools/database/tables/users';
+import { UserFormData } from '../../../server/storage/domains/users';
 import { RootState, store } from '../../store';
 import {
     closeRegistrationPopup,

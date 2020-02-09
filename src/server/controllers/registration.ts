@@ -1,7 +1,7 @@
 import { IPC_REGISTRATION } from '../databus/ipc/events';
 import { PortableReader } from '../lib/readers/portable-reader';
+import { UserFormData } from '../storage/domains/users';
 import { dbMorda } from '../storage/tools/database/database';
-import { UserFormData } from '../storage/tools/database/tables/users';
 import { IpcRoot } from '../databus/ipc/root';
 import { viewUpdater } from '../view-data/view-updater';
 
