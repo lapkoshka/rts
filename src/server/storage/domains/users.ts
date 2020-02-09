@@ -44,6 +44,14 @@ export class Users {
         }
     }
 
+    public static async getUserId(uid: string): Promise<number | undefined> {
+        try {
+            return await dbMorda.tagsMethods.getUserId(uid);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
     private static parseContests(groupConcatValue?: string): number[] {
         return groupConcatValue ? groupConcatValue
             .split(',')

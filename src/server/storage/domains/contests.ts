@@ -18,50 +18,50 @@ export interface ContestData {
 export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description' | 'laps'>;
 
 export class Contests {
-    public static create(): Promise<number> {
+    public static async create(): Promise<number> {
         try {
-            return dbMorda.contests.create();
+            return await dbMorda.contests.create();
         } catch (e) {
             throw Error(e);
         }
     }
 
-    public static changeSettings(data: ContestFormData): Promise<void> {
+    public static async changeSettings(data: ContestFormData): Promise<void> {
         const { id, name, description, laps } = data;
         try {
-            return dbMorda.contests.changeSettings(id, name, description, laps);
+            return await dbMorda.contests.changeSettings(id, name, description, laps);
         } catch (e) {
             throw Error(e);
         }
     }
 
-    public static delete(id: number): Promise<void> {
+    public static async delete(id: number): Promise<void> {
         try {
-            return dbMorda.contests.delete(id);
+            return await dbMorda.contests.delete(id);
         } catch (e) {
             throw Error(e);
         }
     }
 
-    public static getStartedContests(): Promise<ContestData[]> {
+    public static async getStartedContests(): Promise<ContestData[]> {
         try {
-            return dbMorda.contests.getStartedContests();
+            return await dbMorda.contests.getStartedContests();
         } catch (e) {
             throw Error(e);
         }
     }
 
-    public static start(id: number, timestamp: number): Promise<void> {
+    public static async start(id: number, timestamp: number): Promise<void> {
         try {
-            return dbMorda.contests.start(id, timestamp);
+            return await dbMorda.contests.start(id, timestamp);
         } catch (e) {
             throw Error(e);
         }
     }
 
-    public static close(id: number, timestamp: number): Promise<void> {
+    public static async close(id: number, timestamp: number): Promise<void> {
         try {
-            return dbMorda.contests.close(id, timestamp);
+            return await dbMorda.contests.close(id, timestamp);
         } catch (e) {
             throw Error(e);
         }
@@ -86,9 +86,9 @@ export class Contests {
         }
     }
 
-    public static getContestIds(uid: string): Promise<number[]> {
+    public static async getContestIds(uid: string): Promise<number[]> {
         try {
-            return dbMorda.tagContest.getContests(uid);
+            return await dbMorda.tagContest.getContests(uid);
         } catch (e) {
             throw Error(e);
         }
