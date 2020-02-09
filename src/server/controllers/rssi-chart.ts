@@ -1,7 +1,7 @@
-import { IPC_RSSI_CHART } from '../../databus/ipc/events';
-import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { IpcRoot } from '../../databus/ipc/root';
-import { mainReader } from '../../modules/readers/main-reader';
+import { IPC_RSSI_CHART } from '../databus/ipc/events';
+import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
+import { IpcRoot } from '../databus/ipc/root';
+import { mainReader } from '../modules/readers/main-reader';
 import { performance } from 'perf_hooks';
 
 export interface ChartEnableInfo {

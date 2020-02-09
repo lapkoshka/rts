@@ -1,6 +1,6 @@
 import { Divider, Drawer, Position } from '@blueprintjs/core';
 import React, { FC, memo, useCallback } from 'react';
-import { ChartEnableInfo } from '../../../server/controllers/rssi-chart/controller';
+import { ChartEnableInfo } from '../../../server/controllers/rssi-chart';
 import { RaceParams } from '../../../server/lib/domain/race';
 import {
     MainReaderParams,

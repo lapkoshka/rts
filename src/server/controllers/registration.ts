@@ -1,9 +1,9 @@
-import { IPC_REGISTRATION } from '../../databus/ipc/events';
-import { dbMorda } from '../../modules/database/database';
-import { UserFormData } from '../../modules/database/tables/users';
-import { IpcRoot } from '../../databus/ipc/root';
-import { portableReader } from '../../modules/readers/portable-reader';
-import { viewUpdater } from '../../view-data/view-updater';
+import { IPC_REGISTRATION } from '../databus/ipc/events';
+import { dbMorda } from '../modules/database/database';
+import { UserFormData } from '../modules/database/tables/users';
+import { IpcRoot } from '../databus/ipc/root';
+import { portableReader } from '../modules/readers/portable-reader';
+import { viewUpdater } from '../view-data/view-updater';
 
 export interface DeattachContestData {
     uid: string;

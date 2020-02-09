@@ -1,10 +1,10 @@
-import { getTimestamp } from '../../../common/helpers';
-import { IPC_CONTESTS } from '../../databus/ipc/events';
-import { dbMorda } from '../../modules/database/database';
-import { ContestFormData } from '../../modules/database/tables/contests';
-import { IpcRoot } from '../../databus/ipc/root';
-import { Storage } from '../../storage';
-import { viewUpdater } from '../../view-data/view-updater';
+import { getTimestamp } from '../../common/helpers';
+import { IPC_CONTESTS } from '../databus/ipc/events';
+import { dbMorda } from '../modules/database/database';
+import { ContestFormData } from '../modules/database/tables/contests';
+import { IpcRoot } from '../databus/ipc/root';
+import { Storage } from '../storage';
+import { viewUpdater } from '../view-data/view-updater';
 
 export const initContestController = () => {
     IpcRoot.on(IPC_CONTESTS.CREATE, async () => {

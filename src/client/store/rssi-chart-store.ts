@@ -1,7 +1,7 @@
 import {
     ChartEnableInfo,
     RSSIChartTrace,
-} from '../../server/controllers/rssi-chart/controller';
+} from '../../server/controllers/rssi-chart';
 import { Action } from './index';
 
 type RSSIChartStore = Action<RSSIChartTrace | ChartEnableInfo>;

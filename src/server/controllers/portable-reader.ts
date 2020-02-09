@@ -1,10 +1,10 @@
-import { Nullable } from '../../../common/types';
-import { IPC_PORTABLE_READER } from '../../databus/ipc/events';
-import { READER_EVENT, READER_STATUS, RFIDTag } from '../../lib/readers/base-reader';
-import { dbMorda } from '../../modules/database/database';
-import { UserData } from '../../modules/database/tables/users';
-import { IpcRoot } from '../../databus/ipc/root';
-import { portableReader } from '../../modules/readers/portable-reader';
+import { Nullable } from '../../common/types';
+import { IPC_PORTABLE_READER } from '../databus/ipc/events';
+import { READER_EVENT, READER_STATUS, RFIDTag } from '../lib/readers/base-reader';
+import { dbMorda } from '../modules/database/database';
+import { UserData } from '../modules/database/tables/users';
+import { IpcRoot } from '../databus/ipc/root';
+import { portableReader } from '../modules/readers/portable-reader';
 
 export interface PortableReaderRegistrationData {
     uid: string;

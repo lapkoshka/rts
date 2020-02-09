@@ -1,7 +1,7 @@
-import { IPC_MAIN_READER } from '../../databus/ipc/events';
-import { READER_EVENT, READER_STATUS } from '../../lib/readers/base-reader';
-import { IpcRoot } from '../../databus/ipc/root';
-import { mainReader } from '../../modules/readers/main-reader';
+import { IPC_MAIN_READER } from '../databus/ipc/events';
+import { READER_EVENT, READER_STATUS } from '../lib/readers/base-reader';
+import { IpcRoot } from '../databus/ipc/root';
+import { mainReader } from '../modules/readers/main-reader';
 
 export const initMainReaderController = (): void => {
     mainReader.on(READER_EVENT.CONNECTING_START, () => {

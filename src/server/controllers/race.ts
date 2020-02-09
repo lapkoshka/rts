@@ -1,12 +1,12 @@
-import { Nullable } from '../../../common/types';
-import { IPC_RACE } from '../../databus/ipc/events';
-import { defaultRaceParams, RaceParams } from '../../lib/domain/race';
-import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
-import { dbMorda } from '../../modules/database/database';
-import { UserData } from '../../modules/database/tables/users';
-import { IpcRoot } from '../../databus/ipc/root';
-import { CirclesScenario } from '../../modules/race-scenarios/circles';
-import { mainReader } from '../../modules/readers/main-reader';
+import { Nullable } from '../../common/types';
+import { IPC_RACE } from '../databus/ipc/events';
+import { defaultRaceParams, RaceParams } from '../lib/domain/race';
+import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
+import { dbMorda } from '../modules/database/database';
+import { UserData } from '../modules/database/tables/users';
+import { IpcRoot } from '../databus/ipc/root';
+import { CirclesScenario } from '../modules/race-scenarios/circles';
+import { mainReader } from '../modules/readers/main-reader';
 
 let raceParams = defaultRaceParams;
 

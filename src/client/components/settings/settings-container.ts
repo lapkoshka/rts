@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { Ipc } from '../../../common/ipc';
-import { ChartEnableInfo } from '../../../server/controllers/rssi-chart/controller';
+import { ChartEnableInfo } from '../../../server/controllers/rssi-chart';
 import { IPC_RACE, IPC_RSSI_CHART } from '../../../server/databus/ipc/events';
 import { RaceParams } from '../../../server/lib/domain/race';
 import { MainReaderParams } from '../../../server/lib/readers/main-reader';

@@ -2,16 +2,16 @@ import { mainReader } from './modules/readers/main-reader';
 import { portableReader } from './modules/readers/portable-reader';
 import { dbMorda } from './modules/database/database';
 
-import { initContestController } from './controllers/contests/controller';
-import { initViewUpdaterController } from './controllers/view-updater/controller';
-import { initPortableReaderController } from './controllers/portable-reader/controller';
-import { initMainReaderController } from './controllers/main-reader/controller';
-import { initRaceController } from './controllers/race/controller';
-import { initRSSIController } from './controllers/rssi-chart/controller';
-import { initFakeTagController } from './controllers/fake-tag/controller';
-import { initRegistrationController } from './controllers/registration/controller';
-import { initSmartbannerController } from './controllers/control-panel/controller';
-import { initResultsController } from './controllers/results/controller';
+import { initContestController } from './controllers/contests';
+import { initViewUpdaterController } from './controllers/view-updater';
+import { initPortableReaderController } from './controllers/portable-reader';
+import { initMainReaderController } from './controllers/main-reader';
+import { initRaceController } from './controllers/race';
+import { initRSSIController } from './controllers/rssi-chart';
+import { initFakeTagController } from './controllers/fake-tag';
+import { initRegistrationController } from './controllers/registration';
+import { initSmartbannerController } from './controllers/control-panel';
+import { initResultsController } from './controllers/results';
 
 const start = (): void => {
     initViewUpdaterController();

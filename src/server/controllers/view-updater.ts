@@ -1,9 +1,9 @@
-import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from '../../databus/ipc/events';
-import { READER_STATUS } from '../../lib/readers/base-reader';
-import { IpcRoot } from '../../databus/ipc/root';
-import { mainReader } from '../../modules/readers/main-reader';
-import { portableReader } from '../../modules/readers/portable-reader';
-import { viewUpdater } from '../../view-data/view-updater';
+import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from '../databus/ipc/events';
+import { READER_STATUS } from '../lib/readers/base-reader';
+import { IpcRoot } from '../databus/ipc/root';
+import { mainReader } from '../modules/readers/main-reader';
+import { portableReader } from '../modules/readers/portable-reader';
+import { viewUpdater } from '../view-data/view-updater';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {

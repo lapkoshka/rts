@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import {
     ChartEnableInfo,
     RSSIChartTrace,
-} from '../../../server/controllers/rssi-chart/controller';
+} from '../../../server/controllers/rssi-chart';
 import { Block } from '../ui/block/block';
 import chartXkcd from 'chart.xkcd';
 import { XY } from 'chart.xkcd-react';

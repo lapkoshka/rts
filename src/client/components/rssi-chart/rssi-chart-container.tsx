@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
-import { RSSIChartTrace } from '../../../server/controllers/rssi-chart/controller';
+import { RSSIChartTrace } from '../../../server/controllers/rssi-chart';
 import { IPC_RSSI_CHART } from '../../../server/databus/ipc/events';
 import { setChartData } from '../../store/rssi-chart-store';
 import { store, RootState } from '../../store';
