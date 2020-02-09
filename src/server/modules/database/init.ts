@@ -10,9 +10,9 @@ const openDatabase = (): Database => {
         fs.mkdirSync(DATABASE_CATALOG);
     }
 
-    return  new sqlite3.Database(DATABASE_PATH, (err: Error) => {
+    return new sqlite3.Database(DATABASE_PATH, (err: Error) => {
         if (err) {
-            throw Error('Cant open database, msg:' + err.message);
+            throw err;
         }
 
         console.log(`Connected to the ${DATABASE_PATH} SQlite database.`);

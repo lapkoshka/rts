@@ -1,7 +1,11 @@
 import { IPC_RACE } from '../../databus/ipc/events';
 import { toHumanReadableTime } from '../../lib/functions';
 import { IpcRoot } from '../../databus/ipc/root';
-import { currentRaces as racesState } from './../../controllers/race/race-scenario';
+
+// todo: вероятно, это плохая зависимость. Думаю что представление даннных
+// должно быть согласовано через интерфейс со всеми сценариями гонок (если они появятся)
+// В целом, появление других сценариев может менять даже пользовательский интерфейс.
+import { currentRaces as racesState } from './../../modules/race-scenarios/circles';
 
 export interface CurrentRaceRow {
     uid: string;

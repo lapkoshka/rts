@@ -5,8 +5,8 @@ import { READER_EVENT, RFIDTag } from '../../lib/readers/base-reader';
 import { dbMorda } from '../../modules/database/database';
 import { UserData } from '../../modules/database/tables/users';
 import { IpcRoot } from '../../databus/ipc/root';
+import { CirclesScenario } from '../../modules/race-scenarios/circles';
 import { mainReader } from '../../modules/readers/main-reader';
-import { closeRace, getRace } from './race-scenario';
 
 let raceParams = defaultRaceParams;
 
@@ -20,7 +20,7 @@ export const initRaceController = (): void => {
     });
 
     IpcRoot.on<string>(IPC_RACE.ON_CLOSE_RACE, (uid) => {
-        closeRace(uid);
+        CirclesScenario.closeRace(uid);
     });
 
     mainReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
@@ -42,10 +42,7 @@ export const initRaceController = (): void => {
                 return;
             }
 
-            // todo:
-            // scenario.appendTag();
-            const race = getRace(tag, user, raceParams);
-            race.appendTag(tag);
+            CirclesScenario.appendTag(tag, user, raceParams);
         } catch (e) {
             throw Error(e);
         }

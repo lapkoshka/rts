@@ -1,8 +1,8 @@
-import { RFIDTag } from '../../lib/readers/base-reader';
-import { dbMorda } from '../../modules/database/database';
-import { UserData } from '../../modules/database/tables/users';
 import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
+import { RFIDTag } from '../../lib/readers/base-reader';
 import { viewUpdater } from '../../view-data/view-updater';
+import { dbMorda } from '../database/database';
+import { UserData } from '../database/tables/users';
 
 export interface Races {
     [key: string]: Race;
@@ -57,7 +57,14 @@ export const getRace = (tag: RFIDTag, user: UserData, params: RaceParams): Race 
     return currentRaces[uid];
 };
 
-export const closeRace = (uid: string): void => {
-    delete currentRaces[uid];
-    viewUpdater.race.updateRaceInfo();
-};
+export class CirclesScenario {
+    public static appendTag(tag: RFIDTag, user: UserData, params: RaceParams): void {
+        const race = getRace(tag, user, params);
+        race.appendTag(tag);
+    }
+
+    public static closeRace = (uid: string): void => {
+        delete currentRaces[uid];
+        viewUpdater.race.updateRaceInfo();
+    };
+}
