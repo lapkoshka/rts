@@ -10,4 +10,20 @@ export class Races {
 
         return;
     }
+
+    public static async saveRace(userId: number, contestId: number, totalTime: number): Promise<number> {
+        try {
+            return await dbMorda.races.insertRace(userId, contestId, totalTime);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async saveLap(raceId: number, order: number, time: number): Promise<void> {
+        try {
+            await dbMorda.laps.insertLap(raceId, order, time);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron';
+import IpcMainEvent = Electron.IpcMainEvent;
 
 export class IpcRoot {
     public static send<T> (type: string, data?: T): void {
@@ -8,6 +9,8 @@ export class IpcRoot {
     }
 
     public static on<T>(type: string, listener: (data: T) => void): void {
-        ipcMain.on(type, listener);
+        ipcMain.on(type, (evt: IpcMainEvent, data: T): void => {
+            listener(data);
+        });
     }
 }
