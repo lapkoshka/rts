@@ -1,5 +1,5 @@
 import * as EventEmitter from 'events';
-import { UserData } from '../../modules/database/tables/users';
+import { UserData } from '../../storage/tools/database/tables/users';
 import { RFIDTag } from '../readers/base-reader';
 import { Lap, LAP_EVENT } from './lap';
 import { shouldAppendTag } from './lib';

@@ -2,7 +2,7 @@ import { Button, Icon, MenuItem } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { Select } from '@blueprintjs/select';
 import React, { FC, useCallback, useState } from 'react';
-import { UserData } from '../../../../server/modules/database/tables/users';
+import { UserData } from '../../../../server/storage/tools/database/tables/users';
 import styles from './user-select.module.css';
 
 interface UserSelectProps {

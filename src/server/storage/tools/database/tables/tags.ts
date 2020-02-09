@@ -1,5 +1,4 @@
 import { Database } from 'sqlite3';
-import { Nullable } from '../../../../common/types';
 import { UserFormData } from './users';
 
 export interface TagsMethods {

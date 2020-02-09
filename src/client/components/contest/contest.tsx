@@ -3,7 +3,7 @@ import { IconNames } from '@blueprintjs/icons';
 import { Select } from '@blueprintjs/select';
 import React, { FC, useCallback } from 'react';
 import { Nullable } from '../../../common/types';
-import { ContestFormData } from '../../../server/modules/database/tables/contests';
+import { ContestFormData } from '../../../server/storage/tools/database/tables/contests';
 import styles from './contest.module.css';
 import { ContestData } from '../../../server/view-data/contests/contests';
 import { ContestSettings } from './settings/contest-settings';

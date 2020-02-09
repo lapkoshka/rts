@@ -1,8 +1,8 @@
 import { Race, RACE_EVENT, RaceParams } from '../../lib/domain/race';
 import { RFIDTag } from '../../lib/readers/base-reader';
 import { viewUpdater } from '../../view-data/view-updater';
-import { dbMorda } from '../database/database';
-import { UserData } from '../database/tables/users';
+import { dbMorda } from '../../storage/tools/database/database';
+import { UserData } from '../../storage/tools/database/tables/users';
 
 export interface Races {
     [key: string]: Race;

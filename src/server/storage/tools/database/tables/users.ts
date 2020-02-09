@@ -1,5 +1,5 @@
 import { Database, Statement } from 'sqlite3';
-import { Nullable } from '../../../../common/types';
+import { Nullable } from '../../../../../common/types';
 
 export interface UserData {
     uid: string;

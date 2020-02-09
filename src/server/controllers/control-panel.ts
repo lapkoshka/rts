@@ -1,9 +1,8 @@
 import { IPC_MAIN_READER, IPC_PORTABLE_READER } from '../databus/ipc/events';
 import { BaseReader } from '../lib/readers/base-reader';
-import { MainReaderSettings } from '../lib/readers/main-reader';
+import { MainReader, MainReaderSettings } from '../lib/readers/main-reader';
 import { IpcRoot } from '../databus/ipc/root';
-import { mainReader } from '../modules/readers/main-reader';
-import { portableReader } from '../modules/readers/portable-reader';
+import { PortableReader } from '../lib/readers/portable-reader';
 
 const switchReader = (reader: BaseReader): void => {
     if (reader.isConnected) {
@@ -14,13 +13,13 @@ const switchReader = (reader: BaseReader): void => {
     reader.startListen();
 };
 
-export const initSmartbannerController = () => {
+export const initSmartbannerController = (mReader: MainReader, pReader: PortableReader) => {
     IpcRoot.on(IPC_PORTABLE_READER.TRIGGER_CLICK, () => {
-        switchReader(portableReader);
+        switchReader(pReader);
     });
 
     IpcRoot.on<MainReaderSettings>(IPC_MAIN_READER.TRIGGER_CLICK, (settings) => {
-        mainReader.settings = settings;
-        switchReader(mainReader);
+        mReader.settings = settings;
+        switchReader(mReader);
     });
 };

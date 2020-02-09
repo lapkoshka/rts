@@ -1,8 +1,8 @@
 import { IPC_RSSI_CHART } from '../databus/ipc/events';
 import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
 import { IpcRoot } from '../databus/ipc/root';
-import { mainReader } from '../modules/readers/main-reader';
 import { performance } from 'perf_hooks';
+import { MainReader } from '../lib/readers/main-reader';
 
 export interface ChartEnableInfo {
     enable: boolean;
@@ -32,13 +32,13 @@ const enableInfo: ChartEnableInfo = {
     uid: '-',
 };
 
-export const initRSSIController = () => {
+export const initRSSIController = (mReader: MainReader) => {
     IpcRoot.on<ChartEnableInfo>(IPC_RSSI_CHART.ENABLE, (info) => {
         enableInfo.enable = info.enable;
         enableInfo.uid = info.uid;
     });
 
-    mainReader.on(READER_EVENT.TAG, (tag: RFIDTag) => {
+    mReader.on(READER_EVENT.TAG, (tag: RFIDTag) => {
         if (!enableInfo.enable || enableInfo.uid !== tag.uid) {
             return;
         }

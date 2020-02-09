@@ -1,8 +1,8 @@
 import { IPC_RESULTS } from '../../databus/ipc/events';
 import { toHumanReadableTime } from '../../lib/functions';
-import { dbMorda } from '../../modules/database/database';
-import { RaceData, UserRacesData } from '../../modules/database/tables/races';
-import { UserData } from '../../modules/database/tables/users';
+import { dbMorda } from '../../storage/tools/database/database';
+import { RaceData, UserRacesData } from '../../storage/tools/database/tables/races';
+import { UserData } from '../../storage/tools/database/tables/users';
 import { IpcRoot } from '../../databus/ipc/root';
 import { Storage } from '../../storage';
 

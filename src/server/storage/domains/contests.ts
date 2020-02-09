@@ -1,4 +1,4 @@
-import { JsonStorage } from '../filesystem/json-storage';
+import { JsonStorage } from '../tools/filesystem/json-storage';
 
 const SELECTED_CONTEST_ID = 'storage/contests/selected_contest_id';
 

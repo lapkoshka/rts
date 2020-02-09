@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import { UserData } from '../../../../server/modules/database/tables/users';
+import { UserData } from '../../../../server/storage/tools/database/tables/users';
 
 export const renderUsers = (users: UserData[]) => {
     const usersWithKeys = users.map((item: UserData) => ({

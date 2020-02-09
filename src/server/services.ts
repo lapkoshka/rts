@@ -1,6 +1,6 @@
-import { mainReader } from './modules/readers/main-reader';
-import { portableReader } from './modules/readers/portable-reader';
-import { dbMorda } from './modules/database/database';
+import { MainReader } from './lib/readers/main-reader';
+import { PortableReader } from './lib/readers/portable-reader';
+import { dbMorda } from './storage/tools/database/database';
 
 import { initContestController } from './controllers/contests';
 import { initViewUpdaterController } from './controllers/view-updater';
@@ -13,15 +13,18 @@ import { initRegistrationController } from './controllers/registration';
 import { initSmartbannerController } from './controllers/control-panel';
 import { initResultsController } from './controllers/results';
 
+const mainReader = new MainReader('/bin/MainReaderAdapter.exe');
+const portableReader = new PortableReader('/bin/portablereader.exe');
+
 const start = (): void => {
-    initViewUpdaterController();
-    initPortableReaderController();
-    initMainReaderController();
-    initRaceController();
-    initRSSIController();
-    initFakeTagController();
-    initRegistrationController();
-    initSmartbannerController();
+    initViewUpdaterController(mainReader, portableReader);
+    initPortableReaderController(portableReader);
+    initMainReaderController(mainReader);
+    initRaceController(mainReader);
+    initRSSIController(mainReader);
+    initFakeTagController(mainReader, portableReader);
+    initRegistrationController(portableReader);
+    initSmartbannerController(mainReader, portableReader);
     initResultsController();
     initContestController();
 };
@@ -29,6 +32,8 @@ const start = (): void => {
 const shutdown = () => {
     mainReader.kill();
     portableReader.kill();
+    // todo:
+    // Storage.close();
     dbMorda.closeDatabase();
 };
 

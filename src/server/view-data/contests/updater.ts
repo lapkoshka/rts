@@ -1,5 +1,5 @@
 import { IPC_CONTESTS } from '../../databus/ipc/events';
-import { dbMorda } from '../../modules/database/database';
+import { dbMorda } from '../../storage/tools/database/database';
 import { IpcRoot } from '../../databus/ipc/root';
 import { Storage } from '../../storage';
 

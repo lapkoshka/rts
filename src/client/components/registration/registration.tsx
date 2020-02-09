@@ -2,7 +2,7 @@ import { Button, Divider, Intent, Label, Tag } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import React, { FC, FormEvent, useCallback, useEffect } from 'react';
 import { Nullable } from '../../../common/types';
-import { UserData, UserFormData } from '../../../server/modules/database/tables/users';
+import { UserData, UserFormData } from '../../../server/storage/tools/database/tables/users';
 import { ContestData } from '../../../server/view-data/contests/contests';
 import { KEYCODES } from '../../lib/keycodes';
 import { OverlayPopup } from '../ui/overlay-popup/overlay-popup';

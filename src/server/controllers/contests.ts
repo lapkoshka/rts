@@ -1,7 +1,7 @@
 import { getTimestamp } from '../../common/helpers';
 import { IPC_CONTESTS } from '../databus/ipc/events';
-import { dbMorda } from '../modules/database/database';
-import { ContestFormData } from '../modules/database/tables/contests';
+import { dbMorda } from '../storage/tools/database/database';
+import { ContestFormData } from '../storage/tools/database/tables/contests';
 import { IpcRoot } from '../databus/ipc/root';
 import { Storage } from '../storage';
 import { viewUpdater } from '../view-data/view-updater';

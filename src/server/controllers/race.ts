@@ -2,11 +2,11 @@ import { Nullable } from '../../common/types';
 import { IPC_RACE } from '../databus/ipc/events';
 import { defaultRaceParams, RaceParams } from '../lib/domain/race';
 import { READER_EVENT, RFIDTag } from '../lib/readers/base-reader';
-import { dbMorda } from '../modules/database/database';
-import { UserData } from '../modules/database/tables/users';
+import { MainReader } from '../lib/readers/main-reader';
+import { dbMorda } from '../storage/tools/database/database';
+import { UserData } from '../storage/tools/database/tables/users';
 import { IpcRoot } from '../databus/ipc/root';
 import { CirclesScenario } from '../modules/race-scenarios/circles';
-import { mainReader } from '../modules/readers/main-reader';
 
 let raceParams = defaultRaceParams;
 
@@ -14,7 +14,7 @@ const selectUser = (users: UserData[], userId: number, contestId: number): Nulla
     users.find((user: UserData) =>
         user.id === userId && user.contests.some((id: number) => id === contestId));
 
-export const initRaceController = (): void => {
+export const initRaceController = (mReader: MainReader): void => {
     IpcRoot.on<RaceParams>(IPC_RACE.UPDATE_RACE_PARAMS, (params) => {
         raceParams = params;
     });
@@ -23,7 +23,7 @@ export const initRaceController = (): void => {
         CirclesScenario.closeRace(uid);
     });
 
-    mainReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
+    mReader.on(READER_EVENT.TAG, async (tag: RFIDTag) => {
         try {
             const userId = await dbMorda.tagsMethods.getUserId(tag.uid);
             if (!userId) {

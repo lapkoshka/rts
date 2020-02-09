@@ -1,4 +1,4 @@
-import { UserData } from '../../server/modules/database/tables/users';
+import { UserData } from '../../server/storage/tools/database/tables/users';
 import { Action } from './index';
 import { RaceHistory } from '../../server/view-data/results/updater';
 import { TotalInfo } from '../../server/view-data/results/updater';

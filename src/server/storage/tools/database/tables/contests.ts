@@ -1,6 +1,6 @@
 import { Database, Statement } from 'sqlite3';
-import { Nullable } from '../../../../common/types';
-import { ContestData } from '../../../view-data/contests/contests';
+import { Nullable } from '../../../../../common/types';
+import { ContestData } from '../../../../view-data/contests/contests';
 
 export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description' | 'laps'>;
 

@@ -14,7 +14,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { ContestFormData } from '../../../../server/modules/database/tables/contests';
+import { ContestFormData } from '../../../../server/storage/tools/database/tables/contests';
 import { ContestData } from '../../../../server/view-data/contests/contests';
 import { OverlayPopup } from '../../ui/overlay-popup/overlay-popup';
 import styles from './contest-settings.module.css';

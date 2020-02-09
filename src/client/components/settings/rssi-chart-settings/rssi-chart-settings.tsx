@@ -1,7 +1,7 @@
 import { Switch } from '@blueprintjs/core';
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback } from 'react';
 import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart';
-import { UserData } from '../../../../server/modules/database/tables/users';
+import { UserData } from '../../../../server/storage/tools/database/tables/users';
 
 interface RSSIChartSettingsProps {
     users: UserData[];
