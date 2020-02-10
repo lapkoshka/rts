@@ -78,7 +78,7 @@ export class Contests {
         }
     }
 
-    public static async getCurrentContestId(): Promise<number> {
+    public static async getCurrentContestId(): Promise<number|undefined> {
         try {
             return await dbMorda.contests.getCurrentContestId();
         } catch (e) {

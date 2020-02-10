@@ -1,6 +1,4 @@
 import { Database, Statement } from 'sqlite3';
-import { Nullable } from '../../../../../common/types';
-import { ContestData } from '../../../domains/contests';
 
 export interface ContestMethods {
     create: () => Promise<number>;
@@ -9,8 +7,8 @@ export interface ContestMethods {
     close: (id: number, timestamp: number) => Promise<void>;
     getAll: () => Promise<any[]>;
     changeSettings: (id: number, name: string, description: string, laps: number) => Promise<void>;
-    getStartedContests: () => Promise<ContestData[]>;
-    getCurrentContestId: () => Promise<Nullable<number|undefined>>;
+    getStartedContests: () => Promise<any[]>;
+    getCurrentContestId: () => Promise<number|undefined>;
 }
 
 export const getContestMethods = (database: Database): ContestMethods => ({

@@ -1,8 +1,7 @@
 import { Database, Statement } from 'sqlite3';
-import { Nullable } from '../../../../../common/types';
 
 export interface UserMethods {
-    getUser: (uid: string) => Promise<Nullable<any>>;
+    getUser: (uid: string) => Promise<any>;
     getUsers: () => Promise<any[]>;
     updateUser: (id: number, firstname: string, lastname: string) => Promise<number>;
     insertUser: (uid: string, firstname: string, lastname: string) => Promise<number>;
