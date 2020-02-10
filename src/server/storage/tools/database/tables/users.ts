@@ -1,13 +1,12 @@
 import { Database, Statement } from 'sqlite3';
 import { Nullable } from '../../../../../common/types';
-import { UserData } from '../../../domains/users';
 
 export interface UserMethods {
     getUser: (uid: string) => Promise<Nullable<any>>;
     getUsers: () => Promise<any[]>;
     updateUser: (id: number, firstname: string, lastname: string) => Promise<number>;
     insertUser: (uid: string, firstname: string, lastname: string) => Promise<number>;
-    getUsersByContest: (contestId: number) => Promise<UserData[]>;
+    getUsersByContest: (contestId: number) => Promise<any[]>;
 }
 
 export const getUserMethods = (database: Database): UserMethods => ({

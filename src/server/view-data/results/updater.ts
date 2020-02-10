@@ -1,8 +1,7 @@
 import { IPC_RESULTS } from '../../databus/ipc/events';
 import { toHumanReadableTime } from '../../lib/functions';
+import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
-import { dbMorda } from '../../storage/tools/database/database';
-import { RaceData, UserRacesData } from '../../storage/tools/database/tables/races';
 import { IpcRoot } from '../../databus/ipc/root';
 import { Storage } from '../../storage';
 
@@ -23,7 +22,7 @@ export type RaceHistory = RaceHistoryRow[];
 export const updateUsersData = async (): Promise<void> => {
     try {
         const selectedContestId = Storage.contests.getSelectedContest();
-        const users: UserData[] = await dbMorda.users.getUsersByContest(selectedContestId);
+        const users: UserData[] = await Storage.users.getUsersByContest(selectedContestId);
         IpcRoot.send<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
     } catch (e) {
         throw Error(e);
@@ -33,7 +32,7 @@ export const updateUsersData = async (): Promise<void> => {
 export const updateRaceHistory = async (): Promise<void> => {
     try {
         const selectedContestId = Storage.contests.getSelectedContest();
-        const raceData = await dbMorda.races.getRacesByContest(selectedContestId);
+        const raceData = await Storage.races.getRacesByContest(selectedContestId);
 
         const updateData = raceData.map((race: RaceData) => ({
             ...race,

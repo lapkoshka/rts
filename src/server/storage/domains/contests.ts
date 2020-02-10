@@ -109,4 +109,11 @@ export class Contests {
             throw Error(e);
         }
     }
+    public static async getAll(): Promise<ContestData[]> {
+        try {
+            return await dbMorda.contests.getAll();
+        } catch (e) {
+            throw Error(e);
+        }
+    }
 }

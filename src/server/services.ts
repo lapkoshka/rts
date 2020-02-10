@@ -1,6 +1,6 @@
 import { MainReader } from './lib/readers/main-reader';
 import { PortableReader } from './lib/readers/portable-reader';
-import { dbMorda } from './storage/tools/database/database';
+import { Storage } from './storage';
 
 import { initContestController } from './controllers/contests';
 import { initViewUpdaterController } from './controllers/view-updater';
@@ -32,9 +32,7 @@ const start = (): void => {
 const shutdown = () => {
     mainReader.kill();
     portableReader.kill();
-    // todo:
-    // Storage.close();
-    dbMorda.closeDatabase();
+    Storage.close();
 };
 
 export const services = {

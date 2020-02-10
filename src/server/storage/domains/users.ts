@@ -88,6 +88,14 @@ export class Users {
         }
     }
 
+    public static async getUsersByContest(contestId: number): Promise<UserData[]> {
+        try {
+            return await dbMorda.users.getUsersByContest(contestId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
     private static parseContests(groupConcatValue?: string): number[] {
         return groupConcatValue ? groupConcatValue
             .split(',')

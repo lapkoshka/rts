@@ -1,26 +1,9 @@
 import { Database, Statement } from 'sqlite3';
 
-// todo: интерфейсы уезжают в гидраторы данных
-export interface RaceData {
-    id: number;
-    timestamp: string;
-    firstname: string;
-    lastname: string;
-    time: number;
-}
-
-export interface UserRacesData {
-    firstname: string;
-    lastname: string;
-    besttime: number;
-    count: number;
-}
-
 export interface RacesMethods {
     insertRace: (userId: number, contestId: number, totalTime: number) => Promise<number>;
     deleteRace: (id: number) => Promise<void>;
-    getRacesByContest: (contestId: number) => Promise<any>; // todo: any??
-
+    getRacesByContest: (contestId: number) => Promise<any>;
 }
 
 export const getRacesMethods = (database: Database): RacesMethods => ({

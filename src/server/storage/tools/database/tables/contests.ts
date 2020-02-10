@@ -7,7 +7,7 @@ export interface ContestMethods {
     delete: (id: number) => Promise<void>;
     start: (id: number, timestamp: number) => Promise<void>;
     close: (id: number, timestamp: number) => Promise<void>;
-    get: () => Promise<ContestData[]>;
+    getAll: () => Promise<any[]>;
     changeSettings: (id: number, name: string, description: string, laps: number) => Promise<void>;
     getStartedContests: () => Promise<ContestData[]>;
     getCurrentContestId: () => Promise<Nullable<number|undefined>>;
@@ -66,7 +66,7 @@ export const getContestMethods = (database: Database): ContestMethods => ({
             });
         });
     },
-    get() {
+    getAll() {
         const sql = `select * from contests`;
         return new Promise((resolve, reject) => {
             database.all(sql, [], (err, rows) => {
