@@ -1,11 +1,11 @@
 import { Database } from 'sqlite3';
 import { createAndPrepareDatabase } from './init';
-import { ContestMethods, getContestMethods } from './tables/contests';
-import { getLapsMethods, LapsMethods } from './tables/laps';
-import { getRacesMethods, RacesMethods } from './tables/races';
-import { getTagContestMethods, TagContestMethods } from './tables/tag-contest';
-import { getTagsMethods, TagsMethods } from './tables/tags';
-import { UserMethods, getUserMethods } from './tables/users';
+import { ContestMethods } from './tables/contests';
+import { UserMethods } from './tables/users';
+import { TagContestMethods } from './tables/tag-contest';
+import { TagsMethods } from './tables/tags';
+import { RacesMethods } from './tables/races';
+import { LapsMethods } from './tables/laps';
 
 class DbMorda {
     public database: Database;
@@ -18,12 +18,12 @@ class DbMorda {
 
     constructor() {
         this.database = createAndPrepareDatabase();
-        this.contests = getContestMethods(this.database);
-        this.users = getUserMethods(this.database);
-        this.tagContest = getTagContestMethods(this.database);
-        this.tagsMethods = getTagsMethods(this.database);
-        this.races = getRacesMethods(this.database);
-        this.laps = getLapsMethods(this.database);
+        this.contests = new ContestMethods(this.database);
+        this.users = new UserMethods(this.database);
+        this.tagContest = new TagContestMethods(this.database);
+        this.tagsMethods = new TagsMethods(this.database);
+        this.races = new RacesMethods(this.database);
+        this.laps = new LapsMethods(this.database);
     }
 
     public closeDatabase(): void {
