@@ -52,6 +52,42 @@ export class Users {
         }
     }
 
+    public static async saveUser(formData: UserFormData): Promise<number> {
+        try {
+            const { uid, firstname, lastname } = formData;
+            return await dbMorda.users.insertUser(uid, firstname, lastname);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async updateUser(formData: UserFormData): Promise<number> {
+        try {
+            const { id, firstname, lastname } = formData;
+
+            return await dbMorda.users.updateUser(id, firstname, lastname);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async attachTagToUser(formData: UserFormData): Promise<void> {
+        try {
+            const { attachUserId, uid } = formData;
+            return await dbMorda.tagsMethods.addTagForUser(uid, attachUserId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async deattachTag(uid: string): Promise<void> {
+        try {
+            return await dbMorda.tagsMethods.deleteTag(uid);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
     private static parseContests(groupConcatValue?: string): number[] {
         return groupConcatValue ? groupConcatValue
             .split(',')

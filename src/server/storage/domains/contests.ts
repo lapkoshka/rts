@@ -93,4 +93,20 @@ export class Contests {
             throw Error(e);
         }
     }
+
+    public static async deattachContest(uid: string, contestId: number): Promise<void> {
+        try {
+            return await dbMorda.tagContest.deattachContest(uid, contestId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async attachTagToContest(uid: string, contestId: number): Promise<void> {
+        try {
+            return await dbMorda.tagContest.attachTagToContest(uid, contestId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
 }

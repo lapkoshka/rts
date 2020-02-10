@@ -1,19 +1,17 @@
 import { Database } from 'sqlite3';
-import { UserFormData } from '../../../domains/users';
 
 export interface TagsMethods {
-    addTagForUser: (user: UserFormData) => Promise<void>;
+    addTagForUser: (uid: string, userId: number) => Promise<void>;
     deleteTag: (uid: string) => Promise<void>;
     getUserId: (uid: string) => Promise<number | undefined>;
 }
 
 export const getTagsMethods = (database: Database): TagsMethods => ({
-    addTagForUser(user) {
-        const { attachUserId, uid } = user;
+    addTagForUser(uid, userId) {
         const sql = `insert into tags (uid, user_id) values (?, ?)`;
 
         return new Promise((resolve, reject) => {
-            database.run(sql, [uid, attachUserId], (err: Error) => {
+            database.run(sql, [uid, userId], (err: Error) => {
                 if (err) reject(err);
                 resolve();
             });

@@ -5,8 +5,8 @@ import { UserData } from '../../../domains/users';
 export interface UserMethods {
     getUser: (uid: string) => Promise<Nullable<any>>;
     getUsers: () => Promise<any[]>;
-    updateUser: (user: UserData) => Promise<number>;
-    insertUser: (user: UserData) => Promise<number>;
+    updateUser: (id: number, firstname: string, lastname: string) => Promise<number>;
+    insertUser: (uid: string, firstname: string, lastname: string) => Promise<number>;
     getUsersByContest: (contestId: number) => Promise<UserData[]>;
 }
 
@@ -44,8 +44,7 @@ export const getUserMethods = (database: Database): UserMethods => ({
             });
         });
     },
-    updateUser(user) {
-        const { id, firstname, lastname} = user;
+    updateUser(id, firstname, lastname) {
         const sql = `update users set firstname = (?), lastname = (?) where id = (?)`;
 
         return new Promise((resolve, reject) => {
@@ -56,9 +55,7 @@ export const getUserMethods = (database: Database): UserMethods => ({
             });
         });
     },
-    insertUser(user) {
-        const { uid, firstname, lastname } = user;
-
+    insertUser(uid, firstname, lastname) {
         return new Promise((resolve, reject) => {
             let lastId: number;
             database.serialize(() => {

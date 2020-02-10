@@ -1,7 +1,7 @@
 import { IPC_REGISTRATION } from '../databus/ipc/events';
 import { PortableReader } from '../lib/readers/portable-reader';
+import { Storage } from '../storage';
 import { UserFormData } from '../storage/domains/users';
-import { dbMorda } from '../storage/tools/database/database';
 import { IpcRoot } from '../databus/ipc/root';
 import { viewUpdater } from '../view-data/view-updater';
 
@@ -15,10 +15,10 @@ export interface DeattachContestData {
  */
 const submitNewUser = (user: UserFormData): Promise<number> => {
     if (user.alreadyRegistred) {
-        return dbMorda.users.updateUser(user);
+        return Storage.users.updateUser(user);
     }
 
-    return dbMorda.users.insertUser(user);
+    return Storage.users.saveUser(user);
 };
 
 /**
@@ -30,7 +30,7 @@ const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<voi
         return Promise.resolve();
     }
 
-    return dbMorda.tagContest.attachTagToContest(uid, attachContestId);
+    return Storage.contests.attachTagToContest(uid, attachContestId);
 };
 
 export const initRegistrationController = (pReader: PortableReader) => {
@@ -45,7 +45,7 @@ export const initRegistrationController = (pReader: PortableReader) => {
     });
 
     IpcRoot.on<UserFormData>(IPC_REGISTRATION.ATTACH_USER, async (formData) => {
-        await dbMorda.tagsMethods.addTagForUser(formData);
+        await Storage.users.attachTagToUser(formData);
         await attachTagToContest(formData);
         viewUpdater.results.updateUsersData();
 
@@ -53,7 +53,7 @@ export const initRegistrationController = (pReader: PortableReader) => {
     });
 
     IpcRoot.on<string>(IPC_REGISTRATION.DEATTACH_TAG, async (uid) => {
-        await dbMorda.tagsMethods.deleteTag(uid);
+        await Storage.users.deattachTag(uid);
         viewUpdater.results.updateUsersData();
 
         pReader.continue();
@@ -62,7 +62,7 @@ export const initRegistrationController = (pReader: PortableReader) => {
     IpcRoot.on<DeattachContestData>(IPC_REGISTRATION.DEATTACH_CONTEST, async (data) => {
         const { uid, contestId } = data;
 
-        dbMorda.tagContest.deattachContest(uid, contestId);
+        Storage.contests.deattachContest(uid, contestId);
         viewUpdater.results.updateUsersData();
 
         pReader.continue();
