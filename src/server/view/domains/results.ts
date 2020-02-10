@@ -1,9 +1,9 @@
 import { IPC_RESULTS } from '../../databus/ipc/events';
+import { IpcRoot } from '../../databus/ipc/root';
 import { toHumanReadableTime } from '../../lib/functions';
+import { Storage } from '../../storage';
 import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
-import { IpcRoot } from '../../databus/ipc/root';
-import { Storage } from '../../storage';
 
 export interface TotalInfoRow extends UserRacesData {
     username: string;
@@ -19,18 +19,14 @@ export interface RaceHistoryRow extends RaceData {
 
 export type RaceHistory = RaceHistoryRow[];
 
-export const updateUsersData = async (): Promise<void> => {
-    try {
+export class ResultsViewUpdater {
+    public static async updateUsersData(): Promise<void> {
         const selectedContestId = Storage.contests.getSelectedContest();
         const users: UserData[] = await Storage.users.getUsersByContest(selectedContestId);
         IpcRoot.send<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
-    } catch (e) {
-        throw Error(e);
     }
-};
 
-export const updateRaceHistory = async (): Promise<void> => {
-    try {
+    public static async updateRaceHistory(): Promise<void> {
         const selectedContestId = Storage.contests.getSelectedContest();
         const raceData = await Storage.races.getRacesByContest(selectedContestId);
 
@@ -41,25 +37,23 @@ export const updateRaceHistory = async (): Promise<void> => {
         }));
 
         IpcRoot.send<RaceHistory>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
-    } catch (e) {
-        throw Error(e);
     }
-};
 
-export const updateTotalInfo = async (): Promise<void> => {
-    // const totalInfo =
-    // const updateData
-    // IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
+    public static async updateTotalInfo(): Promise<void> {
+        // const totalInfo =
+        // const updateData
+        // IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
 
 
-    // getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
-    //     const updateData: TotalInfo = userRacesData.map((row: UserRacesData) => ({
-    //         ...row,
-    //         username: row.firstname + ' ' + row.lastname,
-    //         formattedTime: toHumanReadableTime(row.besttime),
-    //     }));
-    //     IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
-    // }).catch((err: Error) => {
-    //     throw err;
-    // });
-};
+        // getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
+        //     const updateData: TotalInfo = userRacesData.map((row: UserRacesData) => ({
+        //         ...row,
+        //         username: row.firstname + ' ' + row.lastname,
+        //         formattedTime: toHumanReadableTime(row.besttime),
+        //     }));
+        //     IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
+        // }).catch((err: Error) => {
+        //     throw err;
+        // });
+    }
+}

@@ -1,7 +1,6 @@
 import { UserData } from '../../server/storage/domains/users';
+import { RaceHistory, TotalInfo } from '../../server/view/domains/results';
 import { Action } from './index';
-import { RaceHistory } from '../../server/view-data/results/updater';
-import { TotalInfo } from '../../server/view-data/results/updater';
 
 type ResultsInfoStore = Action<RaceHistory | UserData[] | TotalInfo>;
 

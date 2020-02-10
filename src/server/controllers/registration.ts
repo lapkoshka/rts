@@ -3,7 +3,7 @@ import { PortableReader } from '../lib/readers/portable-reader';
 import { Storage } from '../storage';
 import { UserFormData } from '../storage/domains/users';
 import { IpcRoot } from '../databus/ipc/root';
-import { viewUpdater } from '../view-data/view-updater';
+import { View } from '../view';
 
 export interface DeattachContestData {
     uid: string;
@@ -39,7 +39,7 @@ export const initRegistrationController = (pReader: PortableReader) => {
     IpcRoot.on<UserFormData>(IPC_REGISTRATION.SUBMIT, async(formData) => {
         await submitNewUser(formData);
         await attachTagToContest(formData);
-        viewUpdater.results.updateUsersData();
+        View.results.updateUsersData();
 
         pReader.continue();
     });
@@ -47,14 +47,14 @@ export const initRegistrationController = (pReader: PortableReader) => {
     IpcRoot.on<UserFormData>(IPC_REGISTRATION.ATTACH_USER, async (formData) => {
         await Storage.users.attachTagToUser(formData);
         await attachTagToContest(formData);
-        viewUpdater.results.updateUsersData();
+        View.results.updateUsersData();
 
         pReader.continue();
     });
 
     IpcRoot.on<string>(IPC_REGISTRATION.DEATTACH_TAG, async (uid) => {
         await Storage.users.deattachTag(uid);
-        viewUpdater.results.updateUsersData();
+        View.results.updateUsersData();
 
         pReader.continue();
     });
@@ -63,7 +63,7 @@ export const initRegistrationController = (pReader: PortableReader) => {
         const { uid, contestId } = data;
 
         Storage.contests.deattachContest(uid, contestId);
-        viewUpdater.results.updateUsersData();
+        View.results.updateUsersData();
 
         pReader.continue();
     });

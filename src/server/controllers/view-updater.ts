@@ -3,7 +3,7 @@ import { READER_STATUS } from '../lib/readers/base-reader';
 import { IpcRoot } from '../databus/ipc/root';
 import { MainReader } from '../lib/readers/main-reader';
 import { PortableReader } from '../lib/readers/portable-reader';
-import { viewUpdater } from '../view-data/view-updater';
+import { View } from '../view';
 
 const waitView = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -20,10 +20,10 @@ export const initViewUpdaterController = (mReader: MainReader, pReader: Portable
         IpcRoot.send<READER_STATUS>(IPC_MAIN_READER.STATUS_CHANGE, mReader.status);
         IpcRoot.send<READER_STATUS>(IPC_PORTABLE_READER.STATUS_CHANGE, pReader.status);
 
-        viewUpdater.contests.updateContestsData();
-        viewUpdater.results.updateUsersData();
-        viewUpdater.results.updateRaceHistory();
-        viewUpdater.results.updateTotalInfo();
-        viewUpdater.race.updateRaceInfo();
+        View.contests.updateContestsData();
+        View.results.updateUsersData();
+        View.results.updateRaceHistory();
+        View.results.updateTotalInfo();
+        View.race.updateRaceInfo();
     });
 };

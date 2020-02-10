@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
 import { IPC_RACE } from '../../../server/databus/ipc/events';
+import { CurrentRaces } from '../../../server/view/domains/race';
 import { store, RootState } from '../../store';
 import { RaceInfo, RaceInfoProps } from './race-info';
 import { setCurrentRaces } from '../../store/race-info-store';
-import { CurrentRaces } from '../../../server/view-data/race/updater';
 
 const mapStateToProps = (state: RootState): RaceInfoProps => ({
     currentRaces: state.raceInfo.currentRaces,

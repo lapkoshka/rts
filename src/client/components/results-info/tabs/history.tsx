@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
-import { RaceHistory, RaceHistoryRow } from '../../../../server/view-data/results/updater';
+import { RaceHistory, RaceHistoryRow } from '../../../../server/view/domains/results';
 import { renderDeleteButton } from '../../ui/delete/delete';
 
 export const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {

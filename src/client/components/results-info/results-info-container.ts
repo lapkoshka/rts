@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
 import { IPC_RESULTS } from '../../../server/databus/ipc/events';
 import { UserData } from '../../../server/storage/domains/users';
+import { RaceHistory, TotalInfo } from '../../../server/view/domains/results';
 import { selectContest } from '../contest/selectors';
 import { ResultsInfo, ResultsInfoProps } from './results-info';
 import { store, RootState } from '../../store';
@@ -10,8 +11,6 @@ import {
     setUsers,
     setTotalInfo,
 } from '../../store/results-info-store';
-import { RaceHistory } from '../../../server/view-data/results/updater';
-import { TotalInfo } from '../../../server/view-data/results/updater';
 
 const mapStateToProps = (state: RootState): ResultsInfoProps => ({
     history: state.resultsInfo.history,

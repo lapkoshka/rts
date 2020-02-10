@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { RaceHistory } from '../../../server/view-data/results/updater';
-import { TotalInfo } from '../../../server/view-data/results/updater';
+import { RaceHistory, TotalInfo } from '../../../server/view/domains/results';
 import { RaceInfoContainer } from '../../components/race-info/race-info-container';
 import { renderRaceHistory } from '../../components/results-info/tabs/history';
 import './results.scss';
