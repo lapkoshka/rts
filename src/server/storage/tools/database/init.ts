@@ -67,6 +67,7 @@ const prepareDatabase = async (db: Database): Promise<void> => {
                 foreign key (race_id)
                 references races(id))`);
 
+        //todo: id integer primary key autoincrement
         await db.run(`create table if not exists tags(
             uid text not null unique,
             user_id unsigned integer,

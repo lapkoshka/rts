@@ -22,8 +22,6 @@ export class Races {
         } catch (e) {
             throw Error(e);
         }
-
-        return;
     }
 
     public static async saveRace(userId: number, contestId: number, totalTime: number): Promise<number> {

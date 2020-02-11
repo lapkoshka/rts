@@ -1,4 +1,5 @@
 import { Nullable } from '../../../common/types';
+import { CACHE_KEY, StorageCache } from '../tools/cache/storage-cache';
 import { dbMorda } from '../tools/database/database';
 
 export interface UserData {
@@ -30,6 +31,10 @@ export class Users {
     }
 
     public static async getUsers(): Promise<UserData[]> {
+        if (StorageCache.has(CACHE_KEY.GET_USERS)) {
+            return StorageCache.get(CACHE_KEY.GET_USERS);
+        }
+
         try {
             const rows = await dbMorda.users.getUsers();
             const users = rows.map((row) => ({
@@ -38,6 +43,7 @@ export class Users {
                 tags: this.parseTags(row.tags),
             }));
 
+            StorageCache.set(CACHE_KEY.GET_USERS, users);
             return users;
         } catch (e) {
             throw Error(e);
@@ -54,6 +60,7 @@ export class Users {
 
     public static async saveUser(formData: UserFormData): Promise<number> {
         try {
+            StorageCache.clearAll();
             const { uid, firstname, lastname } = formData;
             return await dbMorda.users.insertUser(uid, firstname, lastname);
         } catch (e) {
@@ -63,8 +70,8 @@ export class Users {
 
     public static async updateUser(formData: UserFormData): Promise<number> {
         try {
+            StorageCache.clearAll();
             const { id, firstname, lastname } = formData;
-
             return await dbMorda.users.updateUser(id, firstname, lastname);
         } catch (e) {
             throw Error(e);
@@ -73,6 +80,7 @@ export class Users {
 
     public static async attachTagToUser(formData: UserFormData): Promise<void> {
         try {
+            StorageCache.clearAll();
             const { attachUserId, uid } = formData;
             return await dbMorda.tagsMethods.addTagForUser(uid, attachUserId);
         } catch (e) {
@@ -82,6 +90,7 @@ export class Users {
 
     public static async deattachTag(uid: string): Promise<void> {
         try {
+            StorageCache.clearAll();
             return await dbMorda.tagsMethods.deleteTag(uid);
         } catch (e) {
             throw Error(e);
