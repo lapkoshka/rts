@@ -1,4 +1,4 @@
-import * as EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { RFIDTag } from '../readers/base-reader';
 import { RSSITrace, RSSITraceEvent } from '../rssi-trace';
 

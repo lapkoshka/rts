@@ -1,9 +1,9 @@
 export enum CACHE_KEY {
-    GET_USERS,
-    GET_CURRENT_CONTEST_ID
+    GET_USERS = 'cache/get_users',
+    GET_CURRENT_CONTEST_ID = 'cache/get_current_contest_id'
 }
 
-const cache: { [key: number ]: any } = {};
+const cache: { [key: string ]: any } = {};
 
 export class StorageCache {
     public static get(key: CACHE_KEY): any {
@@ -12,12 +12,6 @@ export class StorageCache {
 
     public static set(key: CACHE_KEY, data: any): void {
         cache[key] = data;
-    }
-
-    public static clear(...args): void {
-        args.forEach((key: CACHE_KEY) => {
-            delete cache[key];
-        });
     }
 
     public static clearAll(): void {

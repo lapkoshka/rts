@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import { Database, verbose } from 'sqlite3';
 
-const sqlite3 = verbose();
 const DATABASE_CATALOG = './data';
 const DATABASE_PATH = DATABASE_CATALOG + '/rts.db';
 
@@ -9,6 +8,8 @@ const openDatabase = (): Database => {
     if (!fs.existsSync(DATABASE_CATALOG)) {
         fs.mkdirSync(DATABASE_CATALOG);
     }
+
+    const sqlite3 = verbose();
 
     return new sqlite3.Database(DATABASE_PATH, (err: Error) => {
         if (err) {
@@ -49,13 +50,13 @@ const prepareDatabase = async (db: Database): Promise<void> => {
             contest_id unsigned integer,
             timestamp datetime default current_timestamp,
             time unsigned integer,
-    
+
             constraint fk_user_id
                 foreign key (user_id)
                 references users(id),
             constraint fk_contest_id
                 foreign key (contest_id)
-                references contest(id))`);
+                references contests(id))`);
 
         await db.run(`create table if not exists laps(
             id integer primary key autoincrement,
