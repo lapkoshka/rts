@@ -141,14 +141,13 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
                     value={formData.laps}
                 />
             </Label>
-            <Button
-                onClick={handleSubmit}>
-                Сохранить
-            </Button>
-            <Button
-                onClick={handleDelete}>
-                Удалить
-            </Button>
+            <div className={styles.controls}>
+                <div>
+                    <Button onClick={handleSubmit}>Сохранить</Button>
+                    <Button onClick={handleDelete}>Удалить</Button>
+                </div>
+                <Button onClick={onClose}>Отмена</Button>
+            </div>
         </OverlayPopup>
     );
 };
