@@ -34,7 +34,7 @@ const attachTagToContest = ({ uid, attachContestId }: UserFormData): Promise<voi
 };
 
 export const initRegistrationController = (pReader: PortableReader) => {
-    IpcRoot.on(IPC_REGISTRATION.CANCEL, pReader.continue);
+    IpcRoot.on(IPC_REGISTRATION.CANCEL, pReader.continue.bind(pReader));
 
     IpcRoot.on<UserFormData>(IPC_REGISTRATION.SUBMIT, async(formData) => {
         await submitNewUser(formData);

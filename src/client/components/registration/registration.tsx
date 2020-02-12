@@ -1,6 +1,6 @@
 import { Button, Divider, Intent, Label, Tag } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import React, { FC, FormEvent, useCallback, useEffect } from 'react';
+import React, { FC, FormEvent, useCallback, useEffect, useState } from 'react';
 import { Nullable } from '../../../common/types';
 import { ContestData } from '../../../server/storage/domains/contests';
 import { UserData, UserFormData } from '../../../server/storage/domains/users';
@@ -26,8 +26,6 @@ export interface RegistrationActions {
     onDeattachContest: (uid: string, contestId: number) => void;
 }
 
-const isUserAttach = (formData: UserFormData): boolean => formData.attachUserId !== undefined;
-
 export const Registration: FC<RegistrationProps & RegistrationActions> = (props) => {
     const { user, userList, incomingUid, currentContest } = props;
     const formData: UserFormData = {
@@ -40,6 +38,8 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
         attachContestId: currentContest ? currentContest.id : undefined,
     };
 
+    const [disabled, setInputsDisabled] = useState(false);
+
     const handleContestAttach = useCallback(
         (id: number | undefined) => {
             formData.attachContestId = id;
@@ -50,20 +50,26 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
     const handleSelect = useCallback(
         (id: number | undefined) => {
             formData.attachUserId = id;
+            if (id === undefined) {
+                setInputsDisabled(false);
+                return;
+            }
+
+            setInputsDisabled(true);
         },
-        [formData]
+        [formData, setInputsDisabled]
     );
 
     const handleSubmit = useCallback(
         () => {
-            if (isUserAttach(formData)) {
+            if (formData.attachUserId !== undefined) {
                 props.attachUser(formData);
                 return;
             }
 
             props.submitUser(formData);
         },
-        [props, formData]
+        [props, formData.attachUserId, formData]
     );
 
     const keyUpHandler = useCallback(
@@ -120,6 +126,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 <Label>
                     Имя
                     <input
+                        disabled={disabled}
                         autoFocus
                         className='bp3-input'
                         type='text'
@@ -133,6 +140,7 @@ export const Registration: FC<RegistrationProps & RegistrationActions> = (props)
                 <Label>
                     Фамилия
                     <input
+                        disabled={disabled}
                         className='bp3-input'
                         type='text'
                         placeholder='Имя'

@@ -42,6 +42,8 @@ export const ContestAttach: FC<ContestAttachProps> = (props) => {
     }
 
     if (isUserAlreadyAttached(user, currentContest)) {
+        // hack
+        onAttach(undefined);
         return (
             <div className={style['already-attached-alert']}>
                 <strong className={style['already-attached-label']}>

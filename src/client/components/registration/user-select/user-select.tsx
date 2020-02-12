@@ -42,14 +42,13 @@ export const UserSelect: FC<UserSelectProps> = (props) => {
     );
 
     const displayedName = selectedUser ? selectName(selectedUser) : 'Выбрать';
-    const items = filterUsers(users, filterQueryText);
 
     return (
         <div className={styles.content}>
             <div className={styles.label}>Привязать метку к </div>
             <Select
                 filterable={true}
-                items={items}
+                items={filterUsers(users, filterQueryText)}
                 itemRenderer={(user, { handleClick }) => (
                     <MenuItem
                         key={user.id}
