@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import { AppContainer } from './client/components/app/app';
 import { Provider } from 'react-redux';
 import { store } from './client/store';
-import 'antd/dist/antd.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import './client/static/style/main.scss';
