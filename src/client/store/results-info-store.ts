@@ -1,11 +1,11 @@
 import { UserData } from '../../server/storage/domains/users';
-import { RaceHistory, TotalInfo } from '../../server/view/domains/results';
+import { RaceHistoryViewData, TotalInfo } from '../../server/view/domains/results';
 import { Action } from './index';
 
-type ResultsInfoStore = Action<RaceHistory | UserData[] | TotalInfo>;
+type ResultsInfoStore = Action<RaceHistoryViewData | UserData[] | TotalInfo>;
 
 export interface ResultsInfoState {
-    history: RaceHistory;
+    history: RaceHistoryViewData;
     users: UserData[];
     total: TotalInfo;
 }
@@ -14,7 +14,7 @@ const SET_RACE_HISTORY = 'results/SET_RACE_HISTORY';
 const SET_USERS = 'results/SET_USERS';
 const SET_TOTAL_INFO = 'results/SET_TOTAL_INFO';
 
-export const setRaceHistory = (payload: RaceHistory) => ({
+export const setRaceHistory = (payload: RaceHistoryViewData) => ({
     type: SET_RACE_HISTORY,
     payload,
 });
@@ -40,7 +40,7 @@ export const resultsInfoReducer = (state = initialState, action: ResultsInfoStor
         case SET_RACE_HISTORY:
             return {
                 ...state,
-                history: action.payload as RaceHistory,
+                history: action.payload as RaceHistoryViewData,
             };
         case SET_USERS:
             return {

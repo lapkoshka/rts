@@ -12,12 +12,11 @@ export interface TotalInfoRow extends UserRacesData {
 
 export type TotalInfo = TotalInfoRow[];
 
-export interface RaceHistoryRow extends RaceData {
+export type RaceHistoryViewData = Array<{
+    id: number;
     username: string;
     formattedTime: string;
-}
-
-export type RaceHistory = RaceHistoryRow[];
+}>
 
 export class ResultsViewUpdater {
     public static async updateUsersData(): Promise<void> {
@@ -31,12 +30,12 @@ export class ResultsViewUpdater {
         const raceData = await Storage.races.getRacesByContest(selectedContestId);
 
         const updateData = raceData.map((race: RaceData) => ({
-            ...race,
+            id: race.id,
             username: race.firstname + ' ' + race.lastname,
             formattedTime: toHumanReadableTime(race.time),
         }));
 
-        IpcRoot.send<RaceHistory>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
+        IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
     }
 
     public static async updateTotalInfo(): Promise<void> {

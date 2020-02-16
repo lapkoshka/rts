@@ -1,16 +1,16 @@
 import React, { FC, useCallback, useState } from 'react';
 import { ContestData } from '../../../server/storage/domains/contests';
 import { UserData } from '../../../server/storage/domains/users';
-import { RaceHistory, TotalInfo } from '../../../server/view/domains/results';
+import { RaceHistoryViewData, TotalInfo } from '../../../server/view/domains/results';
 import { Block } from '../ui/block/block';
-import { renderRaceHistory } from './tabs/history';
+import { RaceHistory } from './tabs/history';
 import { renderUsers } from './tabs/users';
 import { renderTotalInfo } from './tabs/total';
 import { Tabs, Tab } from '@blueprintjs/core';
 import './results-info.scss';
 
 export interface ResultsInfoProps {
-    history: RaceHistory;
+    history: RaceHistoryViewData;
     users: UserData[];
     total: TotalInfo;
     selectedContest: ContestData;
@@ -50,7 +50,11 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
                     id='0'
                     className='results-info-tab-button'
                     title='История'
-                    panel={renderRaceHistory(props.history, props.deleteRace)}
+                    panel={(
+                        <RaceHistory
+                            history={props.history}
+                            onDeleteRace={props.deleteRace}
+                        />)}
                 />
                 <Tab
                     id='1'
