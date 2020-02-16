@@ -26,7 +26,7 @@ const mapStateToProps = (state: RootState): SettingsProps => ({
         Ipc.send(IPC_RACE.UPDATE_RACE_PARAMS, params);
         Notification.success('Настройки гонки применены', 3000);
     },
-    users: state.resultsInfo.users,
+    // users: state.resultsInfo.users,
     chartEnableInfo: state.rssiChart.chartEnableInfo,
 });
 
