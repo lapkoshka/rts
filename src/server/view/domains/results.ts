@@ -5,6 +5,11 @@ import { Storage } from '../../storage';
 import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
 
+export type UserInfoViewData = Array<{
+    uid: string;
+    username: string;
+}>
+
 export type TotalInfoViewData = Array<{
     username: string;
     formattedTime: string;
@@ -20,8 +25,14 @@ export type RaceHistoryViewData = Array<{
 export class ResultsViewUpdater {
     public static async updateUsersData(): Promise<void> {
         const selectedContestId = Storage.contests.getSelectedContest();
-        const users: UserData[] = await Storage.users.getUsersByContest(selectedContestId);
-        IpcRoot.send<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
+        const usersByContests = await Storage.users.getUsersByContest(selectedContestId);
+
+        const updateData = usersByContests.map((item: UserData) => ({
+            uid: item.uid, // todo fix
+            username: item.firstname + ' ' + item.lastname,
+        }));
+
+        IpcRoot.send<UserInfoViewData>(IPC_RESULTS.USERS_DATA_UPDATE, updateData);
     }
 
     public static async updateRaceHistory(): Promise<void> {
@@ -39,12 +50,13 @@ export class ResultsViewUpdater {
 
     public static async updateTotalInfo(): Promise<void> {
         const selectedContestId = await Storage.contests.getSelectedContest();
-        const totalInfo = (await Storage.races.getTotalInfoByContests(selectedContestId))
+        const totalInfoByContests = await Storage.races.getTotalInfoByContests(selectedContestId);
+        const updateData = totalInfoByContests
             .map((row: UserRacesData) => ({
                 count: row.count,
                 username: row.firstname + ' ' + row.lastname,
                 formattedTime: toHumanReadableTime(row.besttime),
             }));
-        IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, totalInfo);
+        IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
     }
 }
