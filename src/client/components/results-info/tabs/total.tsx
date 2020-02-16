@@ -1,18 +1,27 @@
-import { Table } from 'antd';
-import React from 'react';
-import { TotalInfo, TotalInfoRow } from '../../../../server/view/domains/results';
+import React, { FC } from 'react';
+import { TotalInfoViewData } from '../../../../server/view/domains/results';
 
-export const renderTotalInfo = (info: TotalInfo) => {
-    const infoWithKeys = info.map((item: TotalInfoRow, index: number) => ({
-        ...item,
-        key: index,
-    }));
+interface TotalInfoProps {
+    info: TotalInfoViewData;
+}
 
-    return (
-        <Table dataSource={infoWithKeys}>
-            <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column key='time' title='Лучшее время' dataIndex='formattedTime'/>
-            <Table.Column key='count' title='Всего заездов' dataIndex='count'/>
-        </Table>
-    );
-};
+export const TotalInfo: FC<TotalInfoProps> = (props) => (
+    <table className="bp3-html-table bp3-html-table-bordered bp3-html-table-condensed bp3-html-table-striped">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Лучшее время</th>
+            <th>Всего заездов</th>
+        </tr>
+        </thead>
+        <tbody>
+        {props.info.map((row) => (
+            <tr key={row.formattedTime}>
+                <td>{row.username}</td>
+                <td>{row.formattedTime}</td>
+                <td>{row.count}</td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+);

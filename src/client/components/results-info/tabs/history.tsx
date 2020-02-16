@@ -35,8 +35,7 @@ export const RaceHistory: FC<RaceHistoryProps & RaceHistoryActions> = (props) =>
                             onClick={() => props.onDeleteRace(race.id)}
                         />
                     </td>
-                ) : null
-                }
+                ) : null}
             </tr>
         ))}
         </tbody>

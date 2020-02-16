@@ -1,18 +1,18 @@
 import React, { FC, useCallback, useState } from 'react';
 import { ContestData } from '../../../server/storage/domains/contests';
 import { UserData } from '../../../server/storage/domains/users';
-import { RaceHistoryViewData, TotalInfo } from '../../../server/view/domains/results';
+import { RaceHistoryViewData, TotalInfoViewData } from '../../../server/view/domains/results';
 import { Block } from '../ui/block/block';
 import { RaceHistory } from './tabs/history';
 import { renderUsers } from './tabs/users';
-import { renderTotalInfo } from './tabs/total';
+import { TotalInfo } from './tabs/total';
 import { Tabs, Tab } from '@blueprintjs/core';
 import './results-info.scss';
 
 export interface ResultsInfoProps {
     history: RaceHistoryViewData;
     users: UserData[];
-    total: TotalInfo;
+    total: TotalInfoViewData;
     selectedContest: ContestData;
     deleteRace: (id: number) => void;
 }
@@ -66,7 +66,9 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
                     id='2'
                     className='results-info-tab-button'
                     title='Итого'
-                    panel={renderTotalInfo(props.total)}
+                    panel={(
+                        <TotalInfo info={props.total}/>
+                    )}
                 />
             </Tabs>
         </Block>

@@ -5,12 +5,11 @@ import { Storage } from '../../storage';
 import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
 
-export interface TotalInfoRow extends UserRacesData {
+export type TotalInfoViewData = Array<{
     username: string;
     formattedTime: string;
-}
-
-export type TotalInfo = TotalInfoRow[];
+    count: number;
+}>
 
 export type RaceHistoryViewData = Array<{
     id: number;
@@ -42,10 +41,10 @@ export class ResultsViewUpdater {
         const selectedContestId = await Storage.contests.getSelectedContest();
         const totalInfo = (await Storage.races.getTotalInfoByContests(selectedContestId))
             .map((row: UserRacesData) => ({
-                ...row,
+                count: row.count,
                 username: row.firstname + ' ' + row.lastname,
                 formattedTime: toHumanReadableTime(row.besttime),
-            }) as TotalInfoRow);
-        IpcRoot.send<TotalInfo>(IPC_RESULTS.TOTAL_INFO_UPDATE, totalInfo);
+            }));
+        IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, totalInfo);
     }
 }
