@@ -40,20 +40,13 @@ export class ResultsViewUpdater {
     }
 
     public static async updateTotalInfo(): Promise<void> {
-        // const totalInfo =
-        // const updateData
-        // IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
-
-
-        // getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
-        //     const updateData: TotalInfo = userRacesData.map((row: UserRacesData) => ({
-        //         ...row,
-        //         username: row.firstname + ' ' + row.lastname,
-        //         formattedTime: toHumanReadableTime(row.besttime),
-        //     }));
-        //     IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
-        // }).catch((err: Error) => {
-        //     throw err;
-        // });
+        const selectedContestId = await Storage.contests.getSelectedContest();
+        const totalInfo = (await Storage.races.getTotalInfoByContests(selectedContestId))
+            .map((row: UserRacesData) => ({
+                ...row,
+                username: row.firstname + ' ' + row.lastname,
+                formattedTime: toHumanReadableTime(row.besttime),
+            }) as TotalInfoRow);
+        IpcRoot.send<TotalInfo>(IPC_RESULTS.TOTAL_INFO_UPDATE, totalInfo);
     }
 }

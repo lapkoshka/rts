@@ -47,4 +47,12 @@ export class Races {
             throw Error(e);
         }
     }
+
+    public static async getTotalInfoByContests(contestId: number): Promise<UserRacesData[]> {
+        try {
+            return await dbMorda.races.getTotalInfoByContest(contestId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
 }

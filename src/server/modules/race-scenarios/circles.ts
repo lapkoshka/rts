@@ -37,6 +37,8 @@ const createRace = (uid: string, user: UserData, params: RaceParams): Race => {
         delete currentRaces[uid];
 
         View.race.updateRaceInfo();
+        View.results.updateRaceHistory();
+        View.results.updateTotalInfo();
     });
 
     return race;

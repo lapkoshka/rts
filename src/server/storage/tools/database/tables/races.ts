@@ -31,11 +31,32 @@ export class RacesMethods {
         });
     }
 
-    public getRacesByContest(contestId: number): Promise<any> {
+    public getRacesByContest(contestId: number): Promise<any[]> {
         const sql = `select races.*, users.firstname, users.lastname from races
             join users on races.user_id = users.id
             and races.contest_id = (?)
         `;
+
+        return new Promise((resolve, reject) => {
+            this.database.all(sql, [contestId], (err: Error, rows) => {
+                if (err) reject(err);
+                resolve(rows);
+            });
+        });
+    }
+
+    public getTotalInfoByContest(contestId: number): Promise<any[]> {
+        const sql = `select
+           u.id,
+           u.firstname as "firstname",
+           u.lastname as "lastname",
+           count(u.id) as "count",
+           min(r.time) as "besttime"
+        from races r
+                 join users u on r.user_id = u.id
+                 and r.contest_id = (?)
+        group by u.id
+        order by time asc`;
 
         return new Promise((resolve, reject) => {
             this.database.all(sql, [contestId], (err: Error, rows) => {

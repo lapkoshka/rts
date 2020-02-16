@@ -40,6 +40,7 @@ export const ResultsInfo: FC<ResultsInfoProps> = (props) => {
 
     return (
         <Block>
+            <h2>{props.selectedContest.name}</h2>
             <Tabs
                 id='Results Info'
                 selectedTabId={tabId}

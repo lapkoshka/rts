@@ -61,7 +61,7 @@ export class UserMethods {
                 this.database.run(`begin transaction`);
 
                 const usersInsertStmt: Statement = this.database.prepare(`insert into users (firstname, lastname) values (?, ?)`);
-                // ATTENTION: non-arrow function is important, because this is context of Statement
+                // ATTENTION: non-arrow function is important, because `this` is context of Statement
                 usersInsertStmt.run([firstname, lastname], function() {
                     lastId = this.lastID;
                 });

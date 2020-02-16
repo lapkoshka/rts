@@ -11,9 +11,14 @@ export interface ResultsViewProps {
     total: TotalInfo;
 }
 
+// todo:
+//  имя текущего мероприятия
+//  данные только о текущем мероприятии
+//  момент с отсутствием данных
 export const ResultsView: FC<ResultsViewProps> = (props) => {
     return (
         <div className='results-view-layout'>
+            Название мероприятия
             <div className='race-view-raceinfo'>
                 <Block>
                     <div className='results-view-title'>Текущая гонка</div>
