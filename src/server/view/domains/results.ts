@@ -46,7 +46,7 @@ export class ResultsViewUpdater {
         const usersByContests = await Storage.users.getUsersByContest(selectedContestId);
 
         const updateData = usersByContests.map((user: UserData) => ({
-            uid: user.uid, // todo fix
+            uid: user.uid,
             username: getUsername(user),
         }));
 

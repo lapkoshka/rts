@@ -76,10 +76,15 @@ export class UserMethods {
     }
 
     public getUsersByContest(contestId: number): Promise<any[]> {
-        const sql = `select t.user_id, u.*, tag_contest.*  from tag_contest
-            left join tags t on t.uid = tag_contest.tag_uid
-            join users u on t.user_id = u.id
-            and tag_contest.contest_id = (?);`;
+        const sql = `select
+             users.firstname,
+             users.lastname,
+             tags.uid
+         from tag_contest
+                  left join tags on tags.uid = tag_contest.tag_uid
+                  join users on tags.user_id = users.id
+             and tag_contest.contest_id = (?);
+        `;
 
         return new Promise((resolve, reject) => {
             this.database.all(sql, [contestId], (err: Error, rows) => {
