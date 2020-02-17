@@ -4,6 +4,7 @@ import { toHumanReadableTime } from '../../lib/functions';
 import { Storage } from '../../storage';
 import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
+import { getUsername } from '../formatters/users';
 
 export type UserInfoViewData = Array<{
     uid: string;
@@ -27,9 +28,9 @@ export class ResultsViewUpdater {
         const selectedContestId = Storage.contests.getSelectedContest();
         const usersByContests = await Storage.users.getUsersByContest(selectedContestId);
 
-        const updateData = usersByContests.map((item: UserData) => ({
-            uid: item.uid, // todo fix
-            username: item.firstname + ' ' + item.lastname,
+        const updateData = usersByContests.map((user: UserData) => ({
+            uid: user.uid, // todo fix
+            username: getUsername(user),
         }));
 
         IpcRoot.send<UserInfoViewData>(IPC_RESULTS.USERS_DATA_UPDATE, updateData);
@@ -41,7 +42,7 @@ export class ResultsViewUpdater {
 
         const updateData = raceData.map((race: RaceData) => ({
             id: race.id,
-            username: race.firstname + ' ' + race.lastname,
+            username: getUsername(race),
             formattedTime: toHumanReadableTime(race.time),
         }));
 
@@ -54,7 +55,7 @@ export class ResultsViewUpdater {
         const updateData = totalInfoByContests
             .map((row: UserRacesData) => ({
                 count: row.count,
-                username: row.firstname + ' ' + row.lastname,
+                username: getUsername(row),
                 formattedTime: toHumanReadableTime(row.besttime),
             }));
         IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
