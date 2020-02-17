@@ -2,10 +2,11 @@ import { dbMorda } from '../tools/database/database';
 
 export interface RaceData {
     id: number;
-    timestamp: string;
+    totalTime: number;
+    bestLapTime: number;
+    lapsCount: number;
     firstname: string;
     lastname: string;
-    time: number;
 }
 
 export interface UserRacesData {

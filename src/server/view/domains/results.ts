@@ -6,6 +6,14 @@ import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
 import { getUsername } from '../formatters/users';
 
+export type RaceHistoryViewData = Array<{
+    id: number;
+    username: string;
+    lapsCounter: string;
+    totalTime: string;
+    bestLapTime: string;
+}>
+
 export type UserInfoViewData = Array<{
     uid: string;
     username: string;
@@ -17,13 +25,22 @@ export type TotalInfoViewData = Array<{
     count: number;
 }>
 
-export type RaceHistoryViewData = Array<{
-    id: number;
-    username: string;
-    formattedTime: string;
-}>
-
 export class ResultsViewUpdater {
+    public static async updateRaceHistory(): Promise<void> {
+        const selectedContestId = Storage.contests.getSelectedContest();
+        const raceData = await Storage.races.getRacesByContest(selectedContestId);
+
+        const updateData = raceData.map((race: RaceData) => ({
+            id: race.id,
+            lapsCounter: `${race.lapsCount}/${race.lapsCount}`,
+            username: getUsername(race),
+            totalTime: toHumanReadableTime(race.totalTime),
+            bestLapTime: toHumanReadableTime(race.bestLapTime)
+        }));
+
+        IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
+    }
+
     public static async updateUsersData(): Promise<void> {
         const selectedContestId = Storage.contests.getSelectedContest();
         const usersByContests = await Storage.users.getUsersByContest(selectedContestId);
@@ -34,19 +51,6 @@ export class ResultsViewUpdater {
         }));
 
         IpcRoot.send<UserInfoViewData>(IPC_RESULTS.USERS_DATA_UPDATE, updateData);
-    }
-
-    public static async updateRaceHistory(): Promise<void> {
-        const selectedContestId = Storage.contests.getSelectedContest();
-        const raceData = await Storage.races.getRacesByContest(selectedContestId);
-
-        const updateData = raceData.map((race: RaceData) => ({
-            id: race.id,
-            username: getUsername(race),
-            formattedTime: toHumanReadableTime(race.time),
-        }));
-
-        IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
     }
 
     public static async updateTotalInfo(): Promise<void> {

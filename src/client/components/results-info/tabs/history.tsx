@@ -15,6 +15,7 @@ export const RaceHistory: FC<RaceHistoryProps & RaceHistoryActions> = (props) =>
         <thead>
         <tr>
             <th>Имя</th>
+            <th>Кругов</th>
             <th>Время</th>
             <th>Лучший круг</th>
             {props.onDeleteRace ? (
@@ -24,10 +25,11 @@ export const RaceHistory: FC<RaceHistoryProps & RaceHistoryActions> = (props) =>
         </thead>
         <tbody>
         {props.history.map((race) => (
-            <tr key={race.formattedTime}>
+            <tr key={race.id}>
                 <td>{race.username}</td>
-                <td>{race.formattedTime}</td>
-                <td>N/A</td>
+                <td>{race.lapsCounter}</td>
+                <td>{race.totalTime}</td>
+                <td>{race.bestLapTime}</td>
                 {props.onDeleteRace ? (
                     <td>
                         <DeleteButton

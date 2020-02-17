@@ -32,9 +32,22 @@ export class RacesMethods {
     }
 
     public getRacesByContest(contestId: number): Promise<any[]> {
-        const sql = `select races.*, users.firstname, users.lastname from races
-            join users on races.user_id = users.id
-            and races.contest_id = (?)
+        const sql = `
+            select
+                laps.race_id as "id",
+                races.time as "totalTime",
+                min(laps.time) as "bestLapTime",
+                count(laps.id) as "lapsCount",
+                users.firstname,
+                users.lastname
+            
+            from laps
+                join races on races.id = laps.race_id
+                join users on users.id = races.user_id
+                and races.contest_id = (?)
+            
+            group by laps.race_id
+            order by laps.time;
         `;
 
         return new Promise((resolve, reject) => {
