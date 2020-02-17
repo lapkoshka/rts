@@ -16,7 +16,7 @@ export interface ContestData {
     finish_time: number;
 }
 
-export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description' | 'laps'>;
+export type ContestFormData = Pick<ContestData, 'id' | 'name' | 'description'>;
 
 export class Contests {
     public static async create(): Promise<number> {
@@ -29,10 +29,10 @@ export class Contests {
     }
 
     public static async changeSettings(data: ContestFormData): Promise<void> {
-        const { id, name, description, laps } = data;
+        const { id, name, description } = data;
         try {
             StorageCache.clearAll();
-            return await dbMorda.contests.changeSettings(id, name, description, laps);
+            return await dbMorda.contests.changeSettings(id, name, description);
         } catch (e) {
             throw Error(e);
         }

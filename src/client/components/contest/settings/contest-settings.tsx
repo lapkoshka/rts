@@ -1,19 +1,5 @@
-import {
-    Button,
-    InputGroup,
-    Intent,
-    Label,
-    NumericInput,
-    TextArea,
-} from '@blueprintjs/core';
-import React, {
-    ChangeEvent,
-    FC,
-    FormEvent,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
+import { Button, InputGroup, Intent, Label, TextArea } from '@blueprintjs/core';
+import React, { ChangeEvent, FC, FormEvent, useCallback, useEffect, useState } from 'react';
 import { ContestData, ContestFormData } from '../../../../server/storage/domains/contests';
 import { OverlayPopup } from '../../ui/overlay-popup/overlay-popup';
 import styles from './contest-settings.module.css';
@@ -33,7 +19,6 @@ const selectFormDataFromProps = (contest: ContestData): ContestFormData => ({
     id: contest.id,
     name: contest.name,
     description: contest.description,
-    laps: contest.laps,
 });
 
 export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> = (props) => {
@@ -58,20 +43,6 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
             });
         },
         [formData, setFormData]
-    );
-
-    const handleLapsChange = useCallback(
-        (value: number) => {
-            if (value <= 0) {
-                return;
-            }
-
-            setFormData({
-                ...formData,
-                laps: value,
-            });
-        },
-        [formData, setFormData],
     );
 
     const handleSubmit = useCallback(
@@ -132,13 +103,6 @@ export const ContestSettings: FC<ContestSettingsProps & ContestSettingsActions> 
                     intent={Intent.PRIMARY}
                     onChange={handleDescriptionChange}
                     value={formData.description}
-                />
-            </Label>
-            <Label>
-                Количество кругов
-                <NumericInput
-                    onValueChange={handleLapsChange}
-                    value={formData.laps}
                 />
             </Label>
             <div className={styles.controls}>
