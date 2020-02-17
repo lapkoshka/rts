@@ -10,7 +10,7 @@ export interface RaceInfoProps {
 }
 
 export const RaceInfo: FC<RaceInfoProps> = (props: RaceInfoProps) => (
-    <table className='bp3-html-table bp3-html-table-striped'>
+    <table className='bp3-html-table bp3-html-table-bordered bp3-html-table-condensed bp3-html-table-striped'>
         <thead>
             <tr>
                 <th>Имя</th>
