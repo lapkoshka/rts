@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import { Ipc } from '../../../common/ipc';
 import { IPC_RESULTS } from '../../../server/databus/ipc/events';
-import { UserData } from '../../../server/storage/domains/users';
-import { RaceHistory, TotalInfo } from '../../../server/view/domains/results';
+import { UserInfoViewData, RaceHistoryViewData, TotalInfoViewData } from '../../../server/view/domains/results';
 import { selectContest } from '../contest/selectors';
 import { ResultsInfo, ResultsInfoProps } from './results-info';
 import { store, RootState } from '../../store';
@@ -21,15 +20,15 @@ const mapStateToProps = (state: RootState): ResultsInfoProps => ({
 });
 
 const { dispatch } = store;
-Ipc.on<RaceHistory>(IPC_RESULTS.RACE_HISTORY_UPDATE, (history) => {
+Ipc.on<RaceHistoryViewData>(IPC_RESULTS.RACE_HISTORY_UPDATE, (history) => {
     dispatch(setRaceHistory(history));
 });
 
-Ipc.on<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, (users) => {
+Ipc.on<UserInfoViewData>(IPC_RESULTS.USERS_DATA_UPDATE, (users) => {
     dispatch(setUsers(users));
 });
 
-Ipc.on<TotalInfo>(IPC_RESULTS.TOTAL_INFO_UPDATE, (info) => {
+Ipc.on<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, (info) => {
     dispatch(setTotalInfo(info));
 });
 

@@ -23,14 +23,13 @@ const openDatabase = (): Database => {
 const prepareDatabase = async (db: Database): Promise<void> => {
     try {
         await db.run(`create table if not exists contests(
-                id integer primary key autoincrement,
-                name text,
-                description text,
-                laps unsigned integer,
-                started_flag unsigned integer,
-                finished_flag unsigned integer,
-                start_time unsigned integer,
-                finish_time unsigned integer)`);
+            id integer primary key autoincrement,
+            name text,
+            description text,
+            started_flag unsigned integer,
+            finished_flag unsigned integer,
+            start_time unsigned integer,
+            finish_time unsigned integer)`);
 
         await db.run(`create table if not exists users(
             id integer primary key autoincrement,

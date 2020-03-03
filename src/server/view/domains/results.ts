@@ -4,56 +4,100 @@ import { toHumanReadableTime } from '../../lib/functions';
 import { Storage } from '../../storage';
 import { RaceData, UserRacesData } from '../../storage/domains/races';
 import { UserData } from '../../storage/domains/users';
+import { getUsername } from '../formatters/users';
 
-export interface TotalInfoRow extends UserRacesData {
+export type RaceHistoryViewData = Array<{
+    id: number;
+    username: string;
+    lapsCounter: string;
+    totalTime: string;
+    bestLapTime: string;
+}>
+
+export type UserInfoViewData = Array<{
+    uid: string;
+    username: string;
+}>
+
+export type TotalInfoViewData = Array<{
     username: string;
     formattedTime: string;
-}
-
-export type TotalInfo = TotalInfoRow[];
-
-export interface RaceHistoryRow extends RaceData {
-    username: string;
-    formattedTime: string;
-}
-
-export type RaceHistory = RaceHistoryRow[];
+    count: number;
+}>
 
 export class ResultsViewUpdater {
-    public static async updateUsersData(): Promise<void> {
-        const selectedContestId = Storage.contests.getSelectedContest();
-        const users: UserData[] = await Storage.users.getUsersByContest(selectedContestId);
-        IpcRoot.send<UserData[]>(IPC_RESULTS.USERS_DATA_UPDATE, users);
+    public static async updateRaceHistory(): Promise<void> {
+        const selectedContestId = await Storage.contests.getSelectedContest();
+        const raceHistory = await this.getRaceHistory(selectedContestId);
+        IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.RACE_HISTORY_UPDATE, raceHistory);
+
+        const currentContestId = await Storage.contests.getCurrentContestId();
+        if (currentContestId === selectedContestId) {
+            IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.CURRENT_RACE_HISTORY_UPDATE, raceHistory);
+            return;
+        }
+
+        const currentRaceHistory = await this.getRaceHistory(currentContestId);
+        IpcRoot.send<RaceHistoryViewData>(IPC_RESULTS.CURRENT_RACE_HISTORY_UPDATE, currentRaceHistory);
     }
 
-    public static async updateRaceHistory(): Promise<void> {
-        const selectedContestId = Storage.contests.getSelectedContest();
-        const raceData = await Storage.races.getRacesByContest(selectedContestId);
+    public static async updateUsersData(): Promise<void> {
+        const selectedContestId = await Storage.contests.getSelectedContest();
+        const userData = await this.getUserData(selectedContestId);
+        IpcRoot.send<UserInfoViewData>(IPC_RESULTS.USERS_DATA_UPDATE, userData);
 
-        const updateData = raceData.map((race: RaceData) => ({
-            ...race,
-            username: race.firstname + ' ' + race.lastname,
-            formattedTime: toHumanReadableTime(race.time),
-        }));
+        const currentContestId = await Storage.contests.getCurrentContestId();
+        if (currentContestId === selectedContestId) {
+            IpcRoot.send<UserInfoViewData>(IPC_RESULTS.CURRENT_USERS_DATA_UPDATE, userData);
+            return;
+        }
 
-        IpcRoot.send<RaceHistory>(IPC_RESULTS.RACE_HISTORY_UPDATE, updateData);
+        const currentUserData = await this.getUserData(currentContestId);
+        IpcRoot.send<UserInfoViewData>(IPC_RESULTS.CURRENT_USERS_DATA_UPDATE, currentUserData);
     }
 
     public static async updateTotalInfo(): Promise<void> {
-        // const totalInfo =
-        // const updateData
-        // IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
+        const selectedContestId = await Storage.contests.getSelectedContest();
+        const totalInfo = await this.getTotalInfo(selectedContestId);
+        IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.TOTAL_INFO_UPDATE, totalInfo);
 
+        const currentContestId = await Storage.contests.getCurrentContestId();
+        if (currentContestId === selectedContestId) {
+            IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.CURRENT_TOTAL_INFO_UPDATE, totalInfo);
+        }
 
-        // getTotalUserRaces().then((userRacesData: UserRacesData[]) => {
-        //     const updateData: TotalInfo = userRacesData.map((row: UserRacesData) => ({
-        //         ...row,
-        //         username: row.firstname + ' ' + row.lastname,
-        //         formattedTime: toHumanReadableTime(row.besttime),
-        //     }));
-        //     IpcRoot.send(IPC_RESULTS.TOTAL_INFO_UPDATE, updateData);
-        // }).catch((err: Error) => {
-        //     throw err;
-        // });
+        const currentTotalInfo = await this.getTotalInfo(currentContestId);
+        IpcRoot.send<TotalInfoViewData>(IPC_RESULTS.CURRENT_TOTAL_INFO_UPDATE, currentTotalInfo);
+    }
+
+    private static async getRaceHistory(contestId: number): Promise<RaceHistoryViewData> {
+        const raceData = await Storage.races.getRacesByContest(contestId);
+
+        return raceData.map((race: RaceData) => ({
+            id: race.id,
+            lapsCounter: `${race.lapsCount}/${race.lapsCount}`,
+            username: getUsername(race),
+            totalTime: toHumanReadableTime(race.totalTime),
+            bestLapTime: toHumanReadableTime(race.bestLapTime)
+        }));
+    }
+
+    private static async getUserData(contestId: number): Promise<UserInfoViewData> {
+        const usersByContests = await Storage.users.getUsersByContest(contestId);
+
+        return usersByContests.map((user: UserData) => ({
+            uid: user.uid,
+            username: getUsername(user),
+        }));
+    }
+
+    private static async getTotalInfo(contestId: number): Promise<TotalInfoViewData> {
+        const totalInfoByContests = await Storage.races.getTotalInfoByContests(contestId);
+
+        return totalInfoByContests.map((row: UserRacesData) => ({
+                count: row.count,
+                username: getUsername(row),
+                formattedTime: toHumanReadableTime(row.besttime),
+            }));
     }
 }

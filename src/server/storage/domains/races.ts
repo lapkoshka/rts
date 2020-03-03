@@ -2,10 +2,11 @@ import { dbMorda } from '../tools/database/database';
 
 export interface RaceData {
     id: number;
-    timestamp: string;
+    totalTime: number;
+    bestLapTime: number;
+    lapsCount: number;
     firstname: string;
     lastname: string;
-    time: number;
 }
 
 export interface UserRacesData {
@@ -43,6 +44,14 @@ export class Races {
     public static async getRacesByContest(contestId: number): Promise<RaceData[]> {
         try {
             return await dbMorda.races.getRacesByContest(contestId);
+        } catch (e) {
+            throw Error(e);
+        }
+    }
+
+    public static async getTotalInfoByContests(contestId: number): Promise<UserRacesData[]> {
+        try {
+            return await dbMorda.races.getTotalInfoByContest(contestId);
         } catch (e) {
             throw Error(e);
         }

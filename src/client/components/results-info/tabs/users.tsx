@@ -1,19 +1,25 @@
-import { Table } from 'antd';
-import React from 'react';
-import { UserData } from '../../../../server/storage/domains/users';
+import React, { FC } from 'react';
+import { UserInfoViewData } from '../../../../server/view/domains/results';
 
-export const renderUsers = (users: UserData[]) => {
-    const usersWithKeys = users.map((item: UserData) => ({
-        key: item.id,
-        uid: item.uid,
-        username: item.firstname + ' ' + item.lastname,
-    }));
+interface UsersInfoProps {
+    users: UserInfoViewData;
+}
 
-    return (
-        <Table dataSource={usersWithKeys}>
-            <Table.Column key='uid' title='Метка' dataIndex='uid'/>
-            <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column />
-        </Table>
-    );
-};
+export const UsersInfo: FC<UsersInfoProps> = (props) => (
+    <table className='bp3-html-table bp3-html-table-bordered bp3-html-table-condensed bp3-html-table-striped'>
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Метка</th>
+        </tr>
+        </thead>
+        <tbody>
+        {props.users.map((row) => (
+            <tr key={row.username}>
+                <td>{row.username}</td>
+                <td>{row.uid}</td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+);

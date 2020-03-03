@@ -6,7 +6,7 @@ import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
-import { UserData } from '../../../server/storage/domains/users';
+// import { UserData } from '../../../server/storage/domains/users';
 import { RaceSettings } from './race-settings/race-settings';
 import { MainReaderIpSettings } from './reader-settings/main-reader-ip-settings';
 import './settings.scss';
@@ -17,7 +17,7 @@ export interface SettingsProps {
     shouldShowPopup: boolean;
     mainReaderSettings: MainReaderSettings;
     raceParams: RaceParams;
-    users: UserData[];
+    // users: UserData[];
     chartEnableInfo: ChartEnableInfo;
     applyRaceParams: (params: RaceParams) => void;
 }
@@ -71,7 +71,7 @@ export const Settings: FC<SettingsProps & SettingsActions> = memo((props) => {
                 <h6 className='bp3-heading'>График</h6>
                 <RSSIChartSettings
                     chartEnableInfo={props.chartEnableInfo}
-                    users={props.users}
+                    // users={props.users}
                     setChartEnableInfo={props.setChartEnableInfo}
                 />
             </div>

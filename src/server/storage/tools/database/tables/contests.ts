@@ -11,7 +11,6 @@ export class ContestMethods {
         const sql = `insert into contests(
             name,
             description,
-            laps,
             started_flag,
             finished_flag,
             start_time,
@@ -20,7 +19,7 @@ export class ContestMethods {
 
         return new Promise((resolve, reject) => {
             const stmt: Statement = this.database.prepare(sql);
-            stmt.run(['Новое мероприятие', '', 1, 0, 0, 0, 0], function(err: Error) {
+            stmt.run(['Новое мероприятие', '', 0, 0, 0, 0], function(err: Error) {
                 if (err) reject(err);
                 resolve(this.lastID);
             });
@@ -73,16 +72,11 @@ export class ContestMethods {
         });
     }
 
-    public changeSettings(id: number, name: string, description: string, laps: number): Promise<void> {
+    public changeSettings(id: number, name: string, description: string): Promise<void> {
         const sql = `update contests set name = (?), description = (?), laps = (?) where id = (?)`;
 
         return new Promise((resolve, reject) => {
-            this.database.run(sql, [
-                name,
-                description,
-                laps,
-                id
-            ], (err: Error) => {
+            this.database.run(sql, [name, description, id], (err: Error) => {
                 if (err) reject(err);
                 resolve();
             });

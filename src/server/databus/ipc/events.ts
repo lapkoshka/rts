@@ -41,6 +41,9 @@ export enum IPC_RESULTS {
     USERS_DATA_UPDATE = 'ipc/results/user_data_update',
     TOTAL_INFO_UPDATE = 'ipc/results/total_info_update',
     RACE_HISTORY_UPDATE = 'ipc/results/race_history_update',
+    CURRENT_USERS_DATA_UPDATE = 'ipc/results/user_data_update',
+    CURRENT_TOTAL_INFO_UPDATE = 'ipc/results/total_info_update',
+    CURRENT_RACE_HISTORY_UPDATE = 'ipc/results/current_race_history_update',
     ON_RACE_DELETE = 'ipc/results/on_race_delete',
 }
 
