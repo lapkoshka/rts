@@ -11,10 +11,6 @@ export interface ResultsViewProps {
     total: TotalInfoViewData;
 }
 
-// todo:
-//  имя текущего мероприятия
-//  данные только о текущем мероприятии
-//  момент с отсутствием данных
 export const ResultsView: FC<ResultsViewProps> = (props) => {
     return (
         <div className='results-view-layout'>

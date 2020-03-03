@@ -44,6 +44,7 @@ export class Users {
             }));
 
             StorageCache.set(CACHE_KEY.GET_USERS, users);
+
             return users;
         } catch (e) {
             throw Error(e);

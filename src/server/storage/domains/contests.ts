@@ -90,7 +90,10 @@ export class Contests {
         }
 
         try {
-            return await dbMorda.contests.getCurrentContestId();
+            const contestId = await dbMorda.contests.getCurrentContestId();
+            StorageCache.set(CACHE_KEY.GET_CURRENT_CONTEST_ID, contestId);
+
+            return contestId;
         } catch (e) {
             throw Error(e);
         }
