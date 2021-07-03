@@ -1,6 +1,6 @@
 import { RFIDTag } from './readers/base-reader';
 import { RSSITracePoint } from './rssi-trace-point';
-import * as EventEmitter from 'events';
+import { EventEmitter } from 'events';
 
 export const TRACE_FILLING_TIMEOUT = 1000;
 
@@ -54,7 +54,7 @@ export class RSSITrace extends EventEmitter {
         return this.getSortedPoints()[0];
     }
 
-    private openTraceFilling(autoclose: boolean = true): void {
+    private openTraceFilling(autoclose = true): void {
         if (autoclose) {
             setTimeout(() => {
                 this.completed = true;

@@ -1,35 +1,46 @@
-import { Table } from 'antd';
-import React from 'react';
-import {
-    RaceHistory,
-    RaceHistoryRow,
-} from '../../../../server/controllers/results/history';
-import { renderDeleteButton } from '../../ui/delete/delete';
+import React, { FC } from 'react';
+import { RaceHistoryViewData } from '../../../../server/view/domains/results';
+import { DeleteButton } from '../../ui/delete/delete';
 
-export const renderRaceHistory = (history: RaceHistory, deleteRace?: (id: number) => void) => {
-    const historyWithKeys = history.map((item: RaceHistoryRow) => ({
-        ...item,
-        key: item.id,
-    }));
+interface RaceHistoryProps {
+    history: RaceHistoryViewData;
+}
 
-    const deleteTitle = 'Вы уверены что хотите удалить эту гонку?';
-    return (
-        <Table dataSource={historyWithKeys}>
-            <Table.Column key='id' title='N' dataIndex='id'/>
-            <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column key='time' title='Время' dataIndex='formattedTIme'/>
-            <Table.Column key='date' title='Дата' dataIndex='timestamp'/>
-            {
-                deleteRace ? (
-                    <Table.Column
-                        key='delete'
-                        title='Удаление'
-                        render={(text) => renderDeleteButton(deleteTitle,
-                            () => deleteRace(text.id))
-                        }
-                    />
-                ) : null
-            }
-        </Table>
-    );
-};
+interface RaceHistoryActions {
+    onDeleteRace?: (id: number) => void;
+}
+
+export const RaceHistory: FC<RaceHistoryProps & RaceHistoryActions> = (props) =>  (
+    <table className='bp3-html-table bp3-html-table-bordered bp3-html-table-condensed bp3-html-table-striped'>
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Кругов</th>
+            <th>Время</th>
+            <th>Лучший круг</th>
+            {props.onDeleteRace ? (
+                <th>Удалить</th>
+            ) : null}
+        </tr>
+        </thead>
+        <tbody>
+        {props.history.map((race) => (
+            <tr key={race.id}>
+                <td>{race.username}</td>
+                <td>{race.lapsCounter}</td>
+                <td>{race.totalTime}</td>
+                <td>{race.bestLapTime}</td>
+                {props.onDeleteRace ? (
+                    <td>
+                        <DeleteButton
+                            title='Вы уверены что хотите удалить эту гонку?'
+                            onClick={() => props.onDeleteRace(race.id)}
+                        />
+                    </td>
+                ) : null}
+            </tr>
+        ))}
+        </tbody>
+    </table>
+);
+

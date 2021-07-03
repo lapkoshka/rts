@@ -1,58 +1,38 @@
-import { updateRaces } from './controllers/race/race-scenario';
-import { updateUsers } from './controllers/results/users';
-import { IPC_APP, IPC_MAIN_READER, IPC_PORTABLE_READER } from './ipc/ipc-events';
-import { rootDispatcher } from './modules/dispatcher/root-dispatcher';
-import { updateRaceHistory } from './controllers/results/history';
-import { updateTotalInfo } from './controllers/results/total';
-import { mainReader } from './modules/readers/main-reader';
-import { portableReader } from './modules/readers/portable-reader';
-import { closeDatabase } from './modules/database/database';
+import { MainReader } from './lib/readers/main-reader';
+import { PortableReader } from './lib/readers/portable-reader';
+import { Storage } from './storage';
 
-import { initPortableReaderController } from './controllers/portable-reader/controller';
-import { initMainReaderController } from './controllers/main-reader/controller';
-import { initRaceController } from './controllers/race/controller';
-import { initRSSIController } from './controllers/rssi-chart/controller';
-import { initFakeTagController } from './controllers/fake-tag/controller';
-import { initRegistrationController } from './controllers/registration/controller';
-import { initSmartbannerController } from './controllers/control-panel/controller';
-import { initResultsController } from './controllers/results/controller';
+import { initContestController } from './controllers/contests';
+import { initViewUpdaterController } from './controllers/view-updater';
+import { initPortableReaderController } from './controllers/portable-reader';
+import { initMainReaderController } from './controllers/main-reader';
+import { initRaceController } from './controllers/race';
+import { initRSSIController } from './controllers/rssi-chart';
+import { initFakeTagController } from './controllers/fake-tag';
+import { initRegistrationController } from './controllers/registration';
+import { initSmartbannerController } from './controllers/control-panel';
+import { initResultsController } from './controllers/results';
 
-const waitView = (): Promise<void> => {
-    return new Promise((resolve) => {
-        rootDispatcher.addPageListener(IPC_APP.VIEW_DID_MOUNT, resolve);
-    });
-};
-
-const updateView = (): void => {
-    updateRaceHistory();
-    updateTotalInfo();
-    updateUsers();
-    rootDispatcher.sendEvent(IPC_MAIN_READER.STATUS_CHANGE, mainReader.status);
-    rootDispatcher.sendEvent(IPC_PORTABLE_READER.STATUS_CHANGE, portableReader.status);
-    updateRaces();
-};
+const mainReader = new MainReader('/bin/MainReaderAdapter.exe');
+const portableReader = new PortableReader('/bin/portablereader.exe');
 
 const start = (): void => {
-    const pageReady = waitView();
-    rootDispatcher.addPageListener(IPC_APP.START, async () => {
-        await pageReady;
-        updateView();
-    });
-
-    initPortableReaderController();
-    initMainReaderController();
-    initRaceController();
-    initRSSIController();
-    initFakeTagController();
-    initRegistrationController();
-    initSmartbannerController();
+    initViewUpdaterController(mainReader, portableReader);
+    initPortableReaderController(portableReader);
+    initMainReaderController(mainReader);
+    initRaceController(mainReader);
+    initRSSIController(mainReader);
+    initFakeTagController(mainReader, portableReader);
+    initRegistrationController(portableReader);
+    initSmartbannerController(mainReader, portableReader);
     initResultsController();
+    initContestController();
 };
 
 const shutdown = () => {
     mainReader.kill();
     portableReader.kill();
-    closeDatabase();
+    Storage.close();
 };
 
 export const services = {

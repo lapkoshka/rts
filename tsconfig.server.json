@@ -1,21 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "outDir": "build/server",
-    "baseUrl": "src",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "paths": {
-      "*": ["node_modules/*"]
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "*": ["node_modules/*"]
+        },
     },
-    "target": "es6"
-  },
-  "include": [
-    "src/server"
-  ],
-  "exclude": [
-    "src/client"
-  ]
+    "include": [
+        "src/server"
+    ],
+    "exclude": [
+        "src/client"
+    ]
 }

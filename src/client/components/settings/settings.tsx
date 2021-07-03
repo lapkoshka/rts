@@ -1,12 +1,12 @@
 import { Divider, Drawer, Position } from '@blueprintjs/core';
 import React, { FC, memo, useCallback } from 'react';
-import { Users } from '../../../server/controllers/results/users';
-import { ChartEnableInfo } from '../../../server/controllers/rssi-chart/controller';
+import { ChartEnableInfo } from '../../../server/controllers/rssi-chart';
 import { RaceParams } from '../../../server/lib/domain/race';
 import {
     MainReaderParams,
     MainReaderSettings,
 } from '../../../server/lib/readers/main-reader';
+// import { UserData } from '../../../server/storage/domains/users';
 import { RaceSettings } from './race-settings/race-settings';
 import { MainReaderIpSettings } from './reader-settings/main-reader-ip-settings';
 import './settings.scss';
@@ -17,7 +17,7 @@ export interface SettingsProps {
     shouldShowPopup: boolean;
     mainReaderSettings: MainReaderSettings;
     raceParams: RaceParams;
-    users: Users;
+    // users: UserData[];
     chartEnableInfo: ChartEnableInfo;
     applyRaceParams: (params: RaceParams) => void;
 }
@@ -27,7 +27,7 @@ export interface SettingsActions {
     setIpAuto: (enable: boolean) => void;
     setIpAddress: (address: string) => void;
     setMainReaderParams: (params: MainReaderParams) => void;
-    setDefaultMainReaderParams: () => void;
+    setDefaultMainReaderParams: VoidFunction;
     setChartEnableInfo: (info: ChartEnableInfo) => void;
     setRaceParams: (params: RaceParams) => void;
 }
@@ -71,7 +71,7 @@ export const Settings: FC<SettingsProps & SettingsActions> = memo((props) => {
                 <h6 className='bp3-heading'>График</h6>
                 <RSSIChartSettings
                     chartEnableInfo={props.chartEnableInfo}
-                    users={props.users}
+                    // users={props.users}
                     setChartEnableInfo={props.setChartEnableInfo}
                 />
             </div>

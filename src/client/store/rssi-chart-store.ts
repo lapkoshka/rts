@@ -1,7 +1,7 @@
 import {
     ChartEnableInfo,
     RSSIChartTrace,
-} from '../../server/controllers/rssi-chart/controller';
+} from '../../server/controllers/rssi-chart';
 import { Action } from './index';
 
 type RSSIChartStore = Action<RSSIChartTrace | ChartEnableInfo>;
@@ -11,13 +11,16 @@ export interface RSSIChartState {
     chartEnableInfo: ChartEnableInfo;
 }
 
+const SET_CHART_DATA = 'rssi/SET_CHART_DATA';
+const SET_CHART_ENABLE_INFO = 'rssi/SET_CHART_ENABLE_INFO';
+
 export const setChartData = (payload: RSSIChartTrace) => ({
-    type: 'SET_CHART_DATA',
+    type: SET_CHART_DATA,
     payload,
 });
 
 export const setChartEnableInfo = (payload: ChartEnableInfo) => ({
-    type: 'SET_CHART_ENABLE_INFO',
+    type: SET_CHART_ENABLE_INFO,
     payload,
 });
 
@@ -31,12 +34,12 @@ const initialState = {
 
 export const rssiChartReducer = (state = initialState, action: RSSIChartStore) => {
     switch (action.type) {
-        case 'SET_CHART_DATA':
+        case SET_CHART_DATA:
             return {
                 ...state,
                 trace: action.payload as RSSIChartTrace,
             };
-        case 'SET_CHART_ENABLE_INFO':
+        case SET_CHART_ENABLE_INFO:
             return {
                 ...state,
                 chartEnableInfo: action.payload as ChartEnableInfo,

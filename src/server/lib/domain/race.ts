@@ -1,5 +1,5 @@
-import * as EventEmitter from 'events';
-import { UserData } from '../../modules/database/users';
+import { EventEmitter } from 'events';
+import { UserData } from '../../storage/domains/users';
 import { RFIDTag } from '../readers/base-reader';
 import { Lap, LAP_EVENT } from './lap';
 import { shouldAppendTag } from './lib';
@@ -24,7 +24,7 @@ export const defaultRaceParams: RaceParams = {
 
 export class Race extends EventEmitter {
     public user: UserData;
-    private laps: Lap[];
+    public laps: Lap[];
     private params: RaceParams;
     private lapsFinished: number;
 
@@ -36,6 +36,11 @@ export class Race extends EventEmitter {
         this.lapsFinished = 0;
     }
 
+    public getTotalTime(): number {
+        return this.laps.reduce((total: number, lap: Lap) =>
+            total += lap.getTotalTime(), 0);
+    }
+
     public getLapsCounter(): string {
         return `${this.lapsFinished + 1}/${this.params.maxLaps}`;
     }
@@ -44,7 +49,7 @@ export class Race extends EventEmitter {
         const bestLap = this.laps
             .map((lap: Lap) => lap)
             .sort((a: Lap, b: Lap) =>
-                 a.getTotalTime() - b.getTotalTime())[0];
+                a.getTotalTime() - b.getTotalTime())[0];
         if (!bestLap) {
             return null;
         }
@@ -105,7 +110,7 @@ export class Race extends EventEmitter {
 
         lap.on(LAP_EVENT.FINISH, () => {
             this.lapsFinished++;
-            this.emit(RACE_EVENT.LAP_FINISH, lap);
+            this.emit(RACE_EVENT.LAP_FINISH);
             if (this.isLastLap(lap)) {
                 this.emit(RACE_EVENT.FINISH);
                 return;

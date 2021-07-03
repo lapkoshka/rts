@@ -5,8 +5,9 @@
 /app/storage/*
 dist/
 build/
-/database/
+/data/
 core/*/*/bin
 core/*/*/obj
 .DS_Store
 .env
+.eslintcache

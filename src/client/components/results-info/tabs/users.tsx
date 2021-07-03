@@ -1,27 +1,25 @@
-import { Table } from 'antd';
-import React from 'react';
-import { UserRow, Users } from '../../../../server/controllers/results/users';
-import { renderDeleteButton } from '../../ui/delete/delete';
+import React, { FC } from 'react';
+import { UserInfoViewData } from '../../../../server/view/domains/results';
 
-export const renderUsers = (users: Users, deleteUser: (uid: string) => void) => {
-    const usersWithKeys = users.map((item: UserRow) => ({
-        ...item,
-        key: item.uid,
-    }));
+interface UsersInfoProps {
+    users: UserInfoViewData;
+}
 
-    const deleteTitle = 'Вы уверены что хотите удалить пользователя?';
-    return (
-        <Table dataSource={usersWithKeys}>
-            <Table.Column key='uid' title='Метка' dataIndex='uid'/>
-            <Table.Column key='username' title='Имя' dataIndex='username'/>
-            <Table.Column
-                key='delete'
-                title='Удаление'
-                render={(text) => renderDeleteButton(deleteTitle,
-            () => deleteUser(text.uid))
-                }
-            />
-            <Table.Column />
-        </Table>
-    );
-};
+export const UsersInfo: FC<UsersInfoProps> = (props) => (
+    <table className='bp3-html-table bp3-html-table-bordered bp3-html-table-condensed bp3-html-table-striped'>
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Метка</th>
+        </tr>
+        </thead>
+        <tbody>
+        {props.users.map((row) => (
+            <tr key={row.username}>
+                <td>{row.username}</td>
+                <td>{row.uid}</td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+);

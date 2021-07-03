@@ -1,7 +1,9 @@
 import { Intent, Toaster } from '@blueprintjs/core';
 
 interface Notification {
-    [key: string]: (msg: string, timeout: number) => void;
+    error: (msg: string, timeout: number) => void;
+    warn: (msg: string, timeout: number) => void;
+    success: (msg: string, timeout: number) => void;
 }
 
 export const Notification: Notification = {

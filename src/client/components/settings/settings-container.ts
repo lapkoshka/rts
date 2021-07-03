@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
-import { getIpcRenderer } from '../../../common/ipc';
-import { ChartEnableInfo } from '../../../server/controllers/rssi-chart/controller';
-import { IPC_RACE, IPC_RSSI_CHART } from '../../../server/ipc/ipc-events';
+import { Ipc } from '../../../common/ipc';
+import { ChartEnableInfo } from '../../../server/controllers/rssi-chart';
+import { IPC_RACE, IPC_RSSI_CHART } from '../../../server/databus/ipc/events';
 import { RaceParams } from '../../../server/lib/domain/race';
 import { MainReaderParams } from '../../../server/lib/readers/main-reader';
 import { connect } from 'react-redux';
@@ -18,17 +18,15 @@ import { setRaceParams } from '../../store/race-info-store';
 import { setChartEnableInfo } from '../../store/rssi-chart-store';
 import { Settings, SettingsActions, SettingsProps } from './settings';
 
-const ipc = getIpcRenderer();
-
 const mapStateToProps = (state: RootState): SettingsProps => ({
     mainReaderSettings: state.readersControl.mainReaderSettings,
     shouldShowPopup: state.readersControl.shouldShowPopup,
     raceParams: state.raceInfo.raceParams,
     applyRaceParams: (params: RaceParams) => {
-        ipc.send(IPC_RACE.UPDATE_RACE_PARAMS, params);
+        Ipc.send(IPC_RACE.UPDATE_RACE_PARAMS, params);
         Notification.success('Настройки гонки применены', 3000);
     },
-    users: state.resultsInfo.users,
+    // users: state.resultsInfo.users,
     chartEnableInfo: state.rssiChart.chartEnableInfo,
 });
 
@@ -45,7 +43,7 @@ const mapDispatchToProps = (dispatch: Dispatch): SettingsActions => ({
     setDefaultMainReaderParams: () => dispatch(setDefaultMainReaderParams()),
     setRaceParams: (params: RaceParams) => dispatch(setRaceParams(params)),
     setChartEnableInfo: (info: ChartEnableInfo) => {
-        ipc.send(IPC_RSSI_CHART.ENABLE, info);
+        Ipc.send(IPC_RSSI_CHART.ENABLE, info);
         dispatch(setChartEnableInfo(info));
     },
 });

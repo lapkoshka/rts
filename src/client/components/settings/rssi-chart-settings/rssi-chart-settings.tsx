@@ -1,10 +1,10 @@
 import { Switch } from '@blueprintjs/core';
-import React, { ChangeEvent, FC, FormEvent, memo, useCallback } from 'react';
-import { UserRow, Users } from '../../../../server/controllers/results/users';
-import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart/controller';
+import React, { /**ChangeEvent, */FC, FormEvent, memo, useCallback } from 'react';
+import { ChartEnableInfo } from '../../../../server/controllers/rssi-chart';
+// import { UserData } from '../../../../server/storage/domains/users';
 
 interface RSSIChartSettingsProps {
-    users: Users;
+    // users: UserData[];
     chartEnableInfo: ChartEnableInfo;
     setChartEnableInfo: (info: ChartEnableInfo) => void;
 }
@@ -20,15 +20,15 @@ export const RSSIChartSettings: FC<RSSIChartSettingsProps> = memo((props) => {
         [props],
     );
 
-    const onSelectChange = useCallback(
-        (evt: ChangeEvent<HTMLSelectElement>) => {
-            props.setChartEnableInfo({
-                ...props.chartEnableInfo,
-                uid: evt.currentTarget.selectedOptions[0].value,
-            });
-        },
-        [props],
-    );
+    // const onSelectChange = useCallback(
+    //     (evt: ChangeEvent<HTMLSelectElement>) => {
+    //         props.setChartEnableInfo({
+    //             ...props.chartEnableInfo,
+    //             uid: evt.currentTarget.selectedOptions[0].value,
+    //         });
+    //     },
+    //     [props],
+    // );
 
     return (
         <>
@@ -39,13 +39,13 @@ export const RSSIChartSettings: FC<RSSIChartSettingsProps> = memo((props) => {
             />
 
             <div className='bp3-select .fill'>
-                <select onChange={onSelectChange}>
-                    {
-                        props.users.map((user: UserRow) => (
-                            <option key={user.uid} value={user.uid}>{user.username}</option>
-                        ))
-                    }
-                </select>
+                {/*<select onChange={onSelectChange}>*/}
+                {/*    {*/}
+                {/*        props.users.map(({ id, uid, firstname, lastname}: UserData) => (*/}
+                {/*            <option key={id} value={uid}>{`${firstname} ${lastname}`}</option>*/}
+                {/*        ))*/}
+                {/*    }*/}
+                {/*</select>*/}
             </div>
         </>
     );

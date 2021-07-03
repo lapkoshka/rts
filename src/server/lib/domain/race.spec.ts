@@ -1,4 +1,4 @@
-import { UserData } from '../../modules/database/users';
+import { UserData } from '../../storage/domains/users';
 import { sleep } from '../functions';
 import { createFakeTag } from '../readers/main-reader.spec';
 import { Race, defaultRaceParams, RACE_EVENT } from './race';
@@ -7,10 +7,11 @@ jest.setTimeout(20000);
 
 describe('race', () => {
     const fakeUser: UserData = {
+        id: undefined,
         uid: '123',
         firstname: '',
         lastname: '',
-        alreadyRegistred: true,
+        contests: [],
     };
 
     it('should dispatch START', (done) => {
@@ -22,20 +23,20 @@ describe('race', () => {
     });
 
     it ('should dispatch FINISH', async (done) => {
-       const race = new Race(fakeUser, {
-           ...defaultRaceParams,
-           maxLaps: 2,
-       });
+        const race = new Race(fakeUser, {
+            ...defaultRaceParams,
+            maxLaps: 2,
+        });
 
-       race.on(RACE_EVENT.FINISH, () => {
-          done();
-       });
+        race.on(RACE_EVENT.FINISH, () => {
+            done();
+        });
 
-       race.appendTag(createFakeTag('123', 80));
-       await sleep(1000);
-       race.appendTag(createFakeTag('123', 80));
-       await sleep(1000);
-       race.appendTag(createFakeTag('123', 80));
+        race.appendTag(createFakeTag('123', 80));
+        await sleep(1000);
+        race.appendTag(createFakeTag('123', 80));
+        await sleep(1000);
+        race.appendTag(createFakeTag('123', 80));
     });
 
     it ('should raise exception', async (done) => {
